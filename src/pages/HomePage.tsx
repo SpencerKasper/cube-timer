@@ -3,7 +3,7 @@ import {withRouter} from "react-router";
 
 type FaceValue = 'L' | 'R' | 'B' | 'D' | 'F' | 'U';
 type Axis = 'X' | 'Y' | 'Z'
-type Direction = '' | '\'' | '2';
+type DirectionValue = '' | '\'' | '2';
 
 const AXISES = ['X', 'Y', 'Z'];
 const AXIS_FACE_MAP = {
@@ -11,7 +11,6 @@ const AXIS_FACE_MAP = {
     Y: ['L', 'R'],
     Z: ['F', 'B'],
 };
-
 const FACE_TO_AXIS_MAP = {
     U: 'X',
     D: 'X',
@@ -20,39 +19,63 @@ const FACE_TO_AXIS_MAP = {
     F: 'Z',
     B: 'Z',
 };
+const DIRECTION_VALUES: DirectionValue[] = ['', '\'', '2']
+
+class Direction {
+    private directionValue: DirectionValue;
+
+    constructor(directionValue?: DirectionValue) {
+        this.directionValue = directionValue ? directionValue : Direction.generateRandomDirectionValue();
+    }
+
+    getDirectionValue() {
+        return this.directionValue;
+    }
+
+    private static generateRandomDirectionValue(): DirectionValue {
+        const randomIndexOfDirectionValue = getRandomIntBetweenZeroAndNMinusOne(DIRECTION_VALUES.length);
+        return DIRECTION_VALUES[randomIndexOfDirectionValue]
+    }
+}
 
 class Face {
     private faceValue: FaceValue;
     private axis: Axis;
 
-    constructor(faceValue: FaceValue) {
-        this.faceValue = faceValue;
+    constructor({faceValue, previousTurn}: { faceValue?: FaceValue, previousTurn?: Turn }) {
+        this.faceValue = faceValue ? faceValue : this.generateRandomFaceValue(previousTurn);
         this.axis = FACE_TO_AXIS_MAP[faceValue] as Axis;
     }
+
+    getFaceValue() {
+        return this.faceValue;
+    }
+
+    getAxis() {
+        return this.axis;
+    }
+
+    private generateRandomFaceValue = (previousTurn: Turn): FaceValue => {
+        const randomAxisAsInt = getRandomIntBetweenZeroAndNMinusOne(AXISES.length);
+        const randomFaceForAxisAsInt = getRandomIntBetweenZeroAndNMinusOne(2)
+        const randomlySelectedFace = AXIS_FACE_MAP[AXISES[randomAxisAsInt]][randomFaceForAxisAsInt];
+        if (previousTurn && previousTurn.getFace().getFaceValue() === randomlySelectedFace) {
+            return this.generateRandomFaceValue(previousTurn);
+        }
+        return randomlySelectedFace;
+    };
 }
+
+const getRandomIntBetweenZeroAndNMinusOne = (n: number) => Math.floor(Math.random() * n);
 
 class Turn {
     private face: Face;
     private direction: Direction;
 
     constructor(previousTurn: Turn) {
-        this.face = this.getRandomFace(previousTurn);
-        this.direction = this.getRandomDirection();
+        this.face = new Face({previousTurn});
+        this.direction = new Direction();
     }
-
-    getRandomFace = (previousTurn: Turn): Face => {
-        const randomAxisAsInt = Math.floor(Math.random() * AXISES.length);
-        const randomFaceForAxisAsInt = Math.floor(Math.random() * 2);
-        const randomlySelectedFace = AXIS_FACE_MAP[AXISES[randomAxisAsInt]][randomFaceForAxisAsInt];
-        if(previousTurn && previousTurn.getFace() === randomlySelectedFace) {
-            this.getRandomFace(previousTurn);
-        }
-        return randomlySelectedFace;
-    };
-
-    getRandomDirection = (): Direction => {
-        return '';
-    };
 
     getFace = (): Face => {
         return this.face;
@@ -60,6 +83,10 @@ class Turn {
 
     getDirection = (): Direction => {
         return this.direction;
+    }
+
+    toString() {
+        return `${this.getFace().getFaceValue()}${this.getDirection().getDirectionValue()}`
     }
 }
 
@@ -73,7 +100,7 @@ class Scramble {
 
     generate() {
         this.scramble = [];
-        for(let index = 0; index < this.scrambleLength; index++) {
+        for (let index = 0; index < this.scrambleLength; index++) {
             const previousTurn = index === 0 || this.scramble.length === 0 ? null : this.scramble[index - 1];
             this.scramble.push(new Turn(previousTurn));
         }
@@ -81,18 +108,18 @@ class Scramble {
     }
 
     toString() {
-        if(this.scramble.length === 0) {
+        if (this.scramble.length === 0) {
             console.error('No scramble existed.  Generating new scramble...');
             this.generate();
         }
         return this.scramble.reduce((acc, curr) => {
-            return `${acc}${curr.getFace()}${curr.getDirection()} `;
+            return `${acc}${curr.toString()} `;
         }, '');
     }
 }
 
 const HomePage = () => {
-    const SCRAMBLE_LENGTH = 25;
+    const SCRAMBLE_LENGTH = 20;
     const CUBE_TYPE = '3x3x3';
     const scramble = new Scramble(SCRAMBLE_LENGTH);
     return (
