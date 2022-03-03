@@ -1,0 +1,13 @@
+#root {
+  @import 'static/scss/Home';
+}
+
+@import 'static/scss/Default';
+
+.main-content {
+  padding: 0;
+}
+
+.btn-secondary {
+  background: rgb(123, 93, 151);
+}

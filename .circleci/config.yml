@@ -1,0 +1,40 @@
+version: 2.1
+orbs:
+  node: circleci/node@4.5.0
+  aws-cli: circleci/aws-cli@2.0
+  sam: circleci/aws-sam-serverless@3.1.0
+jobs:
+  build-and-deploy:
+    executor: node/default
+    steps:
+      - checkout
+      - sam/install:
+          aws-access-key-id: AWS_ACCESS_ID
+          aws-secret-access-key: AWS_SECRET_KEY
+      - node/install:
+          node-version: 14.15.1
+          npm-version: 6.14.8
+      - run:
+          name: Build an environment file
+          command: |
+            chmod 755 ./buildEnv.sh
+            npm run buildEnv
+      - run:
+          name: Install aws cli
+          command: |
+            sudo apt-get update
+            sudo apt-get install awscli
+            aws --version
+      - node/install-packages:
+            cache-path: ~/project/node_modules
+            override-ci-command: npm install
+      - run:
+          name: Deploy to s3 bucket
+          command: |
+            npm run deploy
+workflows:
+  build-and-deploy:
+    jobs:
+      - build-and-deploy:
+          context:
+            - AWS_CONTEXT
