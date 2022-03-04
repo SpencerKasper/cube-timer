@@ -15,11 +15,6 @@ jobs:
           node-version: 14.15.1
           npm-version: 6.14.8
       - run:
-          name: Build an environment file
-          command: |
-            chmod 755 ./buildEnv.sh
-            npm run buildEnv
-      - run:
           name: Install aws cli
           command: |
             sudo apt-get update

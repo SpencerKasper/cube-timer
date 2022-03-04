@@ -26,7 +26,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "deploy": "CI=false; npm run build; aws s3 sync build/ cube-timer-bucket",
+        "deploy": "CI=false; npm run build; aws s3 sync build/ s3://cube-timer-website",
         "eject": "react-scripts eject",
         "buildEnv": "./buildEnv.sh"
     },

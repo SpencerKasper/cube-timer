@@ -6,6 +6,7 @@ import {GetScrambleResponse} from "./ScrambleDisplayRow";
 import {useSelector} from "react-redux";
 import scrambleSelectors from "../redux/selectors/scrambleSelectors";
 
+const TIMER_PRECISION_IN_MS = 20;
 const Timer = () => {
     const [currentTime, setCurrentTime] = useState(0);
     const [timerIntervalId, setTimerIntervalId] = useState(null);
@@ -52,8 +53,8 @@ const Timer = () => {
         }
         if (timerState === 'running' && !timerIntervalId) {
             setTimerIntervalId(setInterval(() => {
-                setCurrentTime(time => time + 20);
-            }, 20));
+                setCurrentTime(time => time + TIMER_PRECISION_IN_MS);
+            }, TIMER_PRECISION_IN_MS));
         }
         if (timerState === 'stopping' && timerIntervalId) {
             clearInterval(timerIntervalId);
