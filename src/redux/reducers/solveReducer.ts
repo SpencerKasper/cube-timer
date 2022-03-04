@@ -1,8 +1,8 @@
-interface Solve {
+export interface Solve {
     scramble: string;
     time: number;
     cubeType: '3x3x3';
-
+    number: number;
 }
 
 interface SolveReducerState {
@@ -18,7 +18,7 @@ export default function solveReducer(state = initialState, action) {
         case 'solve/add':
             return {
                 ...state,
-                solves: [...state.solves, action.payload.solve],
+                solves: [{...action.payload.solve, number: state.solves.length + 1}, ...state.solves],
             }
         default:
             return state

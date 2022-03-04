@@ -1,0 +1,46 @@
+.solve-history-container {
+    background: #EEB868;
+    padding: 16px;
+    min-height: 100%;
+    min-width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.solve-container {
+    border-bottom: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    padding: 16px;
+}
+
+.solve-container:last-child {
+    border-bottom: 0;
+}
+
+.solve-history-title {
+    text-transform: uppercase;
+}
+
+.solves {
+    overflow-y: scroll;
+    border: 1px solid black;
+    max-height: 464px;
+}
+
+.label-and-time {
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.label {
+    font-weight: bold;
+    padding-right: 8px;
+}

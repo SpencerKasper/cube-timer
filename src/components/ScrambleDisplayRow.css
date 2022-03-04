@@ -4,10 +4,9 @@
     height: 15vh;
     justify-content: center;
     align-items: center;
-    background: #4B2840;
+    background: #B3FFB3;
 }
 
 .scramble-title {
-    font-family: sans-serif;
-    color: white;
+    color: black;
 }
