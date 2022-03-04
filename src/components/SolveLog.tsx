@@ -4,11 +4,11 @@ import './SolveHistory.css';
 import {Solve} from "../redux/reducers/solveReducer";
 import solveSelectors from "../redux/selectors/solveSelectors";
 
-const SolveHistory = () => {
+const SolveLog = () => {
     const solves = useSelector(solveSelectors.solves);
     return (
         <div className='solve-history-container'>
-            <h2 className='solve-history-title'>Solve History</h2>
+            <h2 className='solve-history-title'>Log</h2>
             <div className='solves'>
                 {solves.map((solve: Solve, index) => {
                     return <div key={index} className='solve-container'>
@@ -44,4 +44,4 @@ const SolveHistory = () => {
     );
 };
 
-export default SolveHistory;
+export default SolveLog;

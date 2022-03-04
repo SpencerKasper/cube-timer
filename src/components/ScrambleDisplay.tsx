@@ -10,7 +10,7 @@ export interface GetScrambleResponse {
     body: { scramble: string; };
 }
 
-const ScrambleDisplayRow = () => {
+const ScrambleDisplay = () => {
     const CUBE_TYPE = '3x3x3';
     const getScramble = async () => {
         const response = await axios
@@ -22,10 +22,10 @@ const ScrambleDisplayRow = () => {
     }, []);
     const scramble = useSelector(scrambleSelectors.scramble);
     return (
-        <div className='scramble-display-row'>
+        <div className='scramble-display-container'>
             <h2 className='scramble-title'>{scramble}</h2>
         </div>
     );
 };
 
-export default ScrambleDisplayRow;
+export default ScrambleDisplay;

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './Timer.css';
 import axios from "axios";
 import reduxStore from "../redux/redux-store";
-import {GetScrambleResponse} from "./ScrambleDisplayRow";
+import {GetScrambleResponse} from "./ScrambleDisplay";
 import {useSelector} from "react-redux";
 import scrambleSelectors from "../redux/selectors/scrambleSelectors";
 
