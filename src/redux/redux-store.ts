@@ -1,11 +1,15 @@
 import {combineReducers, createStore} from 'redux';
+import scrambleReducer from "./reducers/scrambleReducer";
+import solveReducer from "./reducers/solveReducer";
 
 export interface ReduxStore {
-    someReducer: any
+    scrambleReducer: any;
+    solveReducer: any;
 }
 
 const reducers: ReduxStore = {
-    someReducer: () => null
+    scrambleReducer,
+    solveReducer,
 };
 
 const reduxStore = createStore(

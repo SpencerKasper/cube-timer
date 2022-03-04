@@ -1,20 +1,9 @@
-
-:root {
-  --amplify-primary-color: #7b5d97;
-  --amplify-secondary-color: #e79e31;
+@font-face{
+  font-family:'digital-clock-font';
+  src: url('../fonts/digital-7/digital-7.ttf');
 }
 
-#root {
-  font-family: 'Roboto', 'sans-serif';
-  font-stretch: expanded;
-  letter-spacing: 2px;
-}
-
-.btn-secondary.disabled, .btn-secondary:disabled, .btn-secondary:hover, .show > .btn-secondary.dropdown-toggle {
-  background: #c0b0ce;
-  border-color: #c0b0ce;
-}
-
-.card-container {
-  padding: 16px 0;
+body {
+  height: 100vh;
+  max-height: 100vh;
 }

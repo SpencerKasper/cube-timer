@@ -1,0 +1,10 @@
+.timer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.current-time {
+    font-family: digital-clock-font, serif;
+    font-size: 200px;
+}
