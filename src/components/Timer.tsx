@@ -6,7 +6,7 @@ import {GetScrambleResponse} from "./ScrambleDisplayRow";
 import {useSelector} from "react-redux";
 import scrambleSelectors from "../redux/selectors/scrambleSelectors";
 
-const TIMER_PRECISION_IN_MS = 20;
+const TIMER_PRECISION_IN_MS = 10;
 const Timer = () => {
     const [currentTime, setCurrentTime] = useState(0);
     const [timerIntervalId, setTimerIntervalId] = useState(null);
