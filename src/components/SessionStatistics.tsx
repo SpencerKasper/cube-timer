@@ -3,6 +3,7 @@ import './SessionStatistics.css';
 import {useSelector} from "react-redux";
 import solveSelectors from "../redux/selectors/solveSelectors";
 import {Solve} from "../redux/reducers/solveReducer";
+import {Card, CardContent} from "@mui/material";
 
 const SessionStatistics = () => {
     const solves: Solve[] = useSelector(solveSelectors.solves);
@@ -29,24 +30,26 @@ const SessionStatistics = () => {
     return (
         <div className='session-statistics-container'>
             <h2 className='session-stats-title'>Session Statistics</h2>
-            <div className='stats'>
-                <div className='stat'>
-                    <p className='stat-label'>
-                        Average of 5:
-                    </p>
-                    <p>
-                        {averageOf5}
-                    </p>
-                </div>
-                <div className='stat'>
-                    <p className='stat-label'>
-                        Average of 12:
-                    </p>
-                    <p>
-                        {averageOf12}
-                    </p>
-                </div>
-            </div>
+            <Card className='stats' variant='outlined'>
+                <CardContent>
+                    <div className='stat'>
+                        <p className='stat-label'>
+                            Average of 5:
+                        </p>
+                        <p>
+                            {averageOf5}
+                        </p>
+                    </div>
+                    <div className='stat'>
+                        <p className='stat-label'>
+                            Average of 12:
+                        </p>
+                        <p>
+                            {averageOf12}
+                        </p>
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
 }
