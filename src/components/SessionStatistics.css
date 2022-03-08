@@ -1,5 +1,5 @@
 .session-statistics-container {
-    min-width: 25%;
+    flex-basis: 25%;
     background: #e9c46a;
     padding: 16px;
     display: flex;

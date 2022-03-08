@@ -78,20 +78,34 @@ const Timer = () => {
 
     const timerColor = getTimerColor();
 
-    function getTimeParts(decimalPlaces: number = 2) {
-        return (currentTime / 1000).toFixed(decimalPlaces).toString().split('.');
+    function getSecondsSplitByDecimalPoint(decimalPlaces: number = 2) {
+        return ((currentTime / 1000) - (Number(getMinutes()) * 60)).toFixed(decimalPlaces).toString().split('.');
     }
 
+    const isLongerThanMinute = currentTime >= 60000;
+    function getMinutes() {
+        return isLongerThanMinute ? (currentTime / 60000).toFixed(0) : '0';
+    }
+
+    const secondsPortion = getSecondsSplitByDecimalPoint()[0];
     return (
-        <div className='timer-container'>
-            <p style={{color: timerColor}} className='current-time'>
-                {getTimeParts()[0]}
+        <div style={{color: timerColor}} className='timer-container'>
+            {isLongerThanMinute && <>
+                <p className='current-time'>
+                    {getMinutes()}
+                </p>
+                <p className='current-time'>
+                    :
+                </p>
+            </>}
+            <p style={{color: timerColor, minWidth: '190px', textAlign: 'right'}} className='current-time'>
+                {secondsPortion.length === 1 && isLongerThanMinute ? `0${secondsPortion}` : secondsPortion}
             </p>
             <p style={{color: timerColor}} className='current-time'>
                 .
             </p>
-            <p style={{color: timerColor}} className='current-time'>
-                {currentTime === 0 ? '00' : getTimeParts()[1]}
+            <p style={{color: timerColor, minWidth: '190px'}} className='current-time'>
+                {currentTime === 0 ? '00' : getSecondsSplitByDecimalPoint()[1]}
             </p>
         </div>
     );
