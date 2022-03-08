@@ -98,7 +98,7 @@ const Timer = () => {
                     :
                 </p>
             </>}
-            <p style={{color: timerColor, minWidth: '190px', textAlign: 'right'}} className='current-time'>
+            <p style={{color: timerColor, minWidth: '190px', textAlign: currentTime < 10000 ? 'right' : 'center'}} className='current-time'>
                 {secondsPortion.length === 1 && isLongerThanMinute ? `0${secondsPortion}` : secondsPortion}
             </p>
             <p style={{color: timerColor}} className='current-time'>
