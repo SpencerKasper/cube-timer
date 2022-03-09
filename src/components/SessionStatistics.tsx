@@ -5,29 +5,15 @@ import solveSelectors from "../redux/selectors/solveSelectors";
 import {Solve} from "../redux/reducers/solveReducer";
 import {Card, CardContent} from "@mui/material";
 import {TimeFormatter} from "../utils/TimeFormatter";
+import {AverageTimeStatistic} from "../utils/stats/AverageTimeStatistic";
 
 const SessionStatistics = () => {
     const solves: Solve[] = useSelector(solveSelectors.solves);
     const solveTimes = solves.map(solve => solve.time);
     const mostRecentFiveSolves = solveTimes.length > 4 ? solveTimes.slice(0, 5) : solveTimes;
     const mostRecentTwelveSolves = solveTimes.length > 11 ? solveTimes.slice(0, 12) : solveTimes;
-
-    function getSumOfSolveTimesWithoutMaxOrMin(times) {
-        return times
-            .sort((a, b) => a > b ? -1 : 1)
-            .filter((item, index) => index !== 0 && index !== times.length - 1)
-            .reduce((acc, curr) => {
-                return acc + curr;
-            }, 0);
-    }
-
-    const sumOfMostRecentFiveWithoutMaxOrMin = getSumOfSolveTimesWithoutMaxOrMin(mostRecentFiveSolves);
-    const averageOf5 = solves.length > 4 ?
-        (sumOfMostRecentFiveWithoutMaxOrMin / 3).toFixed(2).toString() :
-        '-';
-    const averageOf12 = solves.length > 11 ?
-        (getSumOfSolveTimesWithoutMaxOrMin(mostRecentTwelveSolves) / 10).toFixed(2).toString() :
-        '-';
+    const averageOf5Stat = new AverageTimeStatistic(mostRecentFiveSolves);
+    const averageOf12Stat = new AverageTimeStatistic(mostRecentTwelveSolves);
     const timeFormatter = new TimeFormatter();
     return (
         <div className='session-statistics-container'>
@@ -39,7 +25,7 @@ const SessionStatistics = () => {
                             Average of 5:
                         </p>
                         <p>
-                            {timeFormatter.getFullTime(averageOf5)}
+                            {solveTimes.length > 4 ? timeFormatter.getFullTime(averageOf5Stat.getStatValue()) : '-'}
                         </p>
                     </div>
                     <div className='stat'>
@@ -47,7 +33,7 @@ const SessionStatistics = () => {
                             Average of 12:
                         </p>
                         <p>
-                            {timeFormatter.getFullTime(averageOf12)}
+                            {solveTimes.length > 12 ? timeFormatter.getFullTime(averageOf12Stat.getStatValue()) : '-'}
                         </p>
                     </div>
                 </CardContent>
