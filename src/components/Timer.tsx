@@ -5,6 +5,7 @@ import reduxStore from "../redux/redux-store";
 import {GetScrambleResponse} from "./ScrambleDisplay";
 import {useSelector} from "react-redux";
 import scrambleSelectors from "../redux/selectors/scrambleSelectors";
+import {TimeFormatter} from "../utils/TimeFormatter";
 
 const TIMER_PRECISION_IN_MS = 10;
 const Timer = () => {
@@ -77,35 +78,29 @@ const Timer = () => {
     };
 
     const timerColor = getTimerColor();
-
-    function getSecondsSplitByDecimalPoint(decimalPlaces: number = 2) {
-        return ((currentTime / 1000) - (Number(getMinutes()) * 60)).toFixed(decimalPlaces).toString().split('.');
-    }
-
+    const timeFormatter = new TimeFormatter();
+    const minutes = timeFormatter.getMinutes(currentTime);
+    const seconds = timeFormatter.getSeconds(currentTime);
+    const milliseconds = timeFormatter.getMilliseconds(currentTime);
     const isLongerThanMinute = currentTime >= 60000;
-    function getMinutes() {
-        return isLongerThanMinute ? (currentTime / 60000).toFixed(0) : '0';
-    }
-
-    const secondsPortion = getSecondsSplitByDecimalPoint()[0];
     return (
         <div style={{color: timerColor}} className='timer-container'>
             {isLongerThanMinute && <>
                 <p className='current-time'>
-                    {getMinutes()}
+                    {minutes}
                 </p>
                 <p className='current-time'>
                     :
                 </p>
             </>}
             <p style={{color: timerColor, minWidth: '190px', textAlign: currentTime < 10000 ? 'right' : 'center'}} className='current-time'>
-                {secondsPortion.length === 1 && isLongerThanMinute ? `0${secondsPortion}` : secondsPortion}
+                {seconds}
             </p>
             <p style={{color: timerColor}} className='current-time'>
                 .
             </p>
             <p style={{color: timerColor, minWidth: '190px'}} className='current-time'>
-                {currentTime === 0 ? '00' : getSecondsSplitByDecimalPoint()[1]}
+                {milliseconds}
             </p>
         </div>
     );

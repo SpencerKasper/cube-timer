@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 import solveSelectors from "../redux/selectors/solveSelectors";
 import {Solve} from "../redux/reducers/solveReducer";
 import {Card, CardContent} from "@mui/material";
+import {TimeFormatter} from "../utils/TimeFormatter";
 
 const SessionStatistics = () => {
     const solves: Solve[] = useSelector(solveSelectors.solves);
@@ -22,11 +23,12 @@ const SessionStatistics = () => {
 
     const sumOfMostRecentFiveWithoutMaxOrMin = getSumOfSolveTimesWithoutMaxOrMin(mostRecentFiveSolves);
     const averageOf5 = solves.length > 4 ?
-        (sumOfMostRecentFiveWithoutMaxOrMin / 3000).toFixed(2).toString() :
+        (sumOfMostRecentFiveWithoutMaxOrMin / 3).toFixed(2).toString() :
         '-';
     const averageOf12 = solves.length > 11 ?
-        (getSumOfSolveTimesWithoutMaxOrMin(mostRecentTwelveSolves) / 10000).toFixed(2).toString() :
+        (getSumOfSolveTimesWithoutMaxOrMin(mostRecentTwelveSolves) / 10).toFixed(2).toString() :
         '-';
+    const timeFormatter = new TimeFormatter();
     return (
         <div className='session-statistics-container'>
             <h2 className='session-stats-title'>Session Statistics</h2>
@@ -37,7 +39,7 @@ const SessionStatistics = () => {
                             Average of 5:
                         </p>
                         <p>
-                            {averageOf5}
+                            {timeFormatter.getFullTime(averageOf5)}
                         </p>
                     </div>
                     <div className='stat'>
@@ -45,7 +47,7 @@ const SessionStatistics = () => {
                             Average of 12:
                         </p>
                         <p>
-                            {averageOf12}
+                            {timeFormatter.getFullTime(averageOf12)}
                         </p>
                     </div>
                 </CardContent>

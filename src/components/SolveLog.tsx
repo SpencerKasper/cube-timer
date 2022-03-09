@@ -4,10 +4,11 @@ import './SolveLog.css';
 import {Solve} from "../redux/reducers/solveReducer";
 import solveSelectors from "../redux/selectors/solveSelectors";
 import {Card, CardContent, Paper} from "@mui/material";
+import {TimeFormatter} from "../utils/TimeFormatter";
 
 const SolveLog = () => {
     const solves = useSelector(solveSelectors.solves);
-    console.error(JSON.stringify(solves));
+    const timeFormatter = new TimeFormatter();
     return (
         <div className='solve-history-container'>
             <h2 className='solve-history-title'>Log</h2>
@@ -29,7 +30,7 @@ const SolveLog = () => {
                                     Time:
                                 </p>
                                 <p>
-                                    {`${(solve.time / 1000).toFixed(2)}`}
+                                    {timeFormatter.getFullTime(solve.time)}
                                 </p>
                             </div>
                             <div className='label-and-time'>
