@@ -1,6 +1,6 @@
 export class TimeFormatter {
     getMinutes(currentTime) {
-        return currentTime >= 60000 ? (currentTime / 60000).toFixed(0) : '0';
+        return currentTime >= 60000 ? (currentTime / 60000).toString().split('.')[0] : '0';
     }
 
     getSeconds(currentTime, decimalPlaces = 2) {
