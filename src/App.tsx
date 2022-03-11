@@ -5,10 +5,11 @@ import './App.scss';
 import HomePage from "./pages/HomePage";
 import {ROUTES} from "./static/constants/routes";
 import {Amplify} from "aws-amplify";
-import {Authenticator, useTheme, View} from '@aws-amplify/ui-react';
+import {AmplifyProvider, Authenticator, useTheme, View, Theme} from '@aws-amplify/ui-react';
 import RubiksCubeLogo from '../src/static/images/cube.png';
 
 import '@aws-amplify/ui-react/styles.css';
+
 const awsExports = {
     "aws_project_region": "us-east-1",
     "aws_cognito_identity_pool_id": process.env.REACT_APP_COGNITO_IDENTITY_POOL_ID,
@@ -53,13 +54,13 @@ Amplify.configure(awsExports);
 function App() {
     const components = {
         Header() {
-            const { tokens } = useTheme();
+            const {tokens} = useTheme();
 
             return (
                 <View textAlign="center" padding={tokens.space.large}>
                     <div className={'login-header'}>
                         <h1>
-                           SolveLog
+                            SolveLog
                         </h1>
                         <img
                             alt="Amplify logo"
@@ -81,8 +82,34 @@ function App() {
         </Route>;
     };
 
+    const defaultTheme: Theme = {
+        name: 'default',
+        tokens: {
+            fonts: {
+                default: {
+                    variable: {value: 'Roboto, sans-serif'},
+                    static: {value: 'Roboto, sans-serif'},
+                },
+            },
+            colors: {
+                font: {inverse: {value: 'black'}},
+                background: {
+                    primary: {value: '#051014'},
+                    secondary: {value: 'white'},
+                },
+                brand: {
+                    primary: {
+                        80: {value: '#bcf8ec'},
+                    }
+                }
+            },
+        },
+    };
+
     return (
-            <Authenticator components={components} className='authentication-container' loginMechanisms={['email']} socialProviders={[]} signUpAttributes={['email']}>
+        <AmplifyProvider theme={defaultTheme}>
+            <Authenticator components={components} className='authentication-container' loginMechanisms={['email']}
+                           socialProviders={[]} signUpAttributes={['email']}>
                 {({signOut, user}) => (
                     <Router>
                         <Switch>
@@ -96,6 +123,7 @@ function App() {
                     </Router>
                 )}
             </Authenticator>
+        </AmplifyProvider>
     );
 }
 

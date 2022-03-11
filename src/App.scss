@@ -7,6 +7,17 @@
 body {
   margin: 0;
 }
+.amplify-input {
+  color: white !important;
+}
+
+.amplify-tabs-item:focus {
+  color: #bcf8ec;
+}
+
+.amplify-tabs-item:hover {
+  color: #bcf8ec;
+}
 
 .authentication-container {
   display: flex;
