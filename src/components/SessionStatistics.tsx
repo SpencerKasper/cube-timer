@@ -4,38 +4,32 @@ import {useSelector} from "react-redux";
 import solveSelectors from "../redux/selectors/solveSelectors";
 import {Solve} from "../redux/reducers/solveReducer";
 import {Card, CardContent} from "@mui/material";
-import {TimeFormatter} from "../utils/TimeFormatter";
 import {AverageTimeStatistic} from "../utils/stats/AverageTimeStatistic";
+import {StatValue} from "./StatValue";
 
 const SessionStatistics = () => {
     const solves: Solve[] = useSelector(solveSelectors.solves);
     const solveTimes = solves.map(solve => solve.time);
-    const mostRecentFiveSolves = solveTimes.length > 4 ? solveTimes.slice(0, 5) : solveTimes;
-    const mostRecentTwelveSolves = solveTimes.length > 11 ? solveTimes.slice(0, 12) : solveTimes;
+
+    const withoutMinOrMax = (listOfNumbers: number[]) => {
+        return listOfNumbers
+            .sort((a, b) => a > b ? -1 : 1)
+            .filter((item, index) => index !== 0 && index !== listOfNumbers.length - 1);
+    }
+
+    const mostRecentFiveSolves = solveTimes.length > 4 ? withoutMinOrMax(solveTimes.slice(0, 5)) : solveTimes;
+    const mostRecentTwelveSolves = solveTimes.length > 11 ? withoutMinOrMax(solveTimes.slice(0, 12)) : solveTimes;
     const averageOf5Stat = new AverageTimeStatistic(mostRecentFiveSolves);
     const averageOf12Stat = new AverageTimeStatistic(mostRecentTwelveSolves);
-    const timeFormatter = new TimeFormatter();
+    const averageOfAllSolvesStat = new AverageTimeStatistic(solveTimes);
     return (
         <div className='session-statistics-container'>
             <h2 className='session-stats-title'>Session Statistics</h2>
             <Card className='stats' variant='outlined'>
                 <CardContent>
-                    <div className='stat'>
-                        <p className='stat-label'>
-                            Average of 5:
-                        </p>
-                        <p>
-                            {solveTimes.length > 4 ? timeFormatter.getFullTime(averageOf5Stat.getStatValue()) : '-'}
-                        </p>
-                    </div>
-                    <div className='stat'>
-                        <p className='stat-label'>
-                            Average of 12:
-                        </p>
-                        <p>
-                            {solveTimes.length > 12 ? timeFormatter.getFullTime(averageOf12Stat.getStatValue()) : '-'}
-                        </p>
-                    </div>
+                    <StatValue label='Average of Last 5' statistic={averageOf5Stat}/>
+                    <StatValue label='Average of Last 12' statistic={averageOf12Stat}/>
+                    <StatValue label='Average of All' statistic={averageOfAllSolvesStat}/>
                 </CardContent>
             </Card>
         </div>
