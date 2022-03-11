@@ -1,11 +1,11 @@
 .session-statistics-container {
     flex-basis: 25%;
-    background: #051014;
+    background: #BCF8EC;
     padding: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: white;
+    color: black;
 }
 
 .session-stats-title {
