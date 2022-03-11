@@ -5,18 +5,22 @@ import {Solve} from "../redux/reducers/solveReducer";
 import solveSelectors from "../redux/selectors/solveSelectors";
 import axios from "axios";
 import {UrlHelper} from "../utils/url-helper";
-import reduxStore from "../redux/redux-store";
+import reduxStore, {ReduxStore} from "../redux/redux-store";
 import {SolveCard} from "./SolveCard";
 import {Card, CardContent} from "@mui/material";
 
 const SolveLog = () => {
+    const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     const getSolves = async () => {
-        const response = await axios.get<{ body: { solves: Solve[] } }>(`${UrlHelper.getScrambleApiDomain()}solves`);
-        reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}})
+        if (user) {
+            const userId = user.attributes.email;
+            const response = await axios.get<{ body: { solves: Solve[] } }>(`${UrlHelper.getScrambleApiDomain()}solves?userId=${encodeURIComponent(userId)}`);
+            reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}})
+        }
     };
     useEffect(() => {
         getSolves();
-    }, []);
+    }, [user]);
     const solves = useSelector(solveSelectors.solves);
     return (
         <div className='solve-history-container'>

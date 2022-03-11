@@ -12,7 +12,7 @@ const HomePage = (props) => {
             type: 'signInUserSession/set',
             payload: {user: props.user},
         });
-    }, []);
+    }, [props.user]);
     return (
         <div className={'home-container'}>
             <div className='scramble-display-row'>
@@ -30,7 +30,7 @@ const HomePage = (props) => {
             <div className='solve-history-and-timer-container'>
                 <SolveLog/>
                 <Timer/>
-                <SessionStatistics />
+                <SessionStatistics/>
             </div>
         </div>
     );

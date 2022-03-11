@@ -9,6 +9,7 @@ import {Authenticator} from '@aws-amplify/ui-react';
 
 import '@aws-amplify/ui-react/styles.css';
 
+// Tomorrow start from here because we need to set up all this auth stuff on the build server.
 import awsExports from './aws-exports';
 Amplify.configure(awsExports);
 
