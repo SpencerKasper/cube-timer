@@ -21,7 +21,7 @@ function App() {
             {routeInfo.component}
         </Route>;
     };
-*
+
     return (
             <Authenticator className='authentication-container' loginMechanisms={['email']} socialProviders={['google']} signUpAttributes={['email']}>
                 {({signOut, user}) => (
