@@ -17,10 +17,15 @@ const initialState: SolveReducerState = {
 
 export default function solveReducer(state = initialState, action) {
     switch (action.type) {
-        case 'solve/add':
+        case 'solves/add':
             return {
                 ...state,
                 solves: [{...action.payload.solve, number: state.solves.length + 1}, ...state.solves],
+            }
+        case 'solves/set':
+            return {
+                ...state,
+                solves: action.payload.solves,
             }
         default:
             return state

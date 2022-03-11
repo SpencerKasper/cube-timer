@@ -7,6 +7,7 @@ import {useSelector} from "react-redux";
 import scrambleSelectors from "../redux/selectors/scrambleSelectors";
 import {TimeFormatter} from "../utils/TimeFormatter";
 import {UrlHelper} from "../utils/url-helper";
+import solveSelectors from "../redux/selectors/solveSelectors";
 
 const TIMER_PRECISION_IN_MS = 10;
 const API_DOMAIN = UrlHelper.getScrambleApiDomain();
@@ -15,6 +16,7 @@ const Timer = () => {
     const [timerIntervalId, setTimerIntervalId] = useState(null);
     const [timerState, setTimerState] = useState('ready');
     const scramble = useSelector(scrambleSelectors.scramble);
+    const solves = useSelector(solveSelectors.solves);
 
     function runFunctionOnKeyWhenNotRepeatAndPreventDefault(event: KeyboardEvent, func: () => void, key = 'Space') {
         if (event.code === key) {
@@ -54,7 +56,7 @@ const Timer = () => {
         return axios.post(`${API_DOMAIN}solves`, {
             scramble,
             userId: 'spencer.kasper@gmail.com',
-            number: 7,
+            number: solves.length + 1,
             time: currentTime,
             cubeType: '3x3x3',
         }, {headers: {'Content-Type': 'application/json'}});
@@ -75,7 +77,7 @@ const Timer = () => {
             saveSolve()
                 .then(() => {
                     reduxStore.dispatch({
-                        type: 'solve/add',
+                        type: 'solves/add',
                         payload: {solve: {scramble, time: currentTime, cubeType: '3x3x3'}}
                     })
                     getScramble();
