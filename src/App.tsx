@@ -1,9 +1,16 @@
-import React from 'react';
+import './env'
+import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.scss';
 import HomePage from "./pages/HomePage";
 import {ROUTES} from "./static/constants/routes";
-import ScrambleDisplayRow from "./components/ScrambleDisplay";
+import Amplify from "aws-amplify";
+import {Authenticator} from '@aws-amplify/ui-react';
+
+import '@aws-amplify/ui-react/styles.css';
+
+import awsExports from './aws-exports';
+Amplify.configure(awsExports);
 
 function App() {
     const toRoute = (route, index) => {
@@ -16,18 +23,20 @@ function App() {
     };
 
     return (
-        <>
-            <Router>
-                <Switch>
-                    <Route exact path='/'>
-                        <HomePage/>
-                    </Route>
-                    {
-                        Object.keys(ROUTES).map(toRoute)
-                    }
-                </Switch>
-            </Router>
-        </>
+        <Authenticator signUpAttributes={['email']}>
+            {({signOut, user}) => (
+                <Router>
+                    <Switch>
+                        <Route exact path='/'>
+                            <HomePage user={user} logOut={signOut}/>
+                        </Route>
+                        {
+                            Object.keys(ROUTES).map(toRoute)
+                        }
+                    </Switch>
+                </Router>
+            )}
+        </Authenticator>
     );
 }
 

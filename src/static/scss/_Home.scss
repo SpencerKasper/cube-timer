@@ -28,3 +28,21 @@
     color: white;
   }
 }
+
+.user-name {
+  padding-right: 8px;
+}
+
+.log-out {
+  cursor: pointer;
+}
+
+.log-out-and-user-name {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 25%;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}

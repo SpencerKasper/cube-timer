@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-cubetimer-dev-234758-authRole",
+      "UnauthRoleArn": "arn:aws:iam::771384749710:role/amplify-cubetimer-dev-234758-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::771384749710:role/amplify-cubetimer-dev-234758-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-cubetimer-dev-234758-deployment",
+      "UnauthRoleName": "amplify-cubetimer-dev-234758-unauthRole",
+      "StackName": "amplify-cubetimer-dev-234758",
+      "StackId": "arn:aws:cloudformation:us-east-1:771384749710:stack/amplify-cubetimer-dev-234758/d017c9c0-a0fe-11ec-bd68-0a2d7c8f4257",
+      "AmplifyAppId": "d1an6yagcx49bk"
+    },
+    "categories": {
+      "auth": {
+        "cubetimer5724a783": {}
+      }
+    }
+  }
+}

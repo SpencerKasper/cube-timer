@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './Timer.css';
 import axios from "axios";
-import reduxStore from "../redux/redux-store";
+import reduxStore, {ReduxStore} from "../redux/redux-store";
 import {GetScrambleResponse} from "./ScrambleDisplay";
 import {useSelector} from "react-redux";
 import scrambleSelectors from "../redux/selectors/scrambleSelectors";
@@ -17,7 +17,7 @@ const Timer = () => {
     const [timerState, setTimerState] = useState('ready');
     const scramble = useSelector(scrambleSelectors.scramble);
     const solves = useSelector(solveSelectors.solves);
-
+    const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     function runFunctionOnKeyWhenNotRepeatAndPreventDefault(event: KeyboardEvent, func: () => void, key = 'Space') {
         if (event.code === key) {
             event.preventDefault();
@@ -53,9 +53,10 @@ const Timer = () => {
     };
 
     const saveSolve = async () => {
+        const userId = user.attributes.email;
         return axios.post(`${API_DOMAIN}solves`, {
             scramble,
-            userId: 'spencer.kasper@gmail.com',
+            userId,
             number: solves.length + 1,
             time: currentTime,
             cubeType: '3x3x3',

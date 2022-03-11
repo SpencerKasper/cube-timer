@@ -1,15 +1,18 @@
 import {Solve} from "../redux/reducers/solveReducer";
 import axios from "axios";
 import {UrlHelper} from "../utils/url-helper";
-import reduxStore from "../redux/redux-store";
+import reduxStore, {ReduxStore} from "../redux/redux-store";
 import {TimeFormatter} from "../utils/TimeFormatter";
 import {Card, CardContent} from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import React from "react";
+import {useSelector} from "react-redux";
 
 export function SolveCard(props: { solve: Solve }) {
+    const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     const deleteSolve = async () => {
-        const response = await axios.get<{ body: { solves: Solve[] } }>(`${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent('spencer.kasper@gmail.com')}`);
+        const email = user.attributes.email;
+        const response = await axios.get<{ body: { solves: Solve[] } }>(`${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}`);
         reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}});
     }
 
