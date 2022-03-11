@@ -5,7 +5,8 @@ import './App.scss';
 import HomePage from "./pages/HomePage";
 import {ROUTES} from "./static/constants/routes";
 import {Amplify} from "aws-amplify";
-import {Authenticator} from '@aws-amplify/ui-react';
+import {Authenticator, useTheme, View} from '@aws-amplify/ui-react';
+import RubiksCubeLogo from '../src/static/images/cube.png';
 
 import '@aws-amplify/ui-react/styles.css';
 const awsExports = {
@@ -50,6 +51,27 @@ const awsExports = {
 Amplify.configure(awsExports);
 
 function App() {
+    const components = {
+        Header() {
+            const { tokens } = useTheme();
+
+            return (
+                <View textAlign="center" padding={tokens.space.large}>
+                    <div className={'login-header'}>
+                        <h1>
+                           SolveLog
+                        </h1>
+                        <img
+                            alt="Amplify logo"
+                            src={RubiksCubeLogo}
+                            height={48}
+                            width={48}
+                        />
+                    </div>
+                </View>
+            );
+        },
+    };
     const toRoute = (route, index) => {
         const routeInfo = ROUTES[route];
         return <Route
@@ -60,7 +82,7 @@ function App() {
     };
 
     return (
-            <Authenticator className='authentication-container' loginMechanisms={['email']} socialProviders={[]} signUpAttributes={['email']}>
+            <Authenticator components={components} className='authentication-container' loginMechanisms={['email']} socialProviders={[]} signUpAttributes={['email']}>
                 {({signOut, user}) => (
                     <Router>
                         <Switch>
