@@ -3,11 +3,11 @@ import {useSelector} from "react-redux";
 import './SolveLog.css';
 import {Solve} from "../redux/reducers/solveReducer";
 import solveSelectors from "../redux/selectors/solveSelectors";
-import {Card, CardContent, Paper} from "@mui/material";
-import {TimeFormatter} from "../utils/TimeFormatter";
 import axios from "axios";
 import {UrlHelper} from "../utils/url-helper";
 import reduxStore from "../redux/redux-store";
+import {SolveCard} from "./SolveCard";
+import {Card, CardContent} from "@mui/material";
 
 const SolveLog = () => {
     const getSolves = async () => {
@@ -18,42 +18,19 @@ const SolveLog = () => {
         getSolves();
     }, []);
     const solves = useSelector(solveSelectors.solves);
-    const timeFormatter = new TimeFormatter();
     return (
         <div className='solve-history-container'>
             <h2 className='solve-history-title'>Log</h2>
             <div className='solves'>
-                {solves.sort((a, b) => a > b ? 1 : -1).map((solve: Solve, index) => {
-                    return <Card key={index} variant='outlined'>
-                        <CardContent className='solve-container'>
-                            <div className='label-and-time'>
-                                <p className='label'>
-                                    Solve:
-                                </p>
-                                <p>
-                                    {solve.number}
-                                </p>
-
-                            </div>
-                            <div className='label-and-time'>
-                                <p className='label'>
-                                    Time:
-                                </p>
-                                <p>
-                                    {timeFormatter.getFullTime(solve.time)}
-                                </p>
-                            </div>
-                            <div className='label-and-time'>
-                                <p className='label'>
-                                    Scramble:
-                                </p>
-                                <p>
-                                    {solve.scramble}
-                                </p>
-                            </div>
+                {solves.length ? solves.sort((a, b) => a.number > b.number ? -1 : 1).map((solve: Solve, index) => {
+                        return <SolveCard key={index}
+                                          solve={solve}/>
+                    }) :
+                    <Card>
+                        <CardContent>
+                            No Solves Yet! Press the spacebar to start the timer...
                         </CardContent>
-                    </Card>
-                })}
+                    </Card>}
             </div>
         </div>
     );

@@ -29,9 +29,8 @@
 }
 
 .solves {
-    overflow-y: scroll;
-    border: 1px solid black;
-    max-height: 464px;
+    max-height: 75vh;
+    overflow-y: auto;
 }
 
 .label-and-time {
@@ -45,4 +44,10 @@
 .label {
     font-weight: bold;
     padding-right: 8px;
+}
+
+.delete-row {
+    width: 100%;
+    text-align: right;
+    cursor: pointer;
 }
