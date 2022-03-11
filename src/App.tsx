@@ -60,7 +60,7 @@ function App() {
     };
 
     return (
-            <Authenticator className='authentication-container' loginMechanisms={['email']} socialProviders={['google']} signUpAttributes={['email']}>
+            <Authenticator className='authentication-container' loginMechanisms={['email']} socialProviders={[]} signUpAttributes={['email']}>
                 {({signOut, user}) => (
                     <Router>
                         <Switch>
