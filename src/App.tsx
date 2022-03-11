@@ -10,7 +10,45 @@ import {Authenticator} from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
 // Tomorrow start from here because we need to set up all this auth stuff on the build server.
-import awsExports from './aws-exports';
+const awsExports = {
+    "aws_project_region": "us-east-1",
+    "aws_cognito_identity_pool_id": process.env.REACT_APP_COGNITO_IDENTITY_POOL_ID,
+    "aws_cognito_region": "us-east-1",
+    "aws_user_pools_id": process.env.REACT_APP_USER_POOLS_ID,
+    "aws_user_pools_web_client_id": process.env.REACT_APP_POOLS_WEB_CLIENT_ID,
+    "oauth": {
+        "domain": "cubetimer-dev.auth.us-east-1.amazoncognito.com",
+        "scope": [
+            "phone",
+            "email",
+            "openid",
+            "profile",
+            "aws.cognito.signin.user.admin"
+        ],
+        "redirectSignIn": "https://solvelog.com/",
+        "redirectSignOut": "https://solvelog.com/",
+        "responseType": "code"
+    },
+    "federationTarget": "COGNITO_USER_POOLS",
+    "aws_cognito_username_attributes": [
+        "EMAIL"
+    ],
+    "aws_cognito_social_providers": [],
+    "aws_cognito_signup_attributes": [
+        "EMAIL"
+    ],
+    "aws_cognito_mfa_configuration": "OFF",
+    "aws_cognito_mfa_types": [
+        "SMS"
+    ],
+    "aws_cognito_password_protection_settings": {
+        "passwordPolicyMinLength": 8,
+        "passwordPolicyCharacters": []
+    },
+    "aws_cognito_verification_mechanisms": [
+        "EMAIL"
+    ]
+};
 Amplify.configure(awsExports);
 
 function App() {
