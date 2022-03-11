@@ -6,6 +6,7 @@ import {Solve} from "../redux/reducers/solveReducer";
 import {Card, CardContent} from "@mui/material";
 import {AverageTimeStatistic} from "../utils/stats/AverageTimeStatistic";
 import {StatValue} from "./StatValue";
+import {FastestTimeStatistic} from "../utils/stats/FastestTimeStatistic";
 
 const SessionStatistics = () => {
     const solves: Solve[] = useSelector(solveSelectors.solves);
@@ -22,25 +23,22 @@ const SessionStatistics = () => {
     const averageOf5Stat = new AverageTimeStatistic(mostRecentFiveSolves);
     const averageOf12Stat = new AverageTimeStatistic(mostRecentTwelveSolves);
     const averageOfAllSolvesStat = new AverageTimeStatistic(solveTimes);
+    const fastestTimeStat = new FastestTimeStatistic(solveTimes);
     return (
         <div className='session-statistics-container'>
             <h2 className='session-stats-title'>Session Statistics</h2>
             <Card className='stats' variant='outlined'>
                 <CardContent>
+                    <StatValue statistic={averageOf5Stat}/>
+                    <StatValue statistic={averageOf12Stat}/>
                     <StatValue
-                        label='Average of Last 5'
-                        description='This is the average of 5 with the fastest and slowest time removed.  The remaining 3 times are averaged together.'
-                        statistic={averageOf5Stat}
-                    />
-                    <StatValue
-                        label='Average of Last 12'
-                        description='This is the average of 12 with the fastest and slowest time removed.  The remaining 10 times are averaged together.'
-                        statistic={averageOf12Stat}
-                    />
-                    <StatValue
-                        label='Average of All'
-                        description='This is the average of all of the times in the log.'
+                        overrideLabelInStat='Average of All'
+                        overrideDescriptionInStat='This is the average of all of the times in the log.'
                         statistic={averageOfAllSolvesStat}
+                    />
+                    <StatValue
+                        description='This is the fastest time of all of the times in the log.'
+                        statistic={fastestTimeStat}
                     />
                 </CardContent>
             </Card>

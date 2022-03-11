@@ -3,6 +3,11 @@
   src: url('../fonts/digital-7/digital-7.ttf');
 }
 
+@font-face {
+  font-family: 'roboto';
+  src: url('../fonts/Roboto/Roboto-Black.ttf')
+}
+
 * {
-  font-family: sans-serif;
+  font-family: roboto, sans-serif;
 }
