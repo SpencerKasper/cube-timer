@@ -17,17 +17,21 @@
   min-height: 20vh;
   justify-content: center;
   align-items: center;
-  background: #264653;
+  background: #53B3CB;
 }
 
 .logo {
   padding: 16px;
   width: 25%;
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 
   .logo-title {
     letter-spacing: 3px;
-    color: white;
+    color: black;
   }
 }
 
@@ -45,6 +49,6 @@
   justify-content: center;
   width: 25%;
   text-align: center;
-  color: white;
+  color: black;
   font-weight: bold;
 }

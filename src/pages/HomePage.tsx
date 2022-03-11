@@ -5,6 +5,7 @@ import Timer from "../components/Timer";
 import SolveLog from "../components/SolveLog";
 import SessionStatistics from "../components/SessionStatistics";
 import reduxStore from "../redux/redux-store";
+import RubiksCubeIcon from '../static/images/cube.png';
 
 const HomePage = (props) => {
     useEffect(() => {
@@ -20,6 +21,9 @@ const HomePage = (props) => {
                     <h1 className='logo-title'>
                         SolveLog
                     </h1>
+                    <div>
+                        <img src={RubiksCubeIcon} width={48} height={48}/>
+                    </div>
                 </div>
                 <ScrambleDisplayRow/>
                 <div className='log-out-and-user-name'>

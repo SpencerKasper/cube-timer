@@ -8,6 +8,7 @@ import scrambleSelectors from "../redux/selectors/scrambleSelectors";
 import {TimeFormatter} from "../utils/TimeFormatter";
 import {UrlHelper} from "../utils/url-helper";
 import solveSelectors from "../redux/selectors/solveSelectors";
+import {Card, CardContent} from "@mui/material";
 
 const TIMER_PRECISION_IN_MS = 10;
 const API_DOMAIN = UrlHelper.getScrambleApiDomain();
@@ -18,6 +19,7 @@ const Timer = () => {
     const scramble = useSelector(scrambleSelectors.scramble);
     const solves = useSelector(solveSelectors.solves);
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
+
     function runFunctionOnKeyWhenNotRepeatAndPreventDefault(event: KeyboardEvent, func: () => void, key = 'Space') {
         if (event.code === key) {
             event.preventDefault();
@@ -104,26 +106,31 @@ const Timer = () => {
     const seconds = timeFormatter.getSeconds(currentTime);
     const milliseconds = timeFormatter.getMilliseconds(currentTime);
     const isLongerThanMinute = currentTime >= 60000;
+    const isLessThanTenSeconds = currentTime < 10000;
     return (
         <div style={{color: timerColor}} className='timer-container'>
-            {isLongerThanMinute && <>
-                <p className='current-time'>
-                    {minutes}
-                </p>
-                <p className='current-time'>
-                    :
-                </p>
-            </>}
-            <p style={{color: timerColor, minWidth: '190px', textAlign: currentTime < 10000 ? 'right' : 'center'}}
-               className='current-time'>
-                {seconds}
-            </p>
-            <p style={{color: timerColor}} className='current-time'>
-                .
-            </p>
-            <p style={{color: timerColor, minWidth: '190px'}} className='current-time'>
-                {milliseconds}
-            </p>
+            <Card className='timer-card'>
+                <CardContent className='timer-content'>
+                    {isLongerThanMinute && <>
+                        <p className='current-time'>
+                            {minutes}
+                        </p>
+                        <p className='current-time'>
+                            :
+                        </p>
+                    </>}
+                        <p style={{color: timerColor, minWidth: '190px', textAlign: currentTime < 10000 ? 'right' : 'center'}}
+                           className='current-time'>
+                            {seconds}
+                        </p>
+                        <p style={{color: timerColor}} className='current-time'>
+                            .
+                        </p>
+                        <p style={{color: timerColor, minWidth: '190px'}} className='current-time'>
+                            {milliseconds}
+                        </p>
+                </CardContent>
+            </Card>
         </div>
     );
 }
