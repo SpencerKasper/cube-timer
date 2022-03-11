@@ -1,4 +1,5 @@
 import {Statistic} from "./Statistic";
+const ACCOUNT_FOR_MIN_AND_MAX_REMOVAL = 2;
 
 export class AverageTimeStatistic extends Statistic {
     constructor(times: number[]) {
@@ -16,14 +17,12 @@ export class AverageTimeStatistic extends Statistic {
     }
 
     getLabel(): string {
-        return `Average of Last ${this.times.length}`;
+        return `Average of Last ${this.times.length + 2}`;
     }
 
     getDescription(): string {
         const numberOfSolves = this.times.length;
-        const ACCOUNT_FOR_MIN_AND_MAX_REMOVAL = 2;
-        const numberOfSolvesIncludedInAverage = this.times.length - ACCOUNT_FOR_MIN_AND_MAX_REMOVAL;
-        return `This is the average of ${numberOfSolves} with the fastest and slowest time removed.  The remaining ${numberOfSolvesIncludedInAverage} times are averaged together.`
+        return `This is the average of ${numberOfSolves + ACCOUNT_FOR_MIN_AND_MAX_REMOVAL} with the fastest and slowest time removed.  The remaining ${numberOfSolves} times are averaged together.`
     }
 
     private getSumOfSolveTimes() {
