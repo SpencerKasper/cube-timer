@@ -36,10 +36,7 @@ const SessionStatistics = () => {
                         overrideDescriptionInStat='This is the average of all of the times in the log.'
                         statistic={averageOfAllSolvesStat}
                     />
-                    <StatValue
-                        description='This is the fastest time of all of the times in the log.'
-                        statistic={fastestTimeStat}
-                    />
+                    <StatValue statistic={fastestTimeStat}/>
                 </CardContent>
             </Card>
         </div>
