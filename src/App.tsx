@@ -21,22 +21,22 @@ function App() {
             {routeInfo.component}
         </Route>;
     };
-
+*
     return (
-        <Authenticator signUpAttributes={['email']}>
-            {({signOut, user}) => (
-                <Router>
-                    <Switch>
-                        <Route exact path='/'>
-                            <HomePage user={user} logOut={signOut}/>
-                        </Route>
-                        {
-                            Object.keys(ROUTES).map(toRoute)
-                        }
-                    </Switch>
-                </Router>
-            )}
-        </Authenticator>
+            <Authenticator className='authentication-container' loginMechanisms={['email']} socialProviders={['google']} signUpAttributes={['email']}>
+                {({signOut, user}) => (
+                    <Router>
+                        <Switch>
+                            <Route exact path='/'>
+                                <HomePage user={user} logOut={signOut}/>
+                            </Route>
+                            {
+                                Object.keys(ROUTES).map(toRoute)
+                            }
+                        </Switch>
+                    </Router>
+                )}
+            </Authenticator>
     );
 }
 

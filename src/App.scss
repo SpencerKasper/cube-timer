@@ -7,3 +7,10 @@
 body {
   margin: 0;
 }
+
+.authentication-container {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  min-height: 100vh;
+}
