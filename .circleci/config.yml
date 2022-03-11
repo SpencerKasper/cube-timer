@@ -38,3 +38,4 @@ workflows:
       - build-and-deploy:
           context:
             - AWS_CONTEXT
+            - SOLVE_LOG_COGNITO
