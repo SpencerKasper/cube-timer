@@ -7,6 +7,10 @@ export class UrlHelper {
         this.history = history;
     }
 
+    public static getScrambleApiDomain() {
+        return 'https://xw7yliw0a0.execute-api.us-east-1.amazonaws.com/prod/';
+    }
+
     public static parseQueryParams() {
         const queryString = window.location.search;
         const queryStringWithQuestionRemoved = queryString.slice(1, queryString.length);

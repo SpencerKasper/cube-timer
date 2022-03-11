@@ -1,4 +1,6 @@
 export interface Solve {
+    userId: string;
+    solveId: string;
     scramble: string;
     time: number;
     cubeType: '3x3x3';

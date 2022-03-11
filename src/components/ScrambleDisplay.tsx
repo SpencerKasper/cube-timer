@@ -4,6 +4,7 @@ import scrambleSelectors from "../redux/selectors/scrambleSelectors";
 import {useSelector} from "react-redux";
 import axios from "axios";
 import reduxStore from "../redux/redux-store";
+import {UrlHelper} from "../utils/url-helper";
 
 export interface GetScrambleResponse {
     responseCode: number;
@@ -14,7 +15,7 @@ const ScrambleDisplay = () => {
     const CUBE_TYPE = '3x3x3';
     const getScramble = async () => {
         const response = await axios
-            .get<GetScrambleResponse>(`https://akyz39h8vj.execute-api.us-east-1.amazonaws.com/prod/cubeType/${CUBE_TYPE}`);
+            .get<GetScrambleResponse>(`${UrlHelper.getScrambleApiDomain()}cubeType/${CUBE_TYPE}`);
         reduxStore.dispatch({type: 'scrambles/set', payload: {scramble: response.data.body.scramble}});
     };
     useEffect(() => {

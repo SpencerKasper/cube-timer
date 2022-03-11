@@ -6,8 +6,10 @@ import {GetScrambleResponse} from "./ScrambleDisplay";
 import {useSelector} from "react-redux";
 import scrambleSelectors from "../redux/selectors/scrambleSelectors";
 import {TimeFormatter} from "../utils/TimeFormatter";
+import {UrlHelper} from "../utils/url-helper";
 
 const TIMER_PRECISION_IN_MS = 10;
+const API_DOMAIN = UrlHelper.getScrambleApiDomain();
 const Timer = () => {
     const [currentTime, setCurrentTime] = useState(0);
     const [timerIntervalId, setTimerIntervalId] = useState(null);
@@ -44,9 +46,19 @@ const Timer = () => {
 
     const getScramble = async () => {
         const response = await axios
-            .get<GetScrambleResponse>(`https://akyz39h8vj.execute-api.us-east-1.amazonaws.com/prod/cubeType/3x3x3`);
+            .get<GetScrambleResponse>(`${API_DOMAIN}cubeType/3x3x3`);
         reduxStore.dispatch({type: 'scrambles/set', payload: {scramble: response.data.body.scramble}});
     };
+
+    const saveSolve = async () => {
+        return axios.post(`${API_DOMAIN}solves`, {
+            scramble,
+            userId: 'spencer.kasper@gmail.com',
+            number: 7,
+            time: currentTime,
+            cubeType: '3x3x3',
+        }, {headers: {'Content-Type': 'application/json'}});
+    }
 
     useEffect(() => {
         if (timerState === 'starting') {
@@ -60,8 +72,14 @@ const Timer = () => {
         if (timerState === 'stopping' && timerIntervalId) {
             clearInterval(timerIntervalId);
             setTimerIntervalId(null);
-            reduxStore.dispatch({type: 'solve/add', payload: {solve: {scramble, time: currentTime, cubeType: '3x3x3'}}})
-            getScramble();
+            saveSolve()
+                .then(() => {
+                    reduxStore.dispatch({
+                        type: 'solve/add',
+                        payload: {solve: {scramble, time: currentTime, cubeType: '3x3x3'}}
+                    })
+                    getScramble();
+                });
         }
     }, [timerState]);
 
@@ -93,7 +111,8 @@ const Timer = () => {
                     :
                 </p>
             </>}
-            <p style={{color: timerColor, minWidth: '190px', textAlign: currentTime < 10000 ? 'right' : 'center'}} className='current-time'>
+            <p style={{color: timerColor, minWidth: '190px', textAlign: currentTime < 10000 ? 'right' : 'center'}}
+               className='current-time'>
                 {seconds}
             </p>
             <p style={{color: timerColor}} className='current-time'>
