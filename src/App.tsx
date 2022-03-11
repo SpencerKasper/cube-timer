@@ -1,15 +1,13 @@
 import './env'
-import React, {useEffect} from 'react';
+import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.scss';
 import HomePage from "./pages/HomePage";
 import {ROUTES} from "./static/constants/routes";
-import Amplify from "aws-amplify";
+import {Amplify} from "aws-amplify";
 import {Authenticator} from '@aws-amplify/ui-react';
 
 import '@aws-amplify/ui-react/styles.css';
-
-// Tomorrow start from here because we need to set up all this auth stuff on the build server.
 const awsExports = {
     "aws_project_region": "us-east-1",
     "aws_cognito_identity_pool_id": process.env.REACT_APP_COGNITO_IDENTITY_POOL_ID,
