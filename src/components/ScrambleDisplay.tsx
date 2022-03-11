@@ -15,7 +15,7 @@ const ScrambleDisplay = () => {
     const CUBE_TYPE = '3x3x3';
     const getScramble = async () => {
         const response = await axios
-            .get<GetScrambleResponse>(`${UrlHelper.getScrambleApiDomain()}cubeType/${CUBE_TYPE}`);
+            .get<GetScrambleResponse>(`${UrlHelper.getScrambleApiDomain()}cubeType/${CUBE_TYPE}?scrambleLength=32`);
         reduxStore.dispatch({type: 'scrambles/set', payload: {scramble: response.data.body.scramble}});
     };
     useEffect(() => {
