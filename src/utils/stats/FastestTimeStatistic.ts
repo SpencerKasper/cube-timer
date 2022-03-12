@@ -5,12 +5,16 @@ export class FastestTimeStatistic extends Statistic {
         super(times);
     }
 
+    getStatValueBeforeFormat() {
+        return Math.min(...this.times);
+    }
+
     getStatValue(fractionDigits = 2) {
         const statValue = super.getStatValue();
         if(statValue) {
             return statValue;
         }
-        return (Math.min(...this.times)).toFixed(fractionDigits).toString();
+        return this.getStatValueBeforeFormat().toFixed(fractionDigits).toString();
     }
 
     getLabel() {

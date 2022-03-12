@@ -36,7 +36,14 @@ const SessionStatistics = () => {
                         overrideDescriptionInStat='This is the average of all of the times in the log.'
                         statistic={averageOfAllSolvesStat}
                     />
-                    <StatValue statistic={fastestTimeStat}/>
+                    <StatValue onLabelClick={() => {
+                        const fastestTimeAsMilliseconds = fastestTimeStat.getStatValueBeforeFormat() ;
+                        console.error(fastestTimeAsMilliseconds)
+                        const solve = solves.find(item => item.time === fastestTimeAsMilliseconds)
+                        if(solve){
+                            document.getElementById(`solve-item-${solve.number}`).scrollIntoView();
+                        }
+                    }} statistic={fastestTimeStat}/>
                 </CardContent>
             </Card>
         </div>

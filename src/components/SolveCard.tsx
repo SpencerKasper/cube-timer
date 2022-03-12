@@ -8,7 +8,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import React from "react";
 import {useSelector} from "react-redux";
 
-export function SolveCard(props: { solve: Solve }) {
+export function SolveCard(props: { solve: Solve; }) {
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     const deleteSolve = async () => {
         const email = user.attributes.email;
@@ -18,7 +18,7 @@ export function SolveCard(props: { solve: Solve }) {
 
     const timeFormatter = new TimeFormatter();
 
-    return <Card variant='outlined'>
+    return <Card variant='outlined' id={`solve-item-${props.solve.number}`}>
         <CardContent className='solve-container'>
             <div className='delete-row'>
                 <DeleteForeverIcon onClick={() => deleteSolve()}/>
