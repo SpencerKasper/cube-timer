@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import './SolveLog.css';
 import {Solve} from "../redux/reducers/solveReducer";
@@ -7,9 +7,11 @@ import axios from "axios";
 import {UrlHelper} from "../utils/url-helper";
 import reduxStore, {ReduxStore} from "../redux/redux-store";
 import {SolveCard} from "./SolveCard";
-import {Card, CardContent} from "@mui/material";
+import {Card, CardContent, Chip, Stack} from "@mui/material";
+import {ArrowUpward} from "@mui/icons-material";
 
 const SolveLog = () => {
+    const [scrollHeight, setScrollHeight] = useState(0);
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     const getSolves = async () => {
         if (user) {
@@ -22,10 +24,22 @@ const SolveLog = () => {
         getSolves();
     }, [user]);
     const solves = useSelector(solveSelectors.solves);
+    const onScroll = () => {
+        setScrollHeight(document.getElementById('solves').scrollTop);
+    };
+    const scrollToTop = () => {
+        document.getElementById('solves').scrollTo({ top: 0, behavior: "smooth"});
+    };
     return (
         <div className='solve-history-container'>
             <h2 className='solve-history-title'>Log</h2>
-            <div className='solves'>
+            <div className='solves' id='solves' onScroll={onScroll}>
+                {
+                    scrollHeight !== 0 &&
+                    <div className={'scroll-to-top-chip-container'}>
+                        <Chip onClick={scrollToTop} icon={<ArrowUpward/>} label='Scroll to Top' className='scroll-to-top-chip'/>
+                    </div>
+                }
                 {solves.length ? solves.sort((a, b) => a.number > b.number ? -1 : 1).map((solve: Solve, index) => {
                         return <SolveCard key={index}
                                           solve={solve}/>

@@ -50,3 +50,8 @@
     text-align: right;
     cursor: pointer;
 }
+
+.scroll-to-top-chip-container {
+    position: absolute;
+    margin: 8px;
+}
