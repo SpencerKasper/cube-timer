@@ -42,7 +42,9 @@ const SessionStatistics = () => {
                         overrideDescriptionInStat='This is the average of all of the times in the log.'
                         statistic={averageOfAllSolvesStat}
                     />
-                    <StatValue onStatClick={onStatClick} statistic={fastestTimeStat}/>
+                    <StatValue onStatClick={onStatClick}
+                               onStatClickDescription={'Click to scroll to this solve in the solve log.'}
+                               statistic={fastestTimeStat}/>
                 </CardContent>
             </Card>
         </div>

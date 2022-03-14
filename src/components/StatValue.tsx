@@ -3,7 +3,7 @@ import {TimeFormatter} from "../utils/TimeFormatter";
 import React from "react";
 import {Tooltip} from "@mui/material";
 
-export function StatValue(props: { onStatClick?: () => void; statistic: Statistic; overrideLabelInStat?: string; overrideDescriptionInStat?: string; placementOfDescription?: "bottom-end" | "bottom-start" | "bottom" | "left-end" | "left-start" | "left" | "right-end" | "right-start" | "right" | "top-end" | "top-start" | "top" }) {
+export function StatValue(props: { onStatClick?: () => void; statistic: Statistic; overrideLabelInStat?: string; overrideDescriptionInStat?: string; placementOfDescription?: "bottom-end" | "bottom-start" | "bottom" | "left-end" | "left-start" | "left" | "right-end" | "right-start" | "right" | "top-end" | "top-start" | "top"; onStatClickDescription?: string; }) {
     const timeFormatter = new TimeFormatter();
     const statValue = props.statistic.getStatValue();
     const label = props.overrideLabelInStat ? props.overrideLabelInStat : props.statistic.getLabel();
@@ -13,7 +13,7 @@ export function StatValue(props: { onStatClick?: () => void; statistic: Statisti
             props.onStatClick();
         }
     };
-    return <div className='stat' style={{...(props.onStatClick && {cursor: 'pointer'})}} onClick={onStatClick}>
+    return <div className='stat'>
         {description ?
             <Tooltip title={description}
                      placement={props.placementOfDescription ? props.placementOfDescription : 'left'}>
@@ -25,8 +25,15 @@ export function StatValue(props: { onStatClick?: () => void; statistic: Statisti
                 {label}:
             </p>
         }
-        <p className='stat-value'>
-            {statValue ? timeFormatter.getFullTime(statValue) : "-"}
-        </p>
+        {onStatClick ?
+            <Tooltip title={props.onStatClickDescription}>
+                <p className='stat-value' style={{...(props.onStatClick && {cursor: 'pointer'})}} onClick={onStatClick}>
+                    {statValue ? timeFormatter.getFullTime(statValue) : "-"}
+                </p>
+            </Tooltip> :
+            <p className='stat-value' style={{...(props.onStatClick && {cursor: 'pointer'})}} onClick={onStatClick}>
+                {statValue ? timeFormatter.getFullTime(statValue) : "-"}
+            </p>
+        }
     </div>;
 }
