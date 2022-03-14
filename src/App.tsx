@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.scss';
 import HomePage from "./pages/HomePage";
 import {ROUTES} from "./static/constants/routes";
-import {Amplify} from "aws-amplify";
+import {Amplify} from 'aws-amplify';
 import {AmplifyProvider, Authenticator, useTheme, View, Theme} from '@aws-amplify/ui-react';
 import RubiksCubeLogo from '../src/static/images/cube.png';
 
@@ -49,7 +49,9 @@ const awsExports = {
         "EMAIL"
     ]
 };
-Amplify.configure(awsExports);
+if(!process.env.REACT_APP_IS_LOCAL) {
+    Amplify.configure(awsExports);
+}
 
 function App() {
     const components = {
@@ -105,8 +107,18 @@ function App() {
             },
         },
     };
-
     return (
+        process.env.REACT_APP_IS_LOCAL ?
+            <Router>
+                <Switch>
+                    <Route exact path='/'>
+                        <HomePage user={{attributes:{email: 'spencer.kasper@gmail.com'}}} logOut={() => null}/>
+                    </Route>
+                    {
+                        Object.keys(ROUTES).map(toRoute)
+                    }
+                </Switch>
+            </Router> :
         <AmplifyProvider theme={defaultTheme}>
             <Authenticator components={components} className='authentication-container' loginMechanisms={['email']}
                            socialProviders={[]} signUpAttributes={['email']}>

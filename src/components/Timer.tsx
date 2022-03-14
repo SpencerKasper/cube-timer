@@ -8,7 +8,9 @@ import scrambleSelectors from "../redux/selectors/scrambleSelectors";
 import {TimeFormatter} from "../utils/TimeFormatter";
 import {UrlHelper} from "../utils/url-helper";
 import solveSelectors from "../redux/selectors/solveSelectors";
-import {Card, CardContent} from "@mui/material";
+import {Card, CardContent} from '@mui/material';
+import {Stackmat, Packet} from "stackmat";
+import {toast} from "react-toastify";
 
 const TIMER_PRECISION_IN_MS = 10;
 const API_DOMAIN = UrlHelper.getScrambleApiDomain();
@@ -16,9 +18,37 @@ const Timer = () => {
     const [currentTime, setCurrentTime] = useState(0);
     const [timerIntervalId, setTimerIntervalId] = useState(null);
     const [timerState, setTimerState] = useState('ready');
+    const [timerMode, setTimerMode] = useState('built-in');
     const scramble = useSelector(scrambleSelectors.scramble);
     const solves = useSelector(solveSelectors.solves);
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
+    let stackmat;
+    useEffect(() => {
+        stackmat = new Stackmat();
+        stackmat.on('starting', (packet: Packet) => {
+           setTimerState('starting');
+        });
+        stackmat.on('started', (packet: Packet) => {
+            setTimerState('running');
+        });
+        stackmat.on('stopped', (packet: Packet) => {
+            console.log('Timer stopped at: ' + packet.timeAsString);
+            setTimerState('stopping');
+        });
+        stackmat.on('packetReceived', (packet: Packet) => {
+            setCurrentTime(time => packet.timeInMilliseconds !== currentTime ? packet.timeInMilliseconds : currentTime);
+        });
+        stackmat.on('timerConnected', (packet: Packet) => {
+            toast.success('Stackmat timer has been detected! Using that as the timer source.');
+            setTimerMode('speedstack-timer');
+        });
+        stackmat.on('timerDisconnected', (packet: Packet) => {
+            toast.warning('Stackmat timer has been disconnected. Switching to built in timer.');
+            setTimerMode('built-in');
+            setTimerState('ready');
+        });
+        stackmat.start()
+    }, []);
 
     function runFunctionOnKeyWhenNotRepeatAndPreventDefault(event: KeyboardEvent, func: () => void, key = 'Space') {
         if (event.code === key) {
@@ -63,30 +93,36 @@ const Timer = () => {
             time: currentTime,
             cubeType: '3x3x3',
         }, {headers: {'Content-Type': 'application/json'}});
-    }
+    };
 
     useEffect(() => {
         if (timerState === 'starting') {
-            setCurrentTime(0);
+            if(timerMode === 'built-in') {
+                setCurrentTime(0);
+            }
         }
         if (timerState === 'running' && !timerIntervalId) {
-            setTimerIntervalId(setInterval(() => {
-                setCurrentTime(time => time + TIMER_PRECISION_IN_MS);
-            }, TIMER_PRECISION_IN_MS));
+            if(timerMode === 'built-in') {
+                setTimerIntervalId(setInterval(() => {
+                    setCurrentTime(time => time + TIMER_PRECISION_IN_MS);
+                }, TIMER_PRECISION_IN_MS));
+            }
         }
-        if (timerState === 'stopping' && timerIntervalId) {
-            clearInterval(timerIntervalId);
+        if (timerState === 'stopping') {
+            if(timerIntervalId) {
+                clearInterval(timerIntervalId);
+            }
             setTimerIntervalId(null);
             saveSolve()
                 .then(() => {
                     reduxStore.dispatch({
                         type: 'solves/add',
                         payload: {solve: {scramble, time: currentTime, cubeType: '3x3x3'}}
-                    })
+                    });
                     getScramble();
                 });
         }
-    }, [timerState]);
+    }, [timerState, timerMode]);
 
     useEffect(() => () => {
         document.removeEventListener('keyup', keyUpListener);

@@ -6,7 +6,8 @@ import SolveLog from "../components/SolveLog";
 import SessionStatistics from "../components/SessionStatistics";
 import reduxStore from "../redux/redux-store";
 import RubiksCubeIcon from '../static/images/cube.png';
-
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const HomePage = (props) => {
     useEffect(() => {
         reduxStore.dispatch({
@@ -16,6 +17,7 @@ const HomePage = (props) => {
     }, [props.user]);
     return (
         <div className={'home-container'}>
+            <ToastContainer />
             <div className='scramble-display-row'>
                 <div className='logo'>
                     <h1 className='logo-title'>
