@@ -11,6 +11,13 @@
     border-radius: 16px !important;
 }
 
+.timer-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .timer-content {
     width: 100%;
     display: flex;

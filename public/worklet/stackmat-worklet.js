@@ -30,4 +30,3 @@ class StackmatWorkletProcessor extends AudioWorkletProcessor {
 }
 
 registerProcessor('stackmat-processor', StackmatWorkletProcessor);
-console.error('processor has been registered. 67');

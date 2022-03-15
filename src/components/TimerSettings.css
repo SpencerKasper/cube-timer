@@ -1,0 +1,13 @@
+.timer-settings-menu-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #051014 !important;
+    color: white;
+}
+
+.timer-settings-container {
+    text-align: right;
+    padding: 8px;
+    width: 100%;
+}

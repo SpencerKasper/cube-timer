@@ -9,9 +9,7 @@ import {TimeFormatter} from "../utils/TimeFormatter";
 import {UrlHelper} from "../utils/url-helper";
 import solveSelectors from "../redux/selectors/solveSelectors";
 import {Card, CardContent} from '@mui/material';
-import {Stackmat} from '../stackmat/stackmat';
-import {toast} from "react-toastify";
-import {Packet} from "../stackmat/packet/packet";
+import {TimerSettings} from "./TimerSettings";
 
 const TIMER_PRECISION_IN_MS = 10;
 const API_DOMAIN = UrlHelper.getScrambleApiDomain();
@@ -24,38 +22,6 @@ const Timer = () => {
     const solves = useSelector(solveSelectors.solves);
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
 
-    const setUpStackmatTimer = () => {
-        const audioContext = new AudioContext();
-        const stackmat = new Stackmat(audioContext);
-        console.error('created new stackmat');
-        stackmat.on('starting', (packet: Packet) => {
-            console.error('starting');
-            setTimerState('starting');
-        });
-        stackmat.on('started', (packet: Packet) => {
-            setTimerState('running');
-        });
-        stackmat.on('stopped', (packet: Packet) => {
-            console.log('Timer stopped at: ' + packet.timeAsString);
-            setTimerState('stopping');
-        });
-        stackmat.on('packetReceived', (packet: Packet) => {
-            console.error('packetReceived');
-            setCurrentTime(time => packet.timeInMilliseconds !== time ? packet.timeInMilliseconds : time);
-        });
-        stackmat.on('timerConnected', (packet: Packet) => {
-            toast.success('Stackmat timer has been detected! Using that as the timer source.');
-            setTimerMode('speedstack-timer');
-        });
-        stackmat.on('timerDisconnected', (packet: Packet) => {
-            toast.warning('Stackmat timer has been disconnected. Switching to built in timer.');
-            setTimerMode('built-in');
-            setTimerState('ready');
-        });
-        console.error('registered events');
-        stackmat.start();
-        console.error('started stackmat');
-    }
     useEffect(() => {
         document.addEventListener('keydown', keyDownListener);
         document.addEventListener('keyup', keyUpListener);
@@ -149,34 +115,39 @@ const Timer = () => {
     const seconds = timeFormatter.getSeconds(currentTime);
     const milliseconds = timeFormatter.getMilliseconds(currentTime);
     const isLongerThanMinute = currentTime >= 60000;
-    console.error('ready to render');
     return (
         <div style={{color: timerColor}} className='timer-container'>
             <Card className='timer-card'>
-                <CardContent className='timer-content'>
-                    <button onClick={() => setUpStackmatTimer()}>Use Stackmat Timer</button>
-                    {isLongerThanMinute && <>
-                        <p className='current-time'>
-                            {minutes}
+                <CardContent className='timer-card-content'>
+                    <TimerSettings
+                        setTimerState={setTimerState}
+                        setCurrentTime={setCurrentTime}
+                        setTimerMode={setTimerMode}
+                    />
+                    <div className={'timer-content'}>
+                        {isLongerThanMinute && <>
+                            <p className='current-time'>
+                                {minutes}
+                            </p>
+                            <p className='current-time'>
+                                :
+                            </p>
+                        </>}
+                        <p style={{
+                            color: timerColor,
+                            minWidth: '190px',
+                            textAlign: currentTime < 10000 ? 'right' : 'center'
+                        }}
+                           className='current-time'>
+                            {seconds}
                         </p>
-                        <p className='current-time'>
-                            :
+                        <p style={{color: timerColor}} className='current-time'>
+                            .
                         </p>
-                    </>}
-                    <p style={{
-                        color: timerColor,
-                        minWidth: '190px',
-                        textAlign: currentTime < 10000 ? 'right' : 'center'
-                    }}
-                       className='current-time'>
-                        {seconds}
-                    </p>
-                    <p style={{color: timerColor}} className='current-time'>
-                        .
-                    </p>
-                    <p style={{color: timerColor, minWidth: '190px'}} className='current-time'>
-                        {milliseconds}
-                    </p>
+                        <p style={{color: timerColor, minWidth: '190px'}} className='current-time'>
+                            {milliseconds}
+                        </p>
+                    </div>
                 </CardContent>
             </Card>
         </div>
