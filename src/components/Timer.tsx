@@ -10,14 +10,17 @@ import {UrlHelper} from "../utils/url-helper";
 import solveSelectors from "../redux/selectors/solveSelectors";
 import {Card, CardContent} from '@mui/material';
 import {TimerSettings} from "./TimerSettings";
+import {toast} from "react-toastify";
 
 const TIMER_PRECISION_IN_MS = 10;
 const API_DOMAIN = UrlHelper.getScrambleApiDomain();
 const Timer = () => {
+    const [timerInfo, setTimerInfo] = useState({
+        timerState: 'ready',
+        timerMode: 'built-in',
+    });
     const [currentTime, setCurrentTime] = useState(0);
-    const [timerIntervalId, setTimerIntervalId] = useState(null);
-    const [timerState, setTimerState] = useState('ready');
-    const [timerMode, setTimerMode] = useState('built-in');
+    const [intervalId, setIntervalId] = useState(null);
     const scramble = useSelector(scrambleSelectors.scramble);
     const solves = useSelector(solveSelectors.solves);
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
@@ -28,34 +31,36 @@ const Timer = () => {
     }, []);
 
     useEffect(() => {
+        const {timerState, timerMode} = timerInfo;
         console.error(timerState);
-        if (timerState === 'starting') {
-            if (timerMode === 'built-in') {
-                setCurrentTime(0);
-            }
+        if (timerState === 'starting' && timerMode === 'built-in') {
+            setCurrentTime(0);
         }
-        if (timerState === 'running' && !timerIntervalId) {
-            if (timerMode === 'built-in') {
-                setTimerIntervalId(setInterval(() => {
-                    setCurrentTime(time => time + TIMER_PRECISION_IN_MS);
-                }, TIMER_PRECISION_IN_MS));
-            }
+        if (timerState === 'running' && timerMode === 'built-in') {
+            setIntervalId(setInterval(() => {
+                setCurrentTime(time => time + TIMER_PRECISION_IN_MS);
+            }, TIMER_PRECISION_IN_MS));
         }
         if (timerState === 'stopping') {
-            if (timerIntervalId) {
-                clearInterval(timerIntervalId);
-            }
-            setTimerIntervalId(null);
+            setIntervalId(currentIntervalId => {
+                if (currentIntervalId) {
+                    clearInterval(currentIntervalId);
+                }
+                return null;
+            });
+            reduxStore.dispatch({
+                type: 'solves/add',
+                payload: {solve: {scramble, time: currentTime, cubeType: '3x3x3'}}
+            });
             saveSolve()
                 .then(() => {
-                    reduxStore.dispatch({
-                        type: 'solves/add',
-                        payload: {solve: {scramble, time: currentTime, cubeType: '3x3x3'}}
-                    });
-                    getScramble();
+                    getScramble()
+                        .then(() => {
+                            console.error('reset complete.')
+                        });
                 });
         }
-    }, [timerState, timerMode]);
+    }, [timerInfo]);
 
     useEffect(() => () => {
         document.removeEventListener('keyup', keyUpListener);
@@ -73,15 +78,29 @@ const Timer = () => {
 
     function keyDownListener(event) {
         runFunctionOnKeyWhenNotRepeatAndPreventDefault(event, () => {
-            setTimerState(state => state === 'ready' ? 'starting' : state);
-            setTimerState(state => state === 'running' ? 'stopping' : state);
+            setTimerInfo(info => {
+                let timerState = info.timerState;
+                if (timerState === 'ready') {
+                    timerState = 'starting';
+                } else if (timerState === 'running') {
+                    timerState = 'stopping';
+                }
+                return ({...info, timerMode: 'built-in', timerState});
+            });
         });
     }
 
     function keyUpListener(event) {
         runFunctionOnKeyWhenNotRepeatAndPreventDefault(event, () => {
-            setTimerState(state => state === 'stopping' ? 'ready' : state);
-            setTimerState(state => state === 'starting' ? 'running' : state);
+            setTimerInfo(info => {
+                let timerState = info.timerState;
+                if (timerState === 'stopping') {
+                    timerState = 'ready';
+                } else if (timerState === 'starting') {
+                    timerState = 'running';
+                }
+                return ({...info, timerMode: 'built-in', timerState});
+            });
         });
     }
 
@@ -89,26 +108,32 @@ const Timer = () => {
         const response = await axios
             .get<GetScrambleResponse>(`${API_DOMAIN}cubeType/3x3x3`);
         reduxStore.dispatch({type: 'scrambles/set', payload: {scramble: response.data.body.scramble}});
+        setTimerInfo(info => {
+            return ({...info, timerState: 'ready'});
+        });
     };
 
     const saveSolve = async () => {
-        const userId = user.attributes.email;
-        return axios.post(`${API_DOMAIN}solves`, {
-            scramble,
-            userId,
-            number: solves.length + 1,
-            time: currentTime,
-            cubeType: '3x3x3',
-        }, {headers: {'Content-Type': 'application/json'}});
+        if(user) {
+            const userId = user.attributes.email;
+            return axios.post(`${API_DOMAIN}solves`, {
+                scramble,
+                userId,
+                number: solves.length + 1,
+                time: currentTime,
+                cubeType: '3x3x3',
+            }, {headers: {'Content-Type': 'application/json'}});
+        } else {
+            toast.error('There must be a logged in user in order to save a solve.');
+        }
     };
 
     const getTimerColor = () => {
-        if (timerState === 'starting') {
+        if (timerInfo.timerState === 'starting') {
             return 'green';
         }
         return 'black';
     };
-
     const timerColor = getTimerColor();
     const timeFormatter = new TimeFormatter();
     const minutes = timeFormatter.getMinutes(currentTime);
@@ -120,9 +145,8 @@ const Timer = () => {
             <Card className='timer-card'>
                 <CardContent className='timer-card-content'>
                     <TimerSettings
-                        setTimerState={setTimerState}
+                        setTimerInfo={setTimerInfo}
                         setCurrentTime={setCurrentTime}
-                        setTimerMode={setTimerMode}
                     />
                     <div className={'timer-content'}>
                         {isLongerThanMinute && <>

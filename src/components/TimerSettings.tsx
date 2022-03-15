@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Stackmat} from '../stackmat/stackmat';
 import {toast} from "react-toastify";
-import {Packet} from "../stackmat/packet/packet";
-import {Button, Menu, MenuItem, styled, alpha} from "@mui/material";
+import {Packet, PacketStatus} from "../stackmat/packet/packet";
+import {alpha, Button, Menu, MenuItem, styled} from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import TimerIcon from '@mui/icons-material/Timer';
 import './TimerSettings.css';
@@ -22,9 +22,9 @@ export const TimerSettings = (props) => {
             }}
             {...props}
         />
-    ))(({ theme }) => ({
+    ))(({theme}) => ({
         '.MuiButton-text': {
-          color: '#051014'
+            color: '#051014'
         },
         '& .MuiPaper-root': {
             borderRadius: 6,
@@ -52,32 +52,45 @@ export const TimerSettings = (props) => {
             },
         },
     }));
-    const {setTimerState, setCurrentTime, setTimerMode} = props;
+    const {setTimerInfo, setCurrentTime} = props;
     const [selectedSettings, setSelectedSettings] = useState({speedStackTimerEnabled: false})
+    const [previousPacketStatus, setPreviousPacketStatus] = useState('I');
     const setUpStackmatTimer = () => {
-        setSelectedSettings({speedStackTimerEnabled: true});
         const audioContext = new AudioContext();
         const stackmat = new Stackmat(audioContext);
+        setSelectedSettings({speedStackTimerEnabled: true});
         stackmat.on('starting', (packet: Packet) => {
-            setTimerState('starting');
+            setTimerInfo({timerMode: 'speedstack-timer', timerState: 'starting'});
         });
         stackmat.on('started', (packet: Packet) => {
-            setTimerState('running');
+            setTimerInfo({timerMode: 'speedstack-timer', timerState: 'running'});
         });
         stackmat.on('stopped', (packet: Packet) => {
-            setTimerState('stopping');
+            setTimerInfo({timerMode: 'speedstack-timer', timerState: 'stopping'});
         });
         stackmat.on('packetReceived', (packet: Packet) => {
-            setCurrentTime(time => packet.timeInMilliseconds !== time ? packet.timeInMilliseconds : time);
+            setCurrentTime(time => {
+                setPreviousPacketStatus(prevPacket => {
+                    if(prevPacket === PacketStatus.RUNNING && packet.status === PacketStatus.IDLE) {
+                        setTimerInfo(info => ({
+                            ...info,
+                            timerState: 'stopping',
+                        }));
+                    }
+                    return packet.status;
+                });
+                return packet.timeInMilliseconds !== time ?
+                        packet.timeInMilliseconds :
+                        time;
+            });
         });
         stackmat.on('timerConnected', (packet: Packet) => {
+            setTimerInfo({timerMode: 'speedstack-timer', timerState: 'ready'});
             toast.success('Stackmat timer has been detected! Using that as the timer source.');
-            setTimerMode('speedstack-timer');
         });
         stackmat.on('timerDisconnected', (packet: Packet) => {
             toast.warning('Stackmat timer has been disconnected. Switching to built in timer.');
-            setTimerMode('built-in');
-            setTimerState('ready');
+            setTimerInfo({timerMode: 'built-in', timerState: 'ready'});
         });
         stackmat.start();
     };
@@ -98,11 +111,11 @@ export const TimerSettings = (props) => {
                 variant="contained"
                 disableElevation
                 onClick={handleClick}
-                endIcon={<KeyboardArrowDownIcon />}
+                endIcon={<KeyboardArrowDownIcon/>}
                 className={'timer-settings-menu-button'}
             >
                 <div style={{paddingRight: '8px'}}>
-                    <TimerIcon />
+                    <TimerIcon/>
                 </div>
                 <div>
                     Timer Options
@@ -118,7 +131,9 @@ export const TimerSettings = (props) => {
                 onClose={handleClose}
             >
                 <MenuItem onClick={handleClose} disableRipple>
-                    {selectedSettings.speedStackTimerEnabled ? <p>SpeedStack timer has been enabled.  Connect it, approve access to your microphone, and turn it on.</p> : <Button onClick={() => setUpStackmatTimer()}>Enable StackMat Timer</Button>}
+                    {selectedSettings.speedStackTimerEnabled ?
+                        <p>SpeedStack timer has been enabled. Connect it, approve access to your microphone, and turn it
+                            on.</p> : <Button onClick={() => setUpStackmatTimer()}>Enable StackMat Timer</Button>}
                 </MenuItem>
             </StyledMenu>
         </div>

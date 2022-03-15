@@ -9,6 +9,7 @@ import reduxStore, {ReduxStore} from "../redux/redux-store";
 import {SolveCard} from "./SolveCard";
 import {Card, CardContent, Chip, Stack} from "@mui/material";
 import {ArrowUpward} from "@mui/icons-material";
+import {toast} from "react-toastify";
 
 const SolveLog = () => {
     const [scrollHeight, setScrollHeight] = useState(0);
@@ -18,10 +19,14 @@ const SolveLog = () => {
             const userId = user.attributes.email;
             const response = await axios.get<{ body: { solves: Solve[] } }>(`${UrlHelper.getScrambleApiDomain()}solves?userId=${encodeURIComponent(userId)}`);
             reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}})
+        } else {
+            toast.error('There must be a logged in user to get solves.');
         }
     };
     useEffect(() => {
-        getSolves();
+        if(user) {
+            getSolves();
+        }
     }, [user]);
     const solves = useSelector(solveSelectors.solves);
     const onScroll = () => {
