@@ -1,4 +1,3 @@
-/// <reference types="react-scripts" />
 interface AudioWorkletProcessor {
     readonly port: MessagePort
     process(
