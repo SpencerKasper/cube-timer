@@ -6,6 +6,9 @@ import {alpha, Button, Menu, MenuItem, styled} from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import TimerIcon from '@mui/icons-material/Timer';
 import './TimerSettings.css';
+import reduxStore from "../redux/redux-store";
+import settingsSelectors from "../redux/selectors/settingsSelectors";
+import {useSelector} from "react-redux";
 
 export const TimerSettings = (props) => {
     const StyledMenu = styled((props) => (
@@ -53,12 +56,17 @@ export const TimerSettings = (props) => {
         },
     }));
     const {setTimerInfo, setCurrentTime} = props;
-    const [selectedSettings, setSelectedSettings] = useState({speedStackTimerEnabled: false})
+    const timerSettings = useSelector(settingsSelectors.timerSettings);
     const [previousPacketStatus, setPreviousPacketStatus] = useState('I');
     const setUpStackmatTimer = () => {
         const audioContext = new AudioContext();
         const stackmat = new Stackmat(audioContext);
-        setSelectedSettings({speedStackTimerEnabled: true});
+        reduxStore.dispatch({type: 'settings/setTimerSettings', payload: {
+            timerSettings: {
+                ...timerSettings,
+                speedStackTimerEnabled: true,
+            },
+        }});
         stackmat.on('starting', (packet: Packet) => {
             setTimerInfo({timerMode: 'speedstack-timer', timerState: 'starting'});
         });
@@ -131,7 +139,7 @@ export const TimerSettings = (props) => {
                 onClose={handleClose}
             >
                 <MenuItem onClick={handleClose} disableRipple>
-                    {selectedSettings.speedStackTimerEnabled ?
+                    {timerSettings.speedStackTimerEnabled ?
                         <p>SpeedStack timer has been enabled. Connect it, approve access to your microphone, and turn it
                             on.</p> : <Button onClick={() => setUpStackmatTimer()}>Enable StackMat Timer</Button>}
                 </MenuItem>

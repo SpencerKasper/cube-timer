@@ -5,6 +5,8 @@ import axios from "axios";
 import {GetScrambleResponse} from "./ScrambleDisplay";
 import {UrlHelper} from "../utils/url-helper";
 import reduxStore from "../redux/redux-store";
+import settingsSelectors from "../redux/selectors/settingsSelectors";
+import {useSelector} from "react-redux";
 
 export const ScrambleSettings = () => {
     const StyledMenu = styled((props) => (
@@ -53,10 +55,15 @@ export const ScrambleSettings = () => {
             },
         },
     }));
-    const [scrambleSettings, setScrambleSettings] = useState({scrambleLength: 32});
+    const scrambleSettings = useSelector(settingsSelectors.scrambleSettings);
     const [isOpen, setIsOpen] = useState(false);
     const onScrambleLengthChange = (event) => {
-        setScrambleSettings({scrambleLength: event.target.value});
+        reduxStore.dispatch({
+            type: 'settings/setScrambleSettings',
+            payload: {
+                scrambleSettings: {...scrambleSettings, scrambleLength: event.target.value}
+            },
+        });
     };
     const getScramble = async () => {
         const response = await axios
