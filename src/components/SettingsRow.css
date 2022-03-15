@@ -1,0 +1,6 @@
+.settings-row {
+    display: flex;
+    flex-direction: row;
+    padding: 16px;
+    justify-content: space-evenly;
+}

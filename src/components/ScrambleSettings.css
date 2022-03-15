@@ -1,0 +1,19 @@
+.scramble-settings-menu-button {
+    background: #051014 !important;
+    color: white;
+}
+
+.settings-title {
+    text-align: center;
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px;
+}
+
+.setting-label {
+    padding-right: 8px;
+}

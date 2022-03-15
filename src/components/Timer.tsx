@@ -11,6 +11,8 @@ import solveSelectors from "../redux/selectors/solveSelectors";
 import {Card, CardContent} from '@mui/material';
 import {TimerSettings} from "./TimerSettings";
 import {toast} from "react-toastify";
+import {ScrambleSettings} from "./ScrambleSettings";
+import {SettingsRow} from "./SettingsRow";
 
 const TIMER_PRECISION_IN_MS = 10;
 const API_DOMAIN = UrlHelper.getScrambleApiDomain();
@@ -141,10 +143,7 @@ const Timer = () => {
     const isLongerThanMinute = currentTime >= 60000;
     return (
         <div style={{color: timerColor}} className='timer-container'>
-            <TimerSettings
-                setTimerInfo={setTimerInfo}
-                setCurrentTime={setCurrentTime}
-            />
+            <SettingsRow setTimerInfo={setTimerInfo} setCurrentTime={setCurrentTime}/>
             <Card className='timer-card'>
                 <CardContent>
                     <div className={'timer-content'}>
