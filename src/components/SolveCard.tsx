@@ -7,15 +7,21 @@ import {Card, CardContent, CircularProgress} from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
+import {toast} from "react-toastify";
 
 export function SolveCard(props: { solve: Solve; }) {
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     const [isDeleting, setIsDeleting] = useState(false);
     const deleteSolve = async () => {
         setIsDeleting(true);
-        const email = user.attributes.email;
-        const response = await axios.get<{ body: { solves: Solve[] } }>(`${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}`);
-        reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}});
+        if(user && props.solve.solveId) {
+            const email = user.attributes.email;
+            const deleteSolveEndpoint = `${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}`;
+            const response = await axios.get<{ body: { solves: Solve[] } }>(deleteSolveEndpoint);
+            reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}});
+        } else {
+            toast.error('Delete failed for an unknown reason.  Please try again.');
+        }
         setIsDeleting(false);
     };
 

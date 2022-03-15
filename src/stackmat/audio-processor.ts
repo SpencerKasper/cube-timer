@@ -27,7 +27,6 @@ export class AudioProcessor {
                 const signalDecoder = new SignalDecoder(this.context.sampleRate, this.callback)
 
                 this.context.audioWorklet.addModule('worklet/stackmat-worklet.js').then(() => {
-                    console.error('added module in audio processor.');
                     if (this.context && this.source) {
                         this.workletNode = new AudioWorkletNode(this.context, 'stackmat-processor', {
                             numberOfInputs: 1,

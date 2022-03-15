@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Timer.css';
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import reduxStore, {ReduxStore} from "../redux/redux-store";
 import {GetScrambleResponse} from "./ScrambleDisplay";
 import {useSelector} from "react-redux";
@@ -32,7 +32,6 @@ const Timer = () => {
 
     useEffect(() => {
         const {timerState, timerMode} = timerInfo;
-        console.error(timerState);
         if (timerState === 'starting' && timerMode === 'built-in') {
             setCurrentTime(0);
         }
@@ -48,15 +47,14 @@ const Timer = () => {
                 }
                 return null;
             });
-            reduxStore.dispatch({
-                type: 'solves/add',
-                payload: {solve: {scramble, time: currentTime, cubeType: '3x3x3'}}
-            });
             saveSolve()
-                .then(() => {
+                .then((response: AxiosResponse<{body: {solves: any[]}}>) => {
+                    reduxStore.dispatch({
+                        type: 'solves/set',
+                        payload: {solves: response.data.body.solves}
+                    });
                     getScramble()
                         .then(() => {
-                            console.error('reset complete.')
                         });
                 });
         }
@@ -125,6 +123,7 @@ const Timer = () => {
             }, {headers: {'Content-Type': 'application/json'}});
         } else {
             toast.error('There must be a logged in user in order to save a solve.');
+            return [];
         }
     };
 
