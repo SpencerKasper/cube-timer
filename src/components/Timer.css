@@ -1,29 +1,23 @@
 .timer-container {
     background: #848C8E;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     flex-basis: 50%;
 }
 
 .timer-card {
-    width: 100%;
     margin: 24px;
     border-radius: 16px !important;
 }
 
-.timer-card-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
 .timer-content {
     width: 100%;
+    height: 372px;
     display: flex;
     justify-content: center;
     align-items: center;
-    max-height: 100%;
+    padding: 16px;
 }
 
 .current-time {

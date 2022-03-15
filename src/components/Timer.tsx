@@ -48,7 +48,7 @@ const Timer = () => {
                 return null;
             });
             saveSolve()
-                .then((response: AxiosResponse<{body: {solves: any[]}}>) => {
+                .then((response: AxiosResponse<{ body: { solves: any[] } }>) => {
                     reduxStore.dispatch({
                         type: 'solves/set',
                         payload: {solves: response.data.body.solves}
@@ -112,7 +112,7 @@ const Timer = () => {
     };
 
     const saveSolve = async () => {
-        if(user) {
+        if (user) {
             const userId = user.attributes.email;
             return axios.post(`${API_DOMAIN}solves`, {
                 scramble,
@@ -141,12 +141,12 @@ const Timer = () => {
     const isLongerThanMinute = currentTime >= 60000;
     return (
         <div style={{color: timerColor}} className='timer-container'>
+            <TimerSettings
+                setTimerInfo={setTimerInfo}
+                setCurrentTime={setCurrentTime}
+            />
             <Card className='timer-card'>
-                <CardContent className='timer-card-content'>
-                    <TimerSettings
-                        setTimerInfo={setTimerInfo}
-                        setCurrentTime={setCurrentTime}
-                    />
+                <CardContent>
                     <div className={'timer-content'}>
                         {isLongerThanMinute && <>
                             <p className='current-time'>
