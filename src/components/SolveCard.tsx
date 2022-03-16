@@ -9,7 +9,7 @@ import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import {toast} from "react-toastify";
 
-export function SolveCard(props: { solve: Solve; }) {
+export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     const [isDeleting, setIsDeleting] = useState(false);
     const deleteSolve = async () => {
@@ -39,7 +39,7 @@ export function SolveCard(props: { solve: Solve; }) {
                     Solve:
                 </p>
                 <p>
-                    {props.solve.number}
+                    {props.solveNumber}
                 </p>
 
             </div>

@@ -47,6 +47,7 @@ const SolveLog = () => {
                 }
                 {solves.length ? solves.sort((a, b) => a.number > b.number ? -1 : 1).map((solve: Solve, index) => {
                         return <SolveCard key={index}
+                                          solveNumber={solves.length - index}
                                           solve={solve}/>
                     }) :
                     <Card>

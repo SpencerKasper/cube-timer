@@ -9,9 +9,7 @@ import {TimeFormatter} from "../utils/TimeFormatter";
 import {UrlHelper} from "../utils/url-helper";
 import solveSelectors from "../redux/selectors/solveSelectors";
 import {Card, CardContent} from '@mui/material';
-import {TimerSettings} from "./TimerSettings";
 import {toast} from "react-toastify";
-import {ScrambleSettings} from "./ScrambleSettings";
 import {SettingsRow} from "./SettingsRow";
 
 const TIMER_PRECISION_IN_MS = 10;
@@ -116,10 +114,11 @@ const Timer = () => {
     const saveSolve = async () => {
         if (user) {
             const userId = user.attributes.email;
+            const maxSolveNumber = Math.max(...solves.map(solve => solve.number));
             return axios.post(`${API_DOMAIN}solves`, {
                 scramble,
                 userId,
-                number: solves.length + 1,
+                number: maxSolveNumber + 1,
                 time: currentTime,
                 cubeType: '3x3x3',
             }, {headers: {'Content-Type': 'application/json'}});
