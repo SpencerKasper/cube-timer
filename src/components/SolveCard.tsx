@@ -27,6 +27,7 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
     };
 
     const plusTwo = async () => {
+        setIsDeleting(true);
         const email = user.attributes.email;
         if(user && props.solve.solveId) {
             const plusTwoEndpoint = `${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}/plusTwo`;
@@ -35,6 +36,7 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
         } else {
             toast.error('Plus two failed for an unknown reason.  Please try again.');
         }
+        setIsDeleting(false);
     }
 
     const timeFormatter = new TimeFormatter();
