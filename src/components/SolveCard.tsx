@@ -26,12 +26,23 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
         setIsDeleting(false);
     };
 
+    const plusTwo = async () => {
+        const email = user.attributes.email;
+        if(user && props.solve.solveId) {
+            const plusTwoEndpoint = `${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}/plusTwo`;
+            const response = await axios.get<{ body: { solves: Solve[] } }>(plusTwoEndpoint);
+            reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}});
+        } else {
+            toast.error('Plus two failed for an unknown reason.  Please try again.');
+        }
+    }
+
     const timeFormatter = new TimeFormatter();
 
     return <Card variant='outlined' id={`solve-item-${props.solve.number}`}>
         <CardContent className='solve-container'>
             <div className='delete-row'>
-                <div className={'plus-2-button'}>
+                <div className={'plus-2-button'} onClick={() => plusTwo()}>
                     <AddIcon />
                     <p>2</p>
                 </div>
