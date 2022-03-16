@@ -124,7 +124,7 @@ const Timer = () => {
             }, {headers: {'Content-Type': 'application/json'}});
         } else {
             toast.error('There must be a logged in user in order to save a solve.');
-            return [];
+            return Promise.resolve([]);
         }
     };
 

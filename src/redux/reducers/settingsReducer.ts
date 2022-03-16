@@ -19,7 +19,6 @@ const initialState: SettingsReducerState = {
 export default function settingsReducer(state = initialState, action) {
     switch (action.type) {
         case 'settings/setTimerSettings':
-            console.error(action.payload);
             return {
                 ...state,
                 timerSettings: action.payload.timerSettings,

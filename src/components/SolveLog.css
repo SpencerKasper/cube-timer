@@ -47,13 +47,28 @@
 
 .delete-row {
     width: 100%;
-    text-align: right;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-button {
     cursor: pointer;
 }
 
-.scroll-to-top-chip-container {
+.plus-2-button {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.scroll-to-top-chip {
     position: absolute;
     margin: 8px;
+    opacity: 80%;
 }
 
 .loading-spinner {

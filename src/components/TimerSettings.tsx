@@ -64,7 +64,7 @@ export const TimerSettings = (props) => {
         reduxStore.dispatch({type: 'settings/setTimerSettings', payload: {
             timerSettings: {
                 ...timerSettings,
-                speedStackTimerEnabled: true,
+                speedstacksTimerEnabled: true,
             },
         }});
         stackmat.on('starting', (packet: Packet) => {
@@ -139,7 +139,7 @@ export const TimerSettings = (props) => {
                 onClose={handleClose}
             >
                 <MenuItem onClick={handleClose} disableRipple>
-                    {timerSettings.speedStackTimerEnabled ?
+                    {timerSettings.speedstacksTimerEnabled ?
                         <p>SpeedStack timer has been enabled. Connect it, approve access to your microphone, and turn it
                             on.</p> : <Button onClick={() => setUpStackmatTimer()}>Enable StackMat Timer</Button>}
                 </MenuItem>
