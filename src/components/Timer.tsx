@@ -10,12 +10,12 @@ import {UrlHelper} from "../utils/url-helper";
 import solveSelectors from "../redux/selectors/solveSelectors";
 import {Card, CardContent} from '@mui/material';
 import {toast} from "react-toastify";
-import {SettingsRow} from "./SettingsRow";
+import {SettingsRow, TimerInfo} from "./SettingsRow";
 
 const TIMER_PRECISION_IN_MS = 10;
 const API_DOMAIN = UrlHelper.getScrambleApiDomain();
 const Timer = () => {
-    const [timerInfo, setTimerInfo] = useState({
+    const [timerInfo, setTimerInfo] = useState<TimerInfo>({
         timerState: 'ready',
         timerMode: 'built-in',
     });
@@ -41,12 +41,7 @@ const Timer = () => {
             }, TIMER_PRECISION_IN_MS));
         }
         if (timerState === 'stopping') {
-            setIntervalId(currentIntervalId => {
-                if (currentIntervalId) {
-                    clearInterval(currentIntervalId);
-                }
-                return null;
-            });
+            stopTimer();
             saveSolve()
                 .then((response: AxiosResponse<{ body: { solves: any[] } }>) => {
                     reduxStore.dispatch({
@@ -64,6 +59,15 @@ const Timer = () => {
         document.removeEventListener('keyup', keyUpListener);
         document.removeEventListener('keydown', keyDownListener);
     }, []);
+
+    const stopTimer = () => {
+        setIntervalId(currentIntervalId => {
+            if (currentIntervalId) {
+                clearInterval(currentIntervalId);
+            }
+            return null;
+        });
+    };
 
     function runFunctionOnKeyWhenNotRepeatAndPreventDefault(event: KeyboardEvent, func: () => void, key = 'Space') {
         if (event.code === key) {
@@ -142,7 +146,7 @@ const Timer = () => {
     const isLongerThanMinute = currentTime >= 60000;
     return (
         <div style={{color: timerColor}} className='timer-container'>
-            <SettingsRow setTimerInfo={setTimerInfo} setCurrentTime={setCurrentTime}/>
+            <SettingsRow setTimerInfo={setTimerInfo} setCurrentTime={setCurrentTime} timerInfo={timerInfo}/>
             <Card className='timer-card'>
                 <CardContent>
                     <div className={'timer-content'}>

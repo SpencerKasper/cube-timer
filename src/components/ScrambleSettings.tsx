@@ -7,7 +7,9 @@ import {UrlHelper} from "../utils/url-helper";
 import reduxStore from "../redux/redux-store";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
 import {useSelector} from "react-redux";
+import {toast} from "react-toastify";
 
+const MAX_SCRAMBLE_LENGTH = 100;
 export const ScrambleSettings = () => {
     const StyledMenu = styled((props) => (
         // @ts-ignore
@@ -58,12 +60,19 @@ export const ScrambleSettings = () => {
     const scrambleSettings = useSelector(settingsSelectors.scrambleSettings);
     const [isOpen, setIsOpen] = useState(false);
     const onScrambleLengthChange = (event) => {
-        reduxStore.dispatch({
-            type: 'settings/setScrambleSettings',
-            payload: {
-                scrambleSettings: {...scrambleSettings, scrambleLength: event.target.value}
-            },
-        });
+        const scrambleLength = event.target.value;
+        if(scrambleLength > MAX_SCRAMBLE_LENGTH) {
+            toast.error('The max scramble length is 100.');
+        } else if(!Number(scrambleLength)) {
+            toast.error('Scramble length must be a number.');
+        } else {
+            reduxStore.dispatch({
+                type: 'settings/setScrambleSettings',
+                payload: {
+                    scrambleSettings: {...scrambleSettings, scrambleLength}
+                },
+            });
+        }
     };
     const getScramble = async () => {
         const response = await axios

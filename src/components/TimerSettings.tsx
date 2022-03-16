@@ -55,18 +55,20 @@ export const TimerSettings = (props) => {
             },
         },
     }));
-    const {setTimerInfo, setCurrentTime} = props;
+    const {setTimerInfo, setCurrentTime, timerInfo} = props;
     const timerSettings = useSelector(settingsSelectors.timerSettings);
     const [previousPacketStatus, setPreviousPacketStatus] = useState('I');
     const setUpStackmatTimer = () => {
         const audioContext = new AudioContext();
         const stackmat = new Stackmat(audioContext);
-        reduxStore.dispatch({type: 'settings/setTimerSettings', payload: {
-            timerSettings: {
-                ...timerSettings,
-                speedstacksTimerEnabled: true,
-            },
-        }});
+        reduxStore.dispatch({
+            type: 'settings/setTimerSettings', payload: {
+                timerSettings: {
+                    ...timerSettings,
+                    speedstacksTimerEnabled: true,
+                },
+            }
+        });
         stackmat.on('starting', (packet: Packet) => {
             setTimerInfo({timerMode: 'speedstack-timer', timerState: 'starting'});
         });
@@ -79,7 +81,7 @@ export const TimerSettings = (props) => {
         stackmat.on('packetReceived', (packet: Packet) => {
             setCurrentTime(time => {
                 setPreviousPacketStatus(prevPacket => {
-                    if(prevPacket === PacketStatus.RUNNING && packet.status === PacketStatus.IDLE) {
+                    if (prevPacket === PacketStatus.RUNNING && packet.status === PacketStatus.IDLE) {
                         setTimerInfo(info => ({
                             ...info,
                             timerState: 'stopping',
@@ -88,8 +90,8 @@ export const TimerSettings = (props) => {
                     return packet.status;
                 });
                 return packet.timeInMilliseconds !== time ?
-                        packet.timeInMilliseconds :
-                        time;
+                    packet.timeInMilliseconds :
+                    time;
             });
         });
         stackmat.on('timerConnected', (packet: Packet) => {
