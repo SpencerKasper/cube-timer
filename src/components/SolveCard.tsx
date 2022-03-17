@@ -48,6 +48,10 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
         }
     }
 
+    const dnf = () => {
+        toast.warning('The DNF feature has not been implemented yet, but is coming in the near future.  Sorry for the inconvenience!')
+    }
+
     const timeFormatter = new TimeFormatter();
 
     return <Card variant='outlined' id={`solve-item-${props.solve.number}`}>
@@ -57,6 +61,11 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
                     <div className={'plus-2-button'} onClick={plusOrMinusTwo}>
                         {props.solve.plusTwo ? <RemoveIcon /> : <AddIcon/>}
                         <p>2</p>
+                    </div>
+                </Tooltip>
+                <Tooltip title={'This will be added in the near future'}>
+                    <div className={'delete-button'} onClick={dnf}>
+                        DNF
                     </div>
                 </Tooltip>
                 <div className={'delete-button'} onClick={() => deleteSolve()}>
