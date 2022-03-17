@@ -27,25 +27,18 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
         setIsDeleting(false);
     };
 
-    const plusTwo = async () => {
+    const plusOrMinusTwo = async (minus = false) => {
         setIsDeleting(true);
         const email = user.attributes.email;
         if(user && props.solve.solveId) {
             const plusTwoEndpoint = `${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}/plusTwo`;
-            const response = await axios.get<{ body: { solves: Solve[] } }>(plusTwoEndpoint);
+            const finalEndpoint = minus ? `${plusTwoEndpoint}?plusOrMinusTwo=-` : plusTwoEndpoint;
+            const response = await axios.get<{ body: { solves: Solve[] } }>(finalEndpoint);
             reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}});
         } else {
             toast.error('Plus two failed for an unknown reason.  Please try again.');
         }
         setIsDeleting(false);
-    }
-
-    const plusOrMinusTwo = async () => {
-        if(props.solve.plusTwo) {
-            toast.warning('The minus function is the next feature being built. Hang tight and apologies!');
-        } else {
-            await plusTwo();
-        }
     }
 
     const dnf = () => {
@@ -58,7 +51,7 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
         <CardContent className='solve-container'>
             <div className='delete-row'>
                 <Tooltip title={`This will ${props.solve.plusTwo ? 'remove' : 'add'} 2 seconds ${props.solve.plusTwo ? 'from' : 'to'} the solve.`}>
-                    <div className={'plus-2-button'} onClick={plusOrMinusTwo}>
+                    <div className={'plus-2-button'} onClick={() => plusOrMinusTwo(props.solve.plusTwo)}>
                         {props.solve.plusTwo ? <RemoveIcon /> : <AddIcon/>}
                         <p>2</p>
                     </div>

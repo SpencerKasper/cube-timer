@@ -1,11 +1,8 @@
 import './env'
 import React from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.scss';
-import HomePage from "./pages/AuthenticatedHomePage";
-import {ROUTES} from "./static/constants/routes";
 import {Amplify} from 'aws-amplify';
-import {AmplifyProvider, Authenticator, useTheme, View, Theme} from '@aws-amplify/ui-react';
+import {AmplifyProvider, Authenticator, Theme, useTheme, View} from '@aws-amplify/ui-react';
 import RubiksCubeLogo from '../src/static/images/cube.png';
 
 import '@aws-amplify/ui-react/styles.css';
@@ -75,14 +72,6 @@ function App() {
                 </View>
             );
         },
-    };
-    const toRoute = (route, index) => {
-        const routeInfo = ROUTES[route];
-        return <Route
-            key={`route-${index}`}
-            path={routeInfo.route}>
-            {routeInfo.component}
-        </Route>;
     };
 
     const defaultTheme: Theme = {
