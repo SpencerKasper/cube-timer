@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Stackmat} from '../stackmat/stackmat';
 import {toast} from "react-toastify";
 import {Packet, PacketStatus} from "../stackmat/packet/packet";
-import {Button, Dialog, DialogContent} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent} from "@mui/material";
 import TimerIcon from '@mui/icons-material/Timer';
 import './TimerSettings.css';
 import reduxStore from "../redux/redux-store";
@@ -89,6 +89,9 @@ export const TimerSettings = (props) => {
                         }
                     </Setting>
                 </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpen(false)}>Close</Button>
+                </DialogActions>
             </Dialog>
         </div>
     )
