@@ -44,7 +44,7 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
     return <Card variant='outlined' id={`solve-item-${props.solve.number}`}>
         <CardContent className='solve-container'>
             <div className='delete-row'>
-                <div className={'plus-2-button'} onClick={() => plusTwo()}>
+                <div className={'plus-2-button'} onClick={plusTwo}>
                     <AddIcon />
                     <p>2</p>
                 </div>
