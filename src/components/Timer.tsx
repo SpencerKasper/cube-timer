@@ -19,6 +19,7 @@ const Timer = () => {
         timerState: 'ready',
         timerMode: 'built-in',
     });
+    const [startTime, setStartTime] = useState(null);
     const [currentTime, setCurrentTime] = useState(0);
     const [intervalId, setIntervalId] = useState(null);
     const scramble = useSelector(scrambleSelectors.scramble);
@@ -33,11 +34,14 @@ const Timer = () => {
     useEffect(() => {
         const {timerState, timerMode} = timerInfo;
         if (timerState === 'starting' && timerMode === 'built-in') {
+            setStartTime(null);
             setCurrentTime(0);
         }
         if (timerState === 'running' && timerMode === 'built-in') {
+            const currentTime = Date.now();
+            setStartTime(currentTime);
             setIntervalId(setInterval(() => {
-                setCurrentTime(time => time + TIMER_PRECISION_IN_MS);
+                setCurrentTime(Date.now() - currentTime);
             }, TIMER_PRECISION_IN_MS));
         }
         if (timerState === 'stopping') {
