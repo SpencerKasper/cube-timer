@@ -3,7 +3,7 @@ import axios from "axios";
 import {UrlHelper} from "../utils/url-helper";
 import reduxStore, {ReduxStore} from "../redux/redux-store";
 import {TimeFormatter} from "../utils/TimeFormatter";
-import {Card, CardContent, CircularProgress} from "@mui/material";
+import {Card, CardContent, CircularProgress, Tooltip} from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
@@ -44,10 +44,12 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
     return <Card variant='outlined' id={`solve-item-${props.solve.number}`}>
         <CardContent className='solve-container'>
             <div className='delete-row'>
-                <div className={'plus-2-button'} onClick={plusTwo}>
-                    <AddIcon />
-                    <p>2</p>
-                </div>
+                <Tooltip title={'This will add 2 seconds to the solve.'}>
+                    <div className={'plus-2-button'} onClick={plusTwo}>
+                        <AddIcon />
+                        <p>2</p>
+                    </div>
+                </Tooltip>
                 <div className={'delete-button'} onClick={() => deleteSolve()}>
                     <DeleteForeverIcon/>
                 </div>
