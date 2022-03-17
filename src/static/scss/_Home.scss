@@ -13,19 +13,21 @@
 
 .scramble-display-row {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
-  max-height: 20vh;
   min-height: 20vh;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background: #051014;
+  padding: 16px;
 }
 
 .logo {
   padding: 16px;
-  width: 25%;
+  width: 20%;
   text-align: center;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
@@ -47,8 +49,9 @@
 .log-out-and-user-name {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  width: 25%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 20%;
   text-align: center;
   color: white;
   font-weight: bold;

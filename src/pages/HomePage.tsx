@@ -29,7 +29,7 @@ const HomePage = (props) => {
                 </div>
                 <ScrambleDisplayRow/>
                 <div className='log-out-and-user-name'>
-                    <p className='user-name'>{props.user.attributes.email} -</p>
+                    <p className='user-name'>{props.user.attributes.email}</p>
                     <p className='log-out' onClick={() => props.logOut()}>Log Out</p>
                 </div>
             </div>

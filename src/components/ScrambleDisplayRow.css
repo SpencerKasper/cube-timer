@@ -6,6 +6,7 @@
 .scramble-display-container {
     width: 50%;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     padding: 8px;
 }
