@@ -85,7 +85,7 @@ export const TimerSettings = (props) => {
                         {timerSettings.speedstacksTimerEnabled ?
                             <p>SpeedStack timer has been enabled. Connect it, approve access to your microphone, and
                                 turn it
-                                on.</p> : <Button onClick={setUpStackmatTimer}>Enable StackMat Timer</Button>
+                                on.</p> : <Button onClick={setUpStackmatTimer}>Enable SpeedStacks Timer</Button>
                         }
                     </Setting>
                 </DialogContent>
