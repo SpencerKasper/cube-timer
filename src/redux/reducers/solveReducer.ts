@@ -5,6 +5,7 @@ export interface Solve {
     time: number;
     cubeType: '3x3x3';
     number: number;
+    plusTwo: boolean;
 }
 
 interface SolveReducerState {

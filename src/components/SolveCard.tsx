@@ -10,6 +10,7 @@ import {useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import AddIcon from '@mui/icons-material/Add';
 import LooksTwoIcon from '@mui/icons-material/LooksTwo';
+import RemoveIcon from '@mui/icons-material/Remove';
 export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -39,14 +40,22 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
         setIsDeleting(false);
     }
 
+    const plusOrMinusTwo = async () => {
+        if(props.solve.plusTwo) {
+            toast.warning('The minus function is the next feature being built. Hang tight and apologies!');
+        } else {
+            await plusTwo();
+        }
+    }
+
     const timeFormatter = new TimeFormatter();
 
     return <Card variant='outlined' id={`solve-item-${props.solve.number}`}>
         <CardContent className='solve-container'>
             <div className='delete-row'>
-                <Tooltip title={'This will add 2 seconds to the solve.'}>
-                    <div className={'plus-2-button'} onClick={plusTwo}>
-                        <AddIcon />
+                <Tooltip title={`This will ${props.solve.plusTwo ? 'remove' : 'add'} 2 seconds ${props.solve.plusTwo ? 'from' : 'to'} the solve.`}>
+                    <div className={'plus-2-button'} onClick={plusOrMinusTwo}>
+                        {props.solve.plusTwo ? <RemoveIcon /> : <AddIcon/>}
                         <p>2</p>
                     </div>
                 </Tooltip>
