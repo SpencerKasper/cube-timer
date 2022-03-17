@@ -2,13 +2,14 @@ import './env'
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import './App.scss';
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/AuthenticatedHomePage";
 import {ROUTES} from "./static/constants/routes";
 import {Amplify} from 'aws-amplify';
 import {AmplifyProvider, Authenticator, useTheme, View, Theme} from '@aws-amplify/ui-react';
 import RubiksCubeLogo from '../src/static/images/cube.png';
 
 import '@aws-amplify/ui-react/styles.css';
+import {SolveLogRouter} from "./SolveLogRouter";
 
 const awsExports = {
     "aws_project_region": "us-east-1",
@@ -49,7 +50,7 @@ const awsExports = {
         "EMAIL"
     ]
 };
-if(!process.env.REACT_APP_IS_LOCAL) {
+if (!process.env.REACT_APP_IS_LOCAL) {
     Amplify.configure(awsExports);
 }
 
@@ -109,33 +110,15 @@ function App() {
     };
     return (
         process.env.REACT_APP_IS_LOCAL ?
-            <Router>
-                <Switch>
-                    <Route exact path='/'>
-                        <HomePage user={{attributes:{email: 'spencer.kasper@gmail.com'}}} logOut={() => null}/>
-                    </Route>
-                    {
-                        Object.keys(ROUTES).map(toRoute)
-                    }
-                </Switch>
-            </Router> :
-        <AmplifyProvider theme={defaultTheme}>
-            <Authenticator components={components} className='authentication-container' loginMechanisms={['email']}
-                           socialProviders={[]} signUpAttributes={['email']}>
-                {({signOut, user}) => (
-                    <Router>
-                        <Switch>
-                            <Route exact path='/'>
-                                <HomePage user={user} logOut={signOut}/>
-                            </Route>
-                            {
-                                Object.keys(ROUTES).map(toRoute)
-                            }
-                        </Switch>
-                    </Router>
-                )}
-            </Authenticator>
-        </AmplifyProvider>
+            <SolveLogRouter user={{attributes: {email: 'spencer.kasper@gmail.com'}}} logOut={() => null}/> :
+            <AmplifyProvider theme={defaultTheme}>
+                <Authenticator components={components} className='authentication-container' loginMechanisms={['email']}
+                               socialProviders={[]} signUpAttributes={['email']}>
+                    {({signOut, user}) => (
+                        <SolveLogRouter logOut={signOut} user={user}/>
+                    )}
+                </Authenticator>
+            </AmplifyProvider>
     );
 }
 
