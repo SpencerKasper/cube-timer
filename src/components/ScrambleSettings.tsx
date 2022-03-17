@@ -8,6 +8,7 @@ import reduxStore from "../redux/redux-store";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
 import {useSelector} from "react-redux";
 import {toast} from "react-toastify";
+import {Setting} from "./Setting";
 
 const MAX_SCRAMBLE_LENGTH = 100;
 export const ScrambleSettings = () => {
@@ -17,7 +18,7 @@ export const ScrambleSettings = () => {
         const scrambleLength = event.target.value;
         if(scrambleLength > MAX_SCRAMBLE_LENGTH) {
             toast.error('The max scramble length is 100.');
-        } else if(!Number(scrambleLength)) {
+        } else if(!Number(scrambleLength) && scrambleLength !== '') {
             toast.error('Scramble length must be a number.');
         } else {
             reduxStore.dispatch({
@@ -51,12 +52,13 @@ export const ScrambleSettings = () => {
             <Dialog fullWidth open={isOpen} onClose={onClose}>
                 <h2 className={'settings-title'}>Scramble Settings</h2>
                 <DialogContent>
-                    <TextField
-                        fullWidth
-                        label={'Scramble Length'}
-                        value={scrambleSettings.scrambleLength}
-                        onChange={onScrambleLengthChange}
-                    />
+                    <Setting title={'Scramble Length'}>
+                        <TextField
+                            fullWidth
+                            value={scrambleSettings.scrambleLength}
+                            onChange={onScrambleLengthChange}
+                        />
+                    </Setting>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onClose}>Cancel</Button>

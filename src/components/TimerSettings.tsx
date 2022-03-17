@@ -2,16 +2,16 @@ import React, {useState} from 'react';
 import {Stackmat} from '../stackmat/stackmat';
 import {toast} from "react-toastify";
 import {Packet, PacketStatus} from "../stackmat/packet/packet";
-import {alpha, Button, Dialog, DialogContent, Menu, MenuItem, styled, Switch} from "@mui/material";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import {Button, Dialog, DialogContent} from "@mui/material";
 import TimerIcon from '@mui/icons-material/Timer';
 import './TimerSettings.css';
 import reduxStore from "../redux/redux-store";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
 import {useSelector} from "react-redux";
+import {Setting} from "./Setting";
 
 export const TimerSettings = (props) => {
-    const {setTimerInfo, setCurrentTime, timerInfo} = props;
+    const {setTimerInfo, setCurrentTime} = props;
     const timerSettings = useSelector(settingsSelectors.timerSettings);
     const [previousPacketStatus, setPreviousPacketStatus] = useState('I');
     const setUpStackmatTimer = () => {
@@ -64,7 +64,7 @@ export const TimerSettings = (props) => {
     return (
         <div className={'timer-settings-container'}>
             <Button
-                onClick={()=> setOpen(true)}
+                onClick={() => setOpen(true)}
                 className={'timer-settings-menu-button'}
             >
                 <div style={{paddingRight: '8px'}}>
@@ -81,12 +81,13 @@ export const TimerSettings = (props) => {
             >
                 <h2 className={'settings-title'}>Timer Options</h2>
                 <DialogContent>
-                    <div className={'setting'}>
-                        <p className={'setting-label'}>Enable SpeedStacks Timer</p>
+                    <Setting title={'Enable SpeedStacks Timer'}>
                         {timerSettings.speedstacksTimerEnabled ?
-                            <p>SpeedStack timer has been enabled. Connect it, approve access to your microphone, and turn it
-                                on.</p> : <Button onClick={() => setUpStackmatTimer()}>Enable StackMat Timer</Button>}
-                    </div>
+                            <p>SpeedStack timer has been enabled. Connect it, approve access to your microphone, and
+                                turn it
+                                on.</p> : <Button onClick={setUpStackmatTimer}>Enable StackMat Timer</Button>
+                        }
+                    </Setting>
                 </DialogContent>
             </Dialog>
         </div>
