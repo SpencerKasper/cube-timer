@@ -8,11 +8,11 @@
     flex-direction: column;
     align-items: center;
     color: black;
-    max-height: 77vh;
 }
 
 .stats-container {
-    overflow-y: scroll;
+    overflow-y: auto;
+    width: 100%;
 }
 
 .session-stats-title {

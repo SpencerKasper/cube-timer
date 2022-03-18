@@ -32,7 +32,14 @@ const Timer = () => {
 
     useEffect(() => {
         setInspectionTimeInMs(getInspectionTimeAsMs());
-    }, [timerSettings.inspectionTime])
+    }, [timerSettings.inspectionTime]);
+
+    useEffect(() => {
+        if(inspected && currentTime === 0 && timerInfo.timerState === 'inspecting') {
+            setTimerInfo(info => ({...info, timerState: 'ready'}));
+            setInspected(false);
+        }
+    }, [inspected, currentTime, timerInfo.timerState]);
 
     useEffect(() => {
         document.addEventListener('keydown', keyDownListener);
@@ -47,9 +54,7 @@ const Timer = () => {
 
     useEffect(() => {
         const {timerState, timerMode} = timerInfo;
-        console.error(timerState);
         const inspectionTimeAsMs = getInspectionTimeAsMs();
-        console.error(inspectionTimeAsMs);
         if (timerState === 'starting' && timerMode === 'built-in') {
             if (inspectionTimeAsMs > 0) {
                 stopTimer();
@@ -58,12 +63,20 @@ const Timer = () => {
             setCurrentTime(0);
         }
         if (timerState === 'inspecting' && timerMode === 'built-in') {
+            setCurrentTime(inspectionTimeAsMs);
             const currentTime = Date.now();
             setStartTime(currentTime);
             setInspected(true);
             setIntervalId(setInterval(() => {
                 const timePassed = Date.now() - currentTime;
-                setCurrentTime(inspectionTimeAsMs - timePassed);
+                const updatedTime = inspectionTimeAsMs - timePassed;
+                if (updatedTime <= 0) {
+                    stopTimer();
+                    setCurrentTime(0);
+                    toast.error('Inspection took too long.');
+                } else {
+                    setCurrentTime(updatedTime);
+                }
             }, TIMER_PRECISION_IN_MS));
         }
         if (timerState === 'running' && timerMode === 'built-in') {

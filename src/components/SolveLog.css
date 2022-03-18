@@ -8,8 +8,7 @@
     width: 100%;
     flex-grow: 1;
     flex-basis: 17vw;
-    max-height: 77vh;
-    overflow: scroll;
+    overflow-y: auto;
 }
 
 .solve-container {
