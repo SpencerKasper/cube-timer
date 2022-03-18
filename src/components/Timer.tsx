@@ -207,7 +207,7 @@ const Timer = () => {
     const seconds = timeFormatter.getSeconds(currentTime);
     const milliseconds = timeFormatter.getMilliseconds(currentTime);
     const isLongerThanMinute = currentTime >= 60000;
-    const timerContentClass = timerInfo.timerState === 'inspecting' ? 'timer-content blink' : 'timer-content';
+    const timerContentClass = timerInfo.timerState === 'inspecting' ? 'timer-content' : 'timer-content';
     return (
         <div style={{color: timerColor}} className='timer-container'>
             <SettingsRow setTimerInfo={setTimerInfo} setCurrentTime={setCurrentTime} timerInfo={timerInfo}/>
