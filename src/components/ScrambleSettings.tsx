@@ -62,8 +62,8 @@ export const ScrambleSettings = () => {
                     </Setting>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={onClose}>Cancel</Button>
-                    <Button onClick={saveSettings}>Save</Button>
+                    <Button color={'secondary'} onClick={onClose}>Cancel</Button>
+                    <Button color={'secondary'} onClick={saveSettings}>Save</Button>
                 </DialogActions>
             </Dialog>
         </div>
