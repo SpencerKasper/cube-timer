@@ -17,7 +17,7 @@ const muiTheme = createTheme({
             contrastText: '#FFFFFF',
         },
         success: {
-            main: '#BAF8C2',
+            main: '#BFF7BC',
             contrastText: '#000000'
         },
         warning: {

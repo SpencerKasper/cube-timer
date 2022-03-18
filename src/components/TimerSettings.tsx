@@ -77,6 +77,7 @@ export const TimerSettings = (props) => {
     return (
         <div className={'timer-settings-container'}>
             <Button
+                color={'secondary'}
                 onClick={() => setOpen(true)}
                 className={'timer-settings-menu-button'}
             >
@@ -98,7 +99,7 @@ export const TimerSettings = (props) => {
                         {timerSettings.speedstacksTimerEnabled ?
                             <p>SpeedStack timer has been enabled. Connect it, approve access to your microphone, and
                                 turn it
-                                on.</p> : <Button onClick={setUpStackmatTimer}>Enable SpeedStacks Timer</Button>
+                                on.</p> : <Button color={'secondary'} onClick={setUpStackmatTimer}>Enable SpeedStacks Timer</Button>
                         }
                     </Setting>
                     <Setting title={'Inspection Time'}>
@@ -107,7 +108,7 @@ export const TimerSettings = (props) => {
                     </Setting>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpen(false)}>Close</Button>
+                    <Button color={'secondary'} onClick={() => setOpen(false)}>Close</Button>
                 </DialogActions>
             </Dialog>
         </div>
