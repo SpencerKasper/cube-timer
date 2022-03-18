@@ -1,11 +1,15 @@
 .session-statistics-container {
-    flex-basis: 25%;
+    width: 100%;
+    flex-basis: 17vw;
+    flex-grow: 1;
     background: #BCF8EC;
     padding: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
     color: black;
+    max-height: 77vh;
+    overflow: scroll;
 }
 
 .session-stats-title {
@@ -19,6 +23,8 @@
     align-items: center;
     width: 100%;
     border: 1px solid black;
+    max-height: 69vh;
+    overflow: scroll;
 }
 
 .stat {

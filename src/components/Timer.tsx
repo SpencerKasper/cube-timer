@@ -199,7 +199,7 @@ const Timer = () => {
                         </>}
                         <p style={{
                             color: timerColor,
-                            minWidth: '332px',
+                            minWidth: '26vw',
                             textAlign: currentTime < 10000 ? 'right' : 'center'
                         }}
                            className='current-time'>
@@ -208,7 +208,7 @@ const Timer = () => {
                         <p style={{color: timerColor}} className='current-time'>
                             .
                         </p>
-                        <p style={{color: timerColor, minWidth: '332px'}} className='current-time'>
+                        <p style={{color: timerColor, minWidth: '26vw'}} className='current-time'>
                             {milliseconds}
                         </p>
                     </div>

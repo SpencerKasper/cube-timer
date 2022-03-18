@@ -5,7 +5,11 @@
     flex-direction: column;
     align-items: center;
     color: black;
-    flex-basis: 25%;
+    width: 100%;
+    flex-grow: 1;
+    flex-basis: 17vw;
+    max-height: 77vh;
+    overflow: scroll;
 }
 
 .solve-container {
@@ -33,7 +37,6 @@
 }
 
 .label-and-time {
-    font-size: 18px;
     display: flex;
     flex-direction: row;
     justify-content: start;
