@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrambleSettings} from "./ScrambleSettings";
 import {TimerSettings} from "./TimerSettings";
 import './SettingsRow.css';
+import {Chip} from "@mui/material";
 
 export interface TimerInfo {
     timerMode: 'built-in' | 'speedstack-timer',
@@ -15,10 +16,43 @@ interface Props {
 }
 
 export const SettingsRow = (props: Props) => {
-    const {setTimerInfo, setCurrentTime} = props;
+    const {setTimerInfo, setCurrentTime, timerInfo} = props;
+    const [chipColor, setChipColor] = useState('success' as 'success' | 'warning' | 'error' | 'primary');
+    const [visibleTimerState, setVisibleTimerState] = useState(timerInfo.timerState);
+    useEffect(() => {
+        const VISIBLE_TIMER_STATES = ['ready', 'inspecting', 'running'];
+        if(VISIBLE_TIMER_STATES.includes(timerInfo.timerState)){
+            setVisibleTimerState(timerInfo.timerState);
+        }
+    }, [timerInfo.timerState]);
+    useEffect(() => {
+        const nextChipColor = getChipColor(visibleTimerState);
+        if(nextChipColor) {
+            setChipColor(nextChipColor);
+        }
+    }, [visibleTimerState]);
+    const getChipColor = (timerState) => {
+        if(['ready'].includes(timerState)) {
+            return 'success';
+        }
+        if(['inspecting'].includes(timerState)) {
+            return 'warning';
+        }
+        if(['running'].includes(timerState)) {
+            return 'error';
+        }
+        return null;
+    };
+
+    const chipClassName = ['running', 'inspecting'].includes(props.timerInfo.timerState) ? 'timer-state-chip blink' : 'timer-state-chip';
     return (
         <div className={'settings-row'}>
-            <ScrambleSettings />
+            <div className={'scramble-settings-button'}>
+                <ScrambleSettings />
+            </div>
+            <div className={'timer-state-chip-container'}>
+                <Chip className={chipClassName} color={chipColor} label={visibleTimerState}/>
+            </div>
             <TimerSettings
                 timerInfo={props.timerInfo}
                 setTimerInfo={setTimerInfo}

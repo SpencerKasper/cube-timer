@@ -63,7 +63,7 @@ export const TimerSettings = (props) => {
     const [open, setOpen] = useState(false);
     const onInspectionTimeChange = (event) => {
         const inspectionTime = event.target.value;
-        if (!Number(inspectionTime) && inspectionTime !== '') {
+        if (!Number(inspectionTime) && inspectionTime !== '' && Number(inspectionTime) !== 0) {
             toast.error('Inspection time most only be numbers.');
         } else if (Number(inspectionTime) >= 60 && inspectionTime !== '') {
             toast.error('Inspection time cannot be a minute or longer.');

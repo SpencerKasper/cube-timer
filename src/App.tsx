@@ -7,6 +7,7 @@ import RubiksCubeLogo from '../src/static/images/cube.png';
 
 import '@aws-amplify/ui-react/styles.css';
 import {SolveLogRouter} from "./SolveLogRouter";
+import {createTheme} from "@mui/material";
 
 const awsExports = {
     "aws_project_region": "us-east-1",
