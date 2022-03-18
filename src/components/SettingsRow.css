@@ -24,16 +24,6 @@
     width: 100%;
 }
 
-.blink {
-    animation: blinker 2s linear infinite;
-}
-
-@keyframes blinker {
-    50% {
-        opacity: 0;
-    }
-}
-
 .timer-info-card-content {
     display: flex;
 }

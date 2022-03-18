@@ -196,6 +196,9 @@ const Timer = () => {
         if (timerInfo.timerState === 'starting') {
             return '#BFF7BC';
         }
+        if(timerInfo.timerState === 'inspecting') {
+            return '#F8EBBA';
+        }
         return 'white';
     };
     const timerColor = getTimerColor();
@@ -204,12 +207,13 @@ const Timer = () => {
     const seconds = timeFormatter.getSeconds(currentTime);
     const milliseconds = timeFormatter.getMilliseconds(currentTime);
     const isLongerThanMinute = currentTime >= 60000;
+    const timerContentClass = timerInfo.timerState === 'inspecting' ? 'timer-content blink' : 'timer-content';
     return (
         <div style={{color: timerColor}} className='timer-container'>
             <SettingsRow setTimerInfo={setTimerInfo} setCurrentTime={setCurrentTime} timerInfo={timerInfo}/>
             <Card className='timer-card'>
                 <CardContent>
-                    <div className={'timer-content'}>
+                    <div className={timerContentClass}>
                         {isLongerThanMinute && <>
                             <p className='current-time'>
                                 {minutes}
