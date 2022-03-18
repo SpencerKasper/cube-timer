@@ -12,6 +12,7 @@ import {Card, CardContent} from '@mui/material';
 import {toast} from "react-toastify";
 import {SettingsRow, TimerInfo} from "./SettingsRow";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
+import SingletonStackmat from "../stackmat/singleton-stackmat";
 
 const TIMER_PRECISION_IN_MS = 10;
 const API_DOMAIN = UrlHelper.getScrambleApiDomain();
@@ -35,7 +36,7 @@ const Timer = () => {
     }, [timerSettings.inspectionTime]);
 
     useEffect(() => {
-        if(inspected && currentTime === 0 && timerInfo.timerState === 'inspecting') {
+        if (inspected && currentTime === 0 && timerInfo.timerState === 'inspecting') {
             setTimerInfo(info => ({...info, timerState: 'ready'}));
             setInspected(false);
         }
@@ -124,6 +125,10 @@ const Timer = () => {
         runFunctionOnKeyWhenNotRepeatAndPreventDefault(event, () => {
             setTimerInfo(info => {
                 let timerState = info.timerState;
+                if (info.timerMode === 'speedstack-timer') {
+                    toast.error('SpeedStacks timer is connected... Please turn it off to use the built-in timer.');
+                    return info;
+                }
                 if (timerState === 'ready') {
                     timerState = 'starting';
                 } else if (timerState === 'running') {
@@ -141,15 +146,18 @@ const Timer = () => {
             setInspected(isInspected => {
                 setInspectionTimeInMs(inspectTimeMs => {
                     setTimerInfo(info => {
-                        let timerState = info.timerState;
-                        if (timerState === 'stopping') {
-                            timerState = 'ready';
-                        } else if (timerState === 'starting' && (inspectTimeMs === 0 || isInspected)) {
-                            timerState = 'running';
-                        } else if (timerState === 'starting' && inspectTimeMs > 0) {
-                            timerState = 'inspecting';
+                        if (info.timerMode !== 'speedstack-timer') {
+                            let timerState = info.timerState;
+                            if (timerState === 'stopping') {
+                                timerState = 'ready';
+                            } else if (timerState === 'starting' && (inspectTimeMs === 0 || isInspected)) {
+                                timerState = 'running';
+                            } else if (timerState === 'starting' && inspectTimeMs > 0) {
+                                timerState = 'inspecting';
+                            }
+                            return ({...info, timerMode: 'built-in', timerState});
                         }
-                        return ({...info, timerMode: 'built-in', timerState});
+                        return info;
                     });
                     return inspectTimeMs;
                 });

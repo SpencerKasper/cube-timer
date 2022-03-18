@@ -1,22 +1,20 @@
 import React, {useState} from 'react';
-import {Stackmat} from '../stackmat/stackmat';
 import {toast} from "react-toastify";
 import {Packet, PacketStatus} from "../stackmat/packet/packet";
-import {Button, Dialog, DialogActions, DialogContent, Switch, TextField} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, TextField} from "@mui/material";
 import TimerIcon from '@mui/icons-material/Timer';
 import './TimerSettings.css';
 import reduxStore from "../redux/redux-store";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
 import {useSelector} from "react-redux";
 import {Setting} from "./Setting";
+import SingletonStackmat from "../stackmat/singleton-stackmat";
 
 export const TimerSettings = (props) => {
     const {setTimerInfo, setCurrentTime} = props;
     const timerSettings = useSelector(settingsSelectors.timerSettings);
     const [previousPacketStatus, setPreviousPacketStatus] = useState('I');
     const setUpStackmatTimer = () => {
-        const audioContext = new AudioContext();
-        const stackmat = new Stackmat(audioContext);
         reduxStore.dispatch({
             type: 'settings/setTimerSettings', payload: {
                 timerSettings: {
@@ -25,16 +23,16 @@ export const TimerSettings = (props) => {
                 },
             }
         });
-        stackmat.on('starting', (packet: Packet) => {
+        SingletonStackmat.on('starting', (packet: Packet) => {
             setTimerInfo({timerMode: 'speedstack-timer', timerState: 'starting'});
         });
-        stackmat.on('started', (packet: Packet) => {
+        SingletonStackmat.on('started', (packet: Packet) => {
             setTimerInfo({timerMode: 'speedstack-timer', timerState: 'running'});
         });
-        stackmat.on('stopped', (packet: Packet) => {
+        SingletonStackmat.on('stopped', (packet: Packet) => {
             setTimerInfo({timerMode: 'speedstack-timer', timerState: 'stopping'});
         });
-        stackmat.on('packetReceived', (packet: Packet) => {
+        SingletonStackmat.on('packetReceived', (packet: Packet) => {
             setCurrentTime(time => {
                 setPreviousPacketStatus(prevPacket => {
                     if (prevPacket === PacketStatus.RUNNING && packet.status === PacketStatus.IDLE) {
@@ -50,15 +48,15 @@ export const TimerSettings = (props) => {
                     time;
             });
         });
-        stackmat.on('timerConnected', (packet: Packet) => {
+        SingletonStackmat.on('timerConnected', (packet: Packet) => {
             setTimerInfo({timerMode: 'speedstack-timer', timerState: 'ready'});
             toast.success('Stackmat timer has been detected! Using that as the timer source.');
         });
-        stackmat.on('timerDisconnected', (packet: Packet) => {
+        SingletonStackmat.on('timerDisconnected', (packet: Packet) => {
             toast.warning('Stackmat timer has been disconnected. Switching to built in timer.');
             setTimerInfo({timerMode: 'built-in', timerState: 'ready'});
         });
-        stackmat.start();
+        SingletonStackmat.start();
     };
     const [open, setOpen] = useState(false);
     const onInspectionTimeChange = (event) => {
@@ -99,7 +97,8 @@ export const TimerSettings = (props) => {
                         {timerSettings.speedstacksTimerEnabled ?
                             <p>SpeedStack timer has been enabled. Connect it, approve access to your microphone, and
                                 turn it
-                                on.</p> : <Button color={'secondary'} onClick={setUpStackmatTimer}>Enable SpeedStacks Timer</Button>
+                                on.</p> :
+                            <Button color={'secondary'} onClick={setUpStackmatTimer}>Enable SpeedStacks Timer</Button>
                         }
                     </Setting>
                     <Setting title={'Inspection Time'}>
