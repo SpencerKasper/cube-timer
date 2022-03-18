@@ -68,7 +68,7 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
                         <p>2</p>
                     </div>
                 </Tooltip>
-                <Tooltip title={'This will be added in the near future'}>
+                <Tooltip title={props.solve.dnf ? 'Mark the solve as valid' : 'Mark the solve as a DNF'}>
                         <Button className={'delete-button'} onClick={dnf}>
                             {props.solve.dnf ? 'Undo DNF' : 'DNF'}
                         </Button>
@@ -92,7 +92,7 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
                     Time:
                 </p>
                 <p>
-                    {timeFormatter.getFullTime(props.solve.time)}
+                    {props.solve.dnf ? `DNF (${timeFormatter.getFullTime(props.solve.time)})` : timeFormatter.getFullTime(props.solve.time)}
                 </p>
             </div>
             <div className='label-and-time'>
