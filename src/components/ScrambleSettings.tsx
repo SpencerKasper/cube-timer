@@ -42,6 +42,7 @@ export const ScrambleSettings = () => {
     return (
         <div className={'scramble-settings-container'}>
             <Button
+                color={'secondary'}
                 variant="contained"
                 disableElevation
                 onClick={() => setIsOpen(true)}

@@ -5,23 +5,36 @@ import {Provider} from 'react-redux';
 import App from './App';
 import './static/scss/_Default.scss';
 import reduxStore from "./redux/redux-store";
-import {MuiThemeProvider} from "@material-ui/core";
-import {createTheme} from "@mui/material";
+import {createTheme, ThemeProvider} from "@mui/material";
 const muiTheme = createTheme({
     palette: {
         primary: {
-            main: '#bcf8ec'
+            main: '#bcf8ec',
+            contrastText: '#000000'
         },
         secondary: {
-            main: '#051014'
+            main: '#051014',
+            contrastText: '#FFFFFF',
+        },
+        success: {
+            main: '#BAF8C2',
+            contrastText: '#000000'
+        },
+        warning: {
+            main: '#F8EBBA',
+            contrastText: '#000000',
+        },
+        error: {
+            main: '#F8BAC6',
+            contrastText: '#000000'
         }
     }
 });
 ReactDOM.render(
     <Provider store={reduxStore}>
-        <MuiThemeProvider theme={muiTheme}>
+        <ThemeProvider theme={muiTheme}>
             <App />
-        </MuiThemeProvider>
+        </ThemeProvider>
     </Provider>,
   document.getElementById("root")
 );

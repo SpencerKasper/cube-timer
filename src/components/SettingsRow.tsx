@@ -10,7 +10,7 @@ export interface TimerInfo {
 }
 
 interface Props {
-    setTimerInfo: (timerInfo: {timerMode: 'built-in' | 'speedstack-timer'; timerState: string;}) => void;
+    setTimerInfo: (timerInfo: { timerMode: 'built-in' | 'speedstack-timer'; timerState: string; }) => void;
     setCurrentTime: (currentTime: number) => void;
     timerInfo: TimerInfo;
 }
@@ -21,34 +21,35 @@ export const SettingsRow = (props: Props) => {
     const [visibleTimerState, setVisibleTimerState] = useState(timerInfo.timerState);
     useEffect(() => {
         const VISIBLE_TIMER_STATES = ['ready', 'inspecting', 'running'];
-        if(VISIBLE_TIMER_STATES.includes(timerInfo.timerState)){
+        if (VISIBLE_TIMER_STATES.includes(timerInfo.timerState)) {
             setVisibleTimerState(timerInfo.timerState);
         }
     }, [timerInfo.timerState]);
     useEffect(() => {
         const nextChipColor = getChipColor(visibleTimerState);
-        if(nextChipColor) {
+        if (nextChipColor) {
             setChipColor(nextChipColor);
         }
     }, [visibleTimerState]);
     const getChipColor = (timerState) => {
-        if(['ready'].includes(timerState)) {
+        if (['ready'].includes(timerState)) {
             return 'success';
         }
-        if(['inspecting'].includes(timerState)) {
+        if (['inspecting'].includes(timerState)) {
             return 'warning';
         }
-        if(['running'].includes(timerState)) {
+        if (['running'].includes(timerState)) {
             return 'error';
         }
         return null;
     };
 
     const chipClassName = ['running', 'inspecting'].includes(props.timerInfo.timerState) ? 'timer-state-chip blink' : 'timer-state-chip';
+
     return (
         <div className={'settings-row'}>
             <div className={'scramble-settings-button'}>
-                <ScrambleSettings />
+                <ScrambleSettings/>
             </div>
             <div className={'timer-state-chip-container'}>
                 <Chip className={chipClassName} color={chipColor} label={visibleTimerState}/>
