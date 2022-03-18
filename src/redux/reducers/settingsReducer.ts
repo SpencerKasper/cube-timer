@@ -1,6 +1,7 @@
 interface SettingsReducerState {
     timerSettings: {
         speedstacksTimerEnabled: boolean;
+        inspectionTime: number;
     };
     scrambleSettings: {
         scrambleLength: number;
@@ -10,6 +11,7 @@ interface SettingsReducerState {
 const initialState: SettingsReducerState = {
     timerSettings: {
         speedstacksTimerEnabled: false,
+        inspectionTime: 0,
     },
     scrambleSettings: {
         scrambleLength: 30,

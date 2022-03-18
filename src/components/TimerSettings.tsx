@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Stackmat} from '../stackmat/stackmat';
 import {toast} from "react-toastify";
 import {Packet, PacketStatus} from "../stackmat/packet/packet";
-import {Button, Dialog, DialogActions, DialogContent} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, Switch, TextField} from "@mui/material";
 import TimerIcon from '@mui/icons-material/Timer';
 import './TimerSettings.css';
 import reduxStore from "../redux/redux-store";
@@ -61,6 +61,19 @@ export const TimerSettings = (props) => {
         stackmat.start();
     };
     const [open, setOpen] = useState(false);
+    const onInspectionTimeChange = (event) => {
+        const inspectionTime = event.target.value;
+        if (!Number(inspectionTime) && inspectionTime !== '') {
+            toast.error('Inspection time most only be numbers.');
+        } else if (Number(inspectionTime) >= 60 && inspectionTime !== '') {
+            toast.error('Inspection time cannot be a minute or longer.');
+        } else {
+            reduxStore.dispatch({
+                type: 'settings/setTimerSettings',
+                payload: {timerSettings: {...timerSettings, inspectionTime}}
+            })
+        }
+    };
     return (
         <div className={'timer-settings-container'}>
             <Button
@@ -87,6 +100,10 @@ export const TimerSettings = (props) => {
                                 turn it
                                 on.</p> : <Button onClick={setUpStackmatTimer}>Enable SpeedStacks Timer</Button>
                         }
+                    </Setting>
+                    <Setting title={'Inspection Time'}>
+                        <TextField onChange={onInspectionTimeChange}
+                                   value={timerSettings.inspectionTime ? timerSettings.inspectionTime : ''}/>
                     </Setting>
                 </DialogContent>
                 <DialogActions>
