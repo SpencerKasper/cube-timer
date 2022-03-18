@@ -9,7 +9,10 @@
     align-items: center;
     color: black;
     max-height: 77vh;
-    overflow: scroll;
+}
+
+.stats-container {
+    overflow-y: scroll;
 }
 
 .session-stats-title {
@@ -24,7 +27,7 @@
     width: 100%;
     border: 1px solid black;
     max-height: 69vh;
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .stat {

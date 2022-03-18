@@ -38,7 +38,7 @@ const SessionStatistics = () => {
         <div className='session-statistics-container'>
             <h2 className='session-stats-title'>Session Statistics</h2>
             <Card className='stats' variant='outlined'>
-                <CardContent>
+                <CardContent className={'stats-container'}>
                     <StatValue statistic={averageOf5Stat}/>
                     <StatValue statistic={averageOf12Stat}/>
                     <StatValue statistic={averageOf50Stat}/>
