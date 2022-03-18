@@ -3,9 +3,21 @@ import ScrambleDisplayRow from "./ScrambleDisplay";
 import React from "react";
 import {useSelector} from "react-redux";
 import sessionSelectors from "../redux/selectors/sessionSelectors";
+import {Avatar, IconButton, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
+import {settings} from "cluster";
 
 export function Header(props) {
     const user = useSelector(sessionSelectors.user);
+    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
     return <div className='scramble-display-row'>
         <div className='logo'>
             <h1 className='logo-title'>
@@ -17,10 +29,33 @@ export function Header(props) {
         </div>
         {user ? <ScrambleDisplayRow/> : <div></div>}
         <div className='log-out-and-user-name'>
-            {user ? <><p className='user-name'>{user.attributes.email}</p>
-                <p className='log-out' onClick={() => props.logOut()}>Log Out</p></> :
-                <p></p>
-            }
+            <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                    <Avatar alt="" src=""/>
+                </IconButton>
+            </Tooltip>
+            <Menu
+                sx={{mt: '45px'}}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+            >
+                <MenuItem onClick={() => {
+                    props.logOut()
+                }}>
+                    <Typography textAlign="center">Log Out</Typography>
+                </MenuItem>
+            </Menu>
         </div>
     </div>;
 }
