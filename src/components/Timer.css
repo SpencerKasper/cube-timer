@@ -11,6 +11,7 @@
 .timer-card {
     margin: 24px;
     border-radius: 16px !important;
+    background: #051014 !important;
 }
 
 .timer-content {
@@ -25,4 +26,5 @@
 .current-time {
     font-family: digital-clock-font, serif;
     font-size: 25vw;
+    color: white;
 }

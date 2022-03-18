@@ -186,9 +186,9 @@ const Timer = () => {
 
     const getTimerColor = () => {
         if (timerInfo.timerState === 'starting') {
-            return 'green';
+            return '#BFF7BC';
         }
-        return 'black';
+        return 'white';
     };
     const timerColor = getTimerColor();
     const timeFormatter = new TimeFormatter();

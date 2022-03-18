@@ -6,8 +6,11 @@
     align-items: center;
 }
 
-.timer-state-chip-container {
-    text-align: center;
+.timer-info-chip-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     width: 100%;
 }
 
@@ -29,4 +32,23 @@
     50% {
         opacity: 0;
     }
+}
+
+.timer-info-card-content {
+    display: flex;
+}
+
+.chip-and-label {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.chip-and-label:not(:last-child) {
+    padding-right: 16px;
+}
+
+.chip-label {
+    font-style: italic;
+    font-weight: bold;
 }
