@@ -55,3 +55,9 @@
   color: white;
   font-weight: bold;
 }
+
+@media(max-width: 768px) {
+  .timer-container  {
+    order: 0;
+  }
+}

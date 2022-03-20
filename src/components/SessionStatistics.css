@@ -8,6 +8,8 @@
     flex-direction: column;
     align-items: center;
     color: black;
+    order: 3;
+    min-width: 220px;
 }
 
 .stats-container {

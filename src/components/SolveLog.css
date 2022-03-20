@@ -9,6 +9,8 @@
     flex-grow: 1;
     flex-basis: 17vw;
     overflow-y: auto;
+    order: 1;
+    min-width: 220px;
 }
 
 .solve-container {

@@ -4,41 +4,9 @@
     padding: 16px;
     justify-content: space-evenly;
     align-items: center;
+    flex-wrap: wrap;
 }
 
-.timer-info-chip-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.timer-state-chip {
-    text-transform: uppercase;
-    padding: 16px !important;
-    font-size: 24px !important;
-}
-
-.scramble-settings-button {
-    width: 100%;
-}
-
-.timer-info-card-content {
-    display: flex;
-}
-
-.chip-and-label {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-.chip-and-label:not(:last-child) {
-    padding-right: 16px;
-}
-
-.chip-label {
-    font-style: italic;
-    font-weight: bold;
+.settings-button {
+    width: 50%;
 }

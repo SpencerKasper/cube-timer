@@ -1,0 +1,40 @@
+
+.timer-info-chip-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 16px;
+}
+
+.timer-state-chip {
+    text-transform: uppercase;
+    padding: 16px !important;
+    font-size: 24px !important;
+}
+
+.timer-info-card-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.chip-and-label {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.chip-and-label:not(:last-child) {
+    padding-right: 16px;
+}
+
+.chip-label {
+    font-style: italic;
+    font-weight: bold;
+}

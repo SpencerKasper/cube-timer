@@ -13,6 +13,7 @@ import {toast} from "react-toastify";
 import {SettingsRow, TimerInfo} from "./SettingsRow";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
 import SingletonStackmat from "../stackmat/singleton-stackmat";
+import {TimerInfoChipContainer} from "./TimerInfoChipContainer";
 
 const TIMER_PRECISION_IN_MS = 10;
 const API_DOMAIN = UrlHelper.getScrambleApiDomain();
@@ -211,6 +212,7 @@ const Timer = () => {
     return (
         <div style={{color: timerColor}} className='timer-container'>
             <SettingsRow setTimerInfo={setTimerInfo} setCurrentTime={setCurrentTime} timerInfo={timerInfo}/>
+            <TimerInfoChipContainer timerInfo={timerInfo}/>
             <Card className='timer-card'>
                 <CardContent>
                     <div className={timerContentClass}>
