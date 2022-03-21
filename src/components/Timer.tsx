@@ -225,7 +225,7 @@ const Timer = () => {
                         </>}
                         <p style={{
                             color: timerColor,
-                            minWidth: '26vw',
+                            minWidth: '21vw',
                             textAlign: (currentTime < 10000 || timeFormatter.isTimeHidden()) ? 'right' : 'center'
                         }}
                            className='current-time'>
@@ -234,7 +234,7 @@ const Timer = () => {
                         <p style={{color: timerColor}} className='current-time'>
                             .
                         </p>
-                        <p style={{color: timerColor, minWidth: '26vw'}} className='current-time'>
+                        <p style={{color: timerColor, minWidth: '21vw'}} className='current-time'>
                             {milliseconds}
                         </p>
                     </div>
