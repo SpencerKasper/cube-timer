@@ -184,7 +184,7 @@ const Timer = () => {
                 scramble,
                 userId,
                 sessionId: selectedSession.sessionId,
-                number: maxSolveNumber + 1,
+                number: solves && solves.length ? maxSolveNumber + 1 : 1,
                 time: currentTime,
                 cubeType: '3x3x3',
             }, {headers: {'Content-Type': 'application/json'}});

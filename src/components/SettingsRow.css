@@ -10,4 +10,5 @@
 
 .settings-card-container {
     padding: 16px;
+    order: 3;
 }
