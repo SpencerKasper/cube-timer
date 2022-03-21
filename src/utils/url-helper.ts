@@ -8,7 +8,11 @@ export class UrlHelper {
     }
 
     public static getScrambleApiDomain() {
-        return 'https://xw7yliw0a0.execute-api.us-east-1.amazonaws.com/prod/';
+        return 'https://3kshxn7a1g.execute-api.us-east-1.amazonaws.com/prod/';
+    }
+
+    public static getSolveSessionApiDomain() {
+        return 'https://ehje0sjzf7.execute-api.us-east-1.amazonaws.com/prod/';
     }
 
     public static parseQueryParams() {

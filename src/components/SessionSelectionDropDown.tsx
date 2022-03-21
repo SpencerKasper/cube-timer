@@ -5,6 +5,7 @@ import solveSelectors from "../redux/selectors/solveSelectors";
 import sessionSelectors from "../redux/selectors/sessionSelectors";
 import axios from "axios";
 import reduxStore from "../redux/redux-store";
+import {UrlHelper} from "../utils/url-helper";
 
 const SessionSelectionDropDown = () => {
     const selectedSession = useSelector(solveSelectors.selectedSession);
@@ -19,7 +20,7 @@ const SessionSelectionDropDown = () => {
     }, [user]);
 
     const fetchSessionsForUser = async () => {
-        const response = await axios.get(`https://tzxt8d9zbd.execute-api.us-east-1.amazonaws.com/prod/sessions?userId=${user.attributes.email}`);
+        const response = await axios.get(`${UrlHelper.getSolveSessionApiDomain()}sessions?userId=${user.attributes.email}`);
         reduxStore.dispatch({type: 'solves/set-sessions', payload: {sessions: response.data.body.sessions}})
     };
 

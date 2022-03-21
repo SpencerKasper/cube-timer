@@ -40,7 +40,7 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
             toast.error('Plus two failed for an unknown reason.  Please try again.');
         }
         setIsDeleting(false);
-    }
+    };
 
     const dnf = async () => {
         setIsDeleting(true);

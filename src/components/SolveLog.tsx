@@ -10,15 +10,15 @@ import {SolveCard} from "./SolveCard";
 import {Card, CardContent, Chip} from "@mui/material";
 import {ArrowUpward} from "@mui/icons-material";
 import {toast} from "react-toastify";
-import SessionSelectionDropDown from "./SessionSelectionDropDown";
 
 const SolveLog = () => {
     const [scrollHeight, setScrollHeight] = useState(0);
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
+    const selectedSession = useSelector(solveSelectors.selectedSession);
     const getSolves = async () => {
         if (user) {
             const userId = user.attributes.email;
-            const response = await axios.get<{ body: { solves: Solve[] } }>(`${UrlHelper.getScrambleApiDomain()}solves?userId=${encodeURIComponent(userId)}`);
+            const response = await axios.get<{ body: { solves: Solve[] } }>(`${UrlHelper.getScrambleApiDomain()}solves?userId=${encodeURIComponent(userId)}&sessionId=${selectedSession.sessionId}`);
             reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}})
         } else {
             toast.error('There must be a logged in user to get solves.');
@@ -28,7 +28,7 @@ const SolveLog = () => {
         if (user) {
             getSolves();
         }
-    }, [user]);
+    }, [user, selectedSession]);
     const solves = useSelector(solveSelectors.solves);
     const onScroll = () => {
         setScrollHeight(document.getElementById('solves').scrollTop);
