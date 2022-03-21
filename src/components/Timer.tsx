@@ -28,6 +28,7 @@ const Timer = () => {
     const solves = useSelector(solveSelectors.solves);
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     const timerSettings = useSelector(settingsSelectors.timerSettings);
+    const selectedSession = useSelector(solveSelectors.selectedSession);
     const [inspectionTimeInMs, setInspectionTimeInMs] = useState(0);
     const [inspected, setInspected] = useState(false);
 
@@ -182,6 +183,7 @@ const Timer = () => {
             return axios.post(`${API_DOMAIN}solves`, {
                 scramble,
                 userId,
+                sessionId: selectedSession.sessionId,
                 number: maxSolveNumber + 1,
                 time: currentTime,
                 cubeType: '3x3x3',
