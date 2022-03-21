@@ -12,7 +12,6 @@ import {Card, CardContent} from '@mui/material';
 import {toast} from "react-toastify";
 import {SettingsRow, TimerInfo} from "./SettingsRow";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
-import SingletonStackmat from "../stackmat/singleton-stackmat";
 import {TimerInfoChipContainer} from "./TimerInfoChipContainer";
 
 const TIMER_PRECISION_IN_MS = 10;
@@ -203,7 +202,7 @@ const Timer = () => {
         return 'white';
     };
     const timerColor = getTimerColor();
-    const timeFormatter = new TimeFormatter();
+    const timeFormatter = new TimeFormatter(timerInfo, timerSettings);
     const minutes = timeFormatter.getMinutes(currentTime);
     const seconds = timeFormatter.getSeconds(currentTime);
     const milliseconds = timeFormatter.getMilliseconds(currentTime);
@@ -216,18 +215,18 @@ const Timer = () => {
             <Card className='timer-card'>
                 <CardContent>
                     <div className={timerContentClass}>
-                        {isLongerThanMinute && <>
-                            <p className='current-time'>
+                        {isLongerThanMinute && !timeFormatter.isTimeHidden() && <>
+                            <p style={{color: timerColor}} className='current-time'>
                                 {minutes}
                             </p>
-                            <p className='current-time'>
+                            <p style={{color: timerColor}} className='current-time'>
                                 :
                             </p>
                         </>}
                         <p style={{
                             color: timerColor,
                             minWidth: '26vw',
-                            textAlign: currentTime < 10000 ? 'right' : 'center'
+                            textAlign: (currentTime < 10000 || timeFormatter.isTimeHidden()) ? 'right' : 'center'
                         }}
                            className='current-time'>
                             {seconds}

@@ -1,8 +1,11 @@
+export interface ITimerSettings {
+    speedstacksTimerEnabled: boolean;
+    inspectionTime: number;
+    hideTimeDuringSolve: boolean;
+}
+
 interface SettingsReducerState {
-    timerSettings: {
-        speedstacksTimerEnabled: boolean;
-        inspectionTime: number;
-    };
+    timerSettings: ITimerSettings;
     scrambleSettings: {
         scrambleLength: number;
     }
@@ -12,6 +15,7 @@ const initialState: SettingsReducerState = {
     timerSettings: {
         speedstacksTimerEnabled: false,
         inspectionTime: 0,
+        hideTimeDuringSolve: false,
     },
     scrambleSettings: {
         scrambleLength: 30,

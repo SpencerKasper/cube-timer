@@ -31,7 +31,7 @@ export function TimerInfoChipContainer(props: { timerInfo: TimerInfo }) {
         if (['running'].includes(timerState)) {
             return 'error';
         }
-        return null;
+        return 'primary';
     };
 
     return <div className={"timer-info-chip-container"}>
@@ -39,7 +39,7 @@ export function TimerInfoChipContainer(props: { timerInfo: TimerInfo }) {
             <CardContent className={"timer-info-card-content"}>
                 <div className={"chip-and-label"}>
                     <h3 className={"chip-label"}>Timer State</h3>
-                    <Chip className={chipClassName} color={getChipColor(timerInfo.timerState)}
+                    <Chip className={chipClassName} color={chipColor}
                           label={visibleTimerState}/>
                 </div>
                 <div className={"chip-and-label"}>

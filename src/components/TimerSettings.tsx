@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {toast} from "react-toastify";
 import {Packet, PacketStatus} from "../stackmat/packet/packet";
-import {Button, Dialog, DialogActions, DialogContent, TextField} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, Switch, TextField} from "@mui/material";
 import TimerIcon from '@mui/icons-material/Timer';
 import './TimerSettings.css';
 import reduxStore from "../redux/redux-store";
@@ -9,7 +9,7 @@ import settingsSelectors from "../redux/selectors/settingsSelectors";
 import {useSelector} from "react-redux";
 import {Setting} from "./Setting";
 import SingletonStackmat from "../stackmat/singleton-stackmat";
-
+import {ITimerSettings} from '../redux/reducers/settingsReducer';
 export const TimerSettings = (props) => {
     const {setTimerInfo, setCurrentTime} = props;
     const timerSettings = useSelector(settingsSelectors.timerSettings);
@@ -59,6 +59,14 @@ export const TimerSettings = (props) => {
         SingletonStackmat.start();
     };
     const [open, setOpen] = useState(false);
+
+    function updateTimerSettings(timerSettingsUpdate: Partial<ITimerSettings>) {
+        reduxStore.dispatch({
+            type: 'settings/setTimerSettings',
+            payload: {timerSettings: {...timerSettings, ...timerSettingsUpdate}}
+        })
+    }
+
     const onInspectionTimeChange = (event) => {
         const inspectionTime = event.target.value;
         if (!Number(inspectionTime) && inspectionTime !== '' && Number(inspectionTime) !== 0) {
@@ -66,12 +74,14 @@ export const TimerSettings = (props) => {
         } else if (Number(inspectionTime) >= 60 && inspectionTime !== '') {
             toast.error('Inspection time cannot be a minute or longer.');
         } else {
-            reduxStore.dispatch({
-                type: 'settings/setTimerSettings',
-                payload: {timerSettings: {...timerSettings, inspectionTime}}
-            })
+            updateTimerSettings({inspectionTime});
         }
     };
+    const onHideTimeDuringSolveChange = (event) => {
+        const hideTimeDuringSolve = event.target.checked;
+        updateTimerSettings({hideTimeDuringSolve});
+    };
+
     return (
         <div className={'timer-settings-container'}>
             <Button
@@ -104,6 +114,9 @@ export const TimerSettings = (props) => {
                     <Setting title={'Inspection Time'}>
                         <TextField onChange={onInspectionTimeChange}
                                    value={timerSettings.inspectionTime ? timerSettings.inspectionTime : ''}/>
+                    </Setting>
+                    <Setting title={'Hide Time During Solve'}>
+                        <Switch checked={timerSettings.hideTimeDuringSolve} onChange={onHideTimeDuringSolveChange} />
                     </Setting>
                 </DialogContent>
                 <DialogActions>
