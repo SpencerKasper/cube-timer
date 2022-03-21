@@ -1,14 +1,8 @@
 interface SessionReducerState {
-    signInUserSession: any;
-    authState: any;
-    isAdmin: boolean;
+    user?: {attributes: {email: string;}}
 }
 
-const initialState: SessionReducerState = {
-    signInUserSession: {},
-    authState: {},
-    isAdmin: false,
-};
+const initialState: SessionReducerState = {};
 
 export default function sessionReducer(state = initialState, action) {
     switch (action.type) {
@@ -17,7 +11,7 @@ export default function sessionReducer(state = initialState, action) {
             return {
                 ...state,
                 user,
-            }
+            };
         default:
             return state
     }

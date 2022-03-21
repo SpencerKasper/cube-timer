@@ -1,6 +1,6 @@
 import {ROUTES} from "./static/constants/routes";
 import HomePage from "./pages/AuthenticatedHomePage";
-import React from "react";
+import React, {useEffect} from "react";
 import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
 import {Header} from "./components/Header";
 

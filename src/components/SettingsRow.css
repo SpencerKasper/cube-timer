@@ -8,6 +8,6 @@
     order: 1;
 }
 
-.settings-button {
-    width: 50%;
+.settings-card-container {
+    padding: 16px;
 }

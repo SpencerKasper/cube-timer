@@ -2,7 +2,8 @@ import React from 'react';
 import {ScrambleSettings} from "./ScrambleSettings";
 import {TimerSettings} from "./TimerSettings";
 import './SettingsRow.css';
-import {TimerInfoChipContainer} from "./TimerInfoChipContainer";
+import SessionSelectionDropDown from "./SessionSelectionDropDown";
+import {Card, CardContent} from "@mui/material";
 
 export interface TimerInfo {
     timerMode: 'built-in' | 'speedstack-timer',
@@ -18,15 +19,22 @@ interface Props {
 export const SettingsRow = (props: Props) => {
     const {setTimerInfo, setCurrentTime, timerInfo} = props;
     return (
-        <div className={'settings-row'}>
-            <div className={'settings-button'}>
-                <ScrambleSettings/>
-            </div>
-            <TimerSettings
-                timerInfo={timerInfo}
-                setTimerInfo={setTimerInfo}
-                setCurrentTime={setCurrentTime}
-            />
+        <div className={'settings-card-container'}>
+            <Card>
+                <CardContent className={'settings-row'}>
+                    <div className={'settings-button'}>
+                        <ScrambleSettings/>
+                    </div>
+                    <div>
+                        <SessionSelectionDropDown/>
+                    </div>
+                    <TimerSettings
+                        timerInfo={timerInfo}
+                        setTimerInfo={setTimerInfo}
+                        setCurrentTime={setCurrentTime}
+                    />
+                </CardContent>
+            </Card>
         </div>
     );
 };
