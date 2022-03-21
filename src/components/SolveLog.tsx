@@ -19,7 +19,8 @@ const SolveLog = () => {
         if (user) {
             const userId = user.attributes.email;
             const response = await axios.get<{ body: { solves: Solve[] } }>(`${UrlHelper.getScrambleApiDomain()}solves?userId=${encodeURIComponent(userId)}&sessionId=${selectedSession.sessionId}`);
-            reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}})
+            const body = response.data.body;
+            reduxStore.dispatch({type: 'solves/set', payload: {solves: body.solves}})
         } else {
             toast.error('There must be a logged in user to get solves.');
         }

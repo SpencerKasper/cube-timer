@@ -11,15 +11,16 @@ import {toast} from "react-toastify";
 import AddIcon from '@mui/icons-material/Add';
 import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import RemoveIcon from '@mui/icons-material/Remove';
-
+import solveSelectors from "../redux/selectors/solveSelectors";
 export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
+    const selectedSession = useSelector(solveSelectors.selectedSession);
     const [isDeleting, setIsDeleting] = useState(false);
     const deleteSolve = async () => {
         setIsDeleting(true);
         if (user && props.solve.solveId) {
             const email = user.attributes.email;
-            const deleteSolveEndpoint = `${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}`;
+            const deleteSolveEndpoint = `${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}?sessionId=${selectedSession.sessionId}`;
             const response = await axios.get<{ body: { solves: Solve[] } }>(deleteSolveEndpoint);
             reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}});
         } else {
@@ -32,8 +33,8 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
         setIsDeleting(true);
         const email = user.attributes.email;
         if (user && props.solve.solveId) {
-            const plusTwoEndpoint = `${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}/plusTwo`;
-            const finalEndpoint = minus ? `${plusTwoEndpoint}?plusOrMinusTwo=-` : plusTwoEndpoint;
+            const plusTwoEndpoint = `${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}/plusTwo?sessionId=${selectedSession.sessionId}`;
+            const finalEndpoint = minus ? `${plusTwoEndpoint}&plusOrMinusTwo=-` : plusTwoEndpoint;
             const response = await axios.get<{ body: { solves: Solve[] } }>(finalEndpoint);
             reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}});
         } else {
@@ -46,8 +47,8 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
         setIsDeleting(true);
         const email = user.attributes.email;
         if (user && props.solve.solveId) {
-            const dnfEndpoint = `${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}/dnf`;
-            const finalEndpoint = props.solve.dnf ? `${dnfEndpoint}?isDnf=false` : dnfEndpoint;
+            const dnfEndpoint = `${UrlHelper.getScrambleApiDomain()}solves/${props.solve.solveId}/${encodeURIComponent(email)}/dnf?sessionId=${selectedSession.sessionId}`;
+            const finalEndpoint = props.solve.dnf ? `${dnfEndpoint}&isDnf=false` : dnfEndpoint;
             const response = await axios.get<{ body: { solves: Solve[] } }>(finalEndpoint);
             reduxStore.dispatch({type: 'solves/set', payload: {solves: response.data.body.solves}});
         } else {
