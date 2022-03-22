@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Card, CardContent, Chip} from "@mui/material";
 import {TimerInfo} from "./SettingsRow";
 import './TimerInfoChipContainer.css';
+import SessionSelectionDropDown from "./SessionSelectionDropDown";
 
 export function TimerInfoChipContainer(props: { timerInfo: TimerInfo }) {
     const {timerInfo} = props;
@@ -35,13 +36,14 @@ export function TimerInfoChipContainer(props: { timerInfo: TimerInfo }) {
     };
 
     return <div className={"timer-info-chip-container"}>
-        <Card>
+        <Card className={'timer-info-chip-card'}>
             <CardContent className={"timer-info-card-content"}>
                 <div className={"chip-and-label"}>
                     <h3 className={"chip-label"}>Timer State</h3>
                     <Chip className={chipClassName} color={chipColor}
                           label={visibleTimerState}/>
                 </div>
+                <SessionSelectionDropDown/>
                 <div className={"chip-and-label"}>
                     <h3 className={"chip-label"}>Timer Mode</h3>
                     <Chip className={"timer-state-chip"}

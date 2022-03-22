@@ -25,9 +25,6 @@ export const SettingsRow = (props: Props) => {
                     <div className={'settings-button'}>
                         <ScrambleSettings/>
                     </div>
-                    <div>
-                        <SessionSelectionDropDown/>
-                    </div>
                     <TimerSettings
                         timerInfo={timerInfo}
                         setTimerInfo={setTimerInfo}

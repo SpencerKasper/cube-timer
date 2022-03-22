@@ -10,6 +10,7 @@ import {SolveCard} from "./SolveCard";
 import {Card, CardContent, Chip} from "@mui/material";
 import {ArrowUpward} from "@mui/icons-material";
 import {toast} from "react-toastify";
+import SessionSelectionDropDown from "./SessionSelectionDropDown";
 
 const SolveLog = () => {
     const [scrollHeight, setScrollHeight] = useState(0);
