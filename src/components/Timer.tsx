@@ -13,6 +13,7 @@ import {toast} from "react-toastify";
 import {SettingsRow, TimerInfo} from "./SettingsRow";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
 import {TimerInfoChipContainer} from "./TimerInfoChipContainer";
+import {isMobile} from 'react-device-detect';
 
 const TIMER_PRECISION_IN_MS = 10;
 const API_DOMAIN = UrlHelper.getScrambleApiDomain();
@@ -44,8 +45,10 @@ const Timer = () => {
     }, [inspected, currentTime, timerInfo.timerState]);
 
     useEffect(() => {
-        document.addEventListener('keydown', keyDownListener);
-        document.addEventListener('keyup', keyUpListener);
+        if (!isMobile) {
+            document.addEventListener('keydown', keyDownListener);
+            document.addEventListener('keyup', keyUpListener);
+        }
     }, []);
 
     function getInspectionTimeAsMs() {
@@ -114,7 +117,7 @@ const Timer = () => {
     };
 
     function runFunctionOnKeyWhenNotRepeatAndPreventDefault(event: KeyboardEvent, func: () => void, key = 'Space') {
-        if (event.code === key) {
+        if (event.code === key || !key) {
             event.preventDefault();
             if (!event.repeat) {
                 func();
@@ -122,7 +125,7 @@ const Timer = () => {
         }
     }
 
-    function keyDownListener(event) {
+    function keyDownListener(event, keyCode?) {
         runFunctionOnKeyWhenNotRepeatAndPreventDefault(event, () => {
             setTimerInfo(info => {
                 let timerState = info.timerState;
@@ -139,10 +142,10 @@ const Timer = () => {
                 }
                 return ({...info, timerMode: 'built-in', timerState});
             });
-        });
+        }, keyCode);
     }
 
-    function keyUpListener(event) {
+    function keyUpListener(event, keyCode?) {
         runFunctionOnKeyWhenNotRepeatAndPreventDefault(event, () => {
             setInspected(isInspected => {
                 setInspectionTimeInMs(inspectTimeMs => {
@@ -164,7 +167,7 @@ const Timer = () => {
                 });
                 return isInspected;
             })
-        });
+        }, keyCode);
     }
 
     const getScramble = async () => {
@@ -198,7 +201,7 @@ const Timer = () => {
         if (timerInfo.timerState === 'starting') {
             return '#BFF7BC';
         }
-        if(timerInfo.timerState === 'inspecting') {
+        if (timerInfo.timerState === 'inspecting') {
             return '#F8EBBA';
         }
         return 'white';
@@ -211,10 +214,15 @@ const Timer = () => {
     const isLongerThanMinute = currentTime >= 60000;
     const timerContentClass = timerInfo.timerState === 'inspecting' ? 'timer-content' : 'timer-content';
     return (
-        <div style={{color: timerColor}} className='timer-container'>
+        <div style={{color: timerColor}}
+             className='timer-container' id={'timer-container'}>
             <SettingsRow setTimerInfo={setTimerInfo} setCurrentTime={setCurrentTime} timerInfo={timerInfo}/>
             <TimerInfoChipContainer timerInfo={timerInfo}/>
-            <Card className='timer-card'>
+            <Card className='timer-card'
+                  onKeyDown={isMobile ? (event) => null : keyDownListener}
+                  onKeyUp={isMobile ? (event) => null : keyUpListener}
+                  onMouseDown={isMobile ? (event) => keyDownListener(event, null) : (event) => null}
+                  onMouseUp={isMobile ? (event) => keyUpListener(event, null) : (event) => null}>
                 <CardContent>
                     <div className={timerContentClass}>
                         {isLongerThanMinute && !timeFormatter.isTimeHidden() && <>
