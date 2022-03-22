@@ -56,6 +56,11 @@
   font-weight: bold;
 }
 
+.title {
+  font-weight: bold;
+  text-align: center;
+}
+
 @media(max-width: 768px) {
   .timer-container  {
     order: 0;

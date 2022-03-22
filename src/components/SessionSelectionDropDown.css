@@ -1,0 +1,15 @@
+.session-selection-drop-down-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.session-selection-drop-down {
+    padding-right: 8px;
+}
+
+.add-session-button {
+    cursor: pointer;
+}
