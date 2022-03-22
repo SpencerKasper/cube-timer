@@ -24,7 +24,7 @@
     flex-wrap: wrap;
     align-items: center;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .chip-and-label {
