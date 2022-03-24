@@ -5,6 +5,8 @@ import {useSelector} from "react-redux";
 import axios from "axios";
 import reduxStore from "../redux/redux-store";
 import {UrlHelper} from "../utils/url-helper";
+import Scrambo from 'scrambo';
+import settingsSelectors from "../redux/selectors/settingsSelectors";
 
 export interface GetScrambleResponse {
     responseCode: number;
@@ -12,15 +14,20 @@ export interface GetScrambleResponse {
 }
 
 const ScrambleDisplay = () => {
-    const CUBE_TYPE = '3x3x3';
+    const {cubeType, scrambleLength, scrambleLengthMap} = useSelector(settingsSelectors.scrambleSettings);
     const getScramble = async () => {
-        const response = await axios
-            .get<GetScrambleResponse>(`${UrlHelper.getScrambleApiDomain()}cubeType/${CUBE_TYPE}?scrambleLength=32`);
-        reduxStore.dispatch({type: 'scrambles/set', payload: {scramble: response.data.body.scramble}});
+        const scrambleGenerator = new Scrambo();
+        scrambleGenerator
+            .type(cubeType);
+        if (scrambleLengthMap.hasOwnProperty(cubeType)) {
+            scrambleGenerator.length(scrambleLengthMap[cubeType])
+        }
+        const scramble = scrambleGenerator.get(1)[0];
+        reduxStore.dispatch({type: 'scrambles/set', payload: {scramble}});
     };
     useEffect(() => {
         getScramble();
-    }, []);
+    }, [cubeType, scrambleLength]);
     const scramble = useSelector(scrambleSelectors.scramble);
     return (
         <div className='scramble-display-container'>

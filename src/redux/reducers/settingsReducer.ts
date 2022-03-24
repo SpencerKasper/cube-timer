@@ -1,24 +1,30 @@
+export type CubeType = '222' | '333' | '444' | '555' | '666' | '777' | 'clock' | 'minx' | 'pyram' | 'sq1' | 'skewb';
+
 export interface ITimerSettings {
-    speedstacksTimerEnabled: boolean;
+    speedStacksTimerEnabled: boolean;
     inspectionTime: number;
     hideTimeDuringSolve: boolean;
 }
 
+export interface IScrambleSettings {
+    scrambleLengthMap: {[key in CubeType]?: number};
+    cubeType: CubeType;
+}
+
 interface SettingsReducerState {
     timerSettings: ITimerSettings;
-    scrambleSettings: {
-        scrambleLength: number;
-    }
+    scrambleSettings: IScrambleSettings;
 }
 
 const initialState: SettingsReducerState = {
     timerSettings: {
-        speedstacksTimerEnabled: false,
+        speedStacksTimerEnabled: false,
         inspectionTime: 0,
         hideTimeDuringSolve: false,
     },
     scrambleSettings: {
-        scrambleLength: 30,
+        scrambleLengthMap: {},
+        cubeType: '333',
     },
 };
 

@@ -1,3 +1,5 @@
+import {CubeType} from "./settingsReducer";
+
 export interface ISolveSession {
     sessionId: string;
     userId?: string;
@@ -10,7 +12,7 @@ export interface Solve {
     sessionId?: string;
     scramble: string;
     time: number;
-    cubeType: '3x3x3';
+    cubeType: CubeType | '3x3x3';
     number: number;
     plusTwo: boolean;
     dnf: boolean;

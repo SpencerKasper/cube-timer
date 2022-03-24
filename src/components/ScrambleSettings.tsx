@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-import {alpha, Button, Dialog, DialogActions, DialogContent, Menu, styled, TextField} from '@mui/material';
+import {Button, Dialog, DialogActions, DialogContent, TextField} from '@mui/material';
 import './ScrambleSettings.css';
-import axios from "axios";
-import {GetScrambleResponse} from "./ScrambleDisplay";
-import {UrlHelper} from "../utils/url-helper";
 import reduxStore from "../redux/redux-store";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
 import {useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {Setting} from "./Setting";
+import {CubeSelectionDropDown} from "./CubeSelectionDropDown";
 
 const MAX_SCRAMBLE_LENGTH = 100;
+
 export const ScrambleSettings = () => {
     const scrambleSettings = useSelector(settingsSelectors.scrambleSettings);
+    const {cubeType, scrambleLengthMap} = scrambleSettings;
     const [isOpen, setIsOpen] = useState(false);
     const onScrambleLengthChange = (event) => {
         const scrambleLength = event.target.value;
@@ -29,14 +29,8 @@ export const ScrambleSettings = () => {
             });
         }
     };
-    const getScramble = async () => {
-        const response = await axios
-            .get<GetScrambleResponse>(`${UrlHelper.getScrambleApiDomain()}cubeType/3x3x3?scrambleLength=${scrambleSettings.scrambleLength}`);
-        reduxStore.dispatch({type: 'scrambles/set', payload: {scramble: response.data.body.scramble}});
-    };
     const onClose = () => setIsOpen(false);
     const saveSettings = async () => {
-        await getScramble();
         onClose();
     };
     return (
@@ -56,9 +50,12 @@ export const ScrambleSettings = () => {
                     <Setting title={'Scramble Length'}>
                         <TextField
                             fullWidth
-                            value={scrambleSettings.scrambleLength}
+                            value={scrambleLengthMap.hasOwnProperty(cubeType) ? scrambleLengthMap[cubeType] : ''}
                             onChange={onScrambleLengthChange}
                         />
+                    </Setting>
+                    <Setting title={'Cube Type'}>
+                        <CubeSelectionDropDown />
                     </Setting>
                 </DialogContent>
                 <DialogActions>

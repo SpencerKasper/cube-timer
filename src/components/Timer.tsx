@@ -29,6 +29,7 @@ const Timer = () => {
     const solves = useSelector(solveSelectors.solves);
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     const timerSettings = useSelector(settingsSelectors.timerSettings);
+    const scrambleSettings = useSelector(settingsSelectors.scrambleSettings);
     const selectedSession = useSelector(solveSelectors.selectedSession);
     const [inspectionTimeInMs, setInspectionTimeInMs] = useState(0);
     const [inspected, setInspected] = useState(false);
@@ -189,7 +190,7 @@ const Timer = () => {
                 sessionId: selectedSession.sessionId,
                 number: solves && solves.length ? maxSolveNumber + 1 : 1,
                 time: currentTime,
-                cubeType: '3x3x3',
+                cubeType: scrambleSettings.cubeType,
             }, {headers: {'Content-Type': 'application/json'}});
         } else {
             toast.error('There must be a logged in user in order to save a solve.');

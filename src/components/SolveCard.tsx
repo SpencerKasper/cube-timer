@@ -12,6 +12,8 @@ import AddIcon from '@mui/icons-material/Add';
 import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import RemoveIcon from '@mui/icons-material/Remove';
 import solveSelectors from "../redux/selectors/solveSelectors";
+import {CUBE_TYPES} from "./CubeSelectionDropDown";
+
 export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     const selectedSession = useSelector(solveSelectors.selectedSession);
@@ -70,9 +72,9 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
                     </div>
                 </Tooltip>
                 <Tooltip title={props.solve.dnf ? 'Mark the solve as valid' : 'Mark the solve as a DNF'}>
-                        <Button className={'delete-button'} onClick={dnf}>
-                            {props.solve.dnf ? 'Undo DNF' : 'DNF'}
-                        </Button>
+                    <Button className={'delete-button'} onClick={dnf}>
+                        {props.solve.dnf ? 'Undo DNF' : 'DNF'}
+                    </Button>
                 </Tooltip>
                 <div className={'delete-button'} onClick={() => deleteSolve()}>
                     <DeleteForeverIcon/>
@@ -85,7 +87,14 @@ export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
                 <p>
                     {props.solveNumber}
                 </p>
-
+            </div>
+            <div className='label-and-time'>
+                <p className='label'>
+                    Cube Type:
+                </p>
+                <p>
+                    {CUBE_TYPES.hasOwnProperty(props.solve.cubeType) ? CUBE_TYPES[props.solve.cubeType].name : props.solve.cubeType}
+                </p>
             </div>
             {isDeleting && <div className={'loading-spinner'}><CircularProgress/></div>}
             <div className='label-and-time'>
