@@ -1,4 +1,4 @@
-export type CubeType = '222' | '333' | '444' | '555' | '666' | '777' | 'clock' | 'minx' | 'pyram' | 'sq1' | 'skewb';
+export type CubeType = '222' | '333' | '444' | '555' | '666' | '777' | 'clock' | 'minx' | 'pyram' | 'sq1' | 'skewb' | '333oh';
 
 export interface ITimerSettings {
     speedStacksTimerEnabled: boolean;

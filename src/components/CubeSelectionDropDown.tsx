@@ -8,6 +8,7 @@ import {CubeType} from "../redux/reducers/settingsReducer";
 export const CUBE_TYPES: { [key in CubeType]: { name: string; type: CubeType; } } = {
     '222': {name: '2x2x2', type: '222'},
     '333': {name: '3x3x3', type: '333'},
+    '333oh': {name: '3x3x3 One Handed', type: '333oh'},
     '444': {name: '4x4x4', type: '444'},
     '555': {name: '5x5x5', type: '555'},
     '666': {name: '6x6x6', type: '666'},

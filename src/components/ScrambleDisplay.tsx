@@ -2,24 +2,31 @@ import React, {useEffect} from 'react';
 import './ScrambleDisplayRow.css';
 import scrambleSelectors from "../redux/selectors/scrambleSelectors";
 import {useSelector} from "react-redux";
-import axios from "axios";
 import reduxStore from "../redux/redux-store";
-import {UrlHelper} from "../utils/url-helper";
 import Scrambo from 'scrambo';
 import settingsSelectors from "../redux/selectors/settingsSelectors";
+import {CubeType} from "../redux/reducers/settingsReducer";
 
 export interface GetScrambleResponse {
     responseCode: number;
     body: { scramble: string; };
 }
 
+const SCRAMBLE_GENERATOR_OVERRIDE_CUBE_TYPE_MAP: {[key in CubeType]?: CubeType} = {
+    '333oh': '333',
+};
+
 const ScrambleDisplay = () => {
-    const {cubeType, scrambleLength, scrambleLengthMap} = useSelector(settingsSelectors.scrambleSettings);
+    const {cubeType, scrambleLengthMap} = useSelector(settingsSelectors.scrambleSettings);
     const getScramble = async () => {
         const scrambleGenerator = new Scrambo();
         scrambleGenerator
-            .type(cubeType);
-        if (scrambleLengthMap.hasOwnProperty(cubeType)) {
+            .type(
+                SCRAMBLE_GENERATOR_OVERRIDE_CUBE_TYPE_MAP.hasOwnProperty(cubeType) ?
+                    SCRAMBLE_GENERATOR_OVERRIDE_CUBE_TYPE_MAP[cubeType] :
+                    cubeType,
+            );
+        if (scrambleLengthMap.hasOwnProperty(cubeType) && scrambleLengthMap[cubeType]) {
             scrambleGenerator.length(scrambleLengthMap[cubeType])
         }
         const scramble = scrambleGenerator.get(1)[0];
@@ -27,7 +34,7 @@ const ScrambleDisplay = () => {
     };
     useEffect(() => {
         getScramble();
-    }, [cubeType, scrambleLength]);
+    }, [cubeType, scrambleLengthMap]);
     const scramble = useSelector(scrambleSelectors.scramble);
     return (
         <div className='scramble-display-container'>

@@ -16,23 +16,23 @@ export const ScrambleSettings = () => {
     const [isOpen, setIsOpen] = useState(false);
     const onScrambleLengthChange = (event) => {
         const scrambleLength = event.target.value;
-        if(scrambleLength > MAX_SCRAMBLE_LENGTH) {
+        if (scrambleLength > MAX_SCRAMBLE_LENGTH) {
             toast.error('The max scramble length is 100.');
-        } else if(!Number(scrambleLength) && scrambleLength !== '') {
+        } else if (!Number(scrambleLength) && scrambleLength !== '') {
             toast.error('Scramble length must be a number.');
         } else {
             reduxStore.dispatch({
                 type: 'settings/setScrambleSettings',
                 payload: {
-                    scrambleSettings: {...scrambleSettings, scrambleLength}
+                    scrambleSettings: {
+                        ...scrambleSettings,
+                        scrambleLengthMap: {...scrambleLengthMap, [cubeType]: scrambleLength},
+                    }
                 },
             });
         }
     };
     const onClose = () => setIsOpen(false);
-    const saveSettings = async () => {
-        onClose();
-    };
     return (
         <div className={'scramble-settings-container'}>
             <Button
@@ -55,12 +55,11 @@ export const ScrambleSettings = () => {
                         />
                     </Setting>
                     <Setting title={'Cube Type'}>
-                        <CubeSelectionDropDown />
+                        <CubeSelectionDropDown/>
                     </Setting>
                 </DialogContent>
                 <DialogActions>
-                    <Button color={'secondary'} onClick={onClose}>Cancel</Button>
-                    <Button color={'secondary'} onClick={saveSettings}>Save</Button>
+                    <Button color={'secondary'} onClick={onClose}>Close</Button>
                 </DialogActions>
             </Dialog>
         </div>
