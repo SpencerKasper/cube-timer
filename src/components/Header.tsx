@@ -5,8 +5,9 @@ import {useSelector} from "react-redux";
 import sessionSelectors from "../redux/selectors/sessionSelectors";
 import {Avatar, IconButton, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
 import {settings} from "cluster";
+import {withRouter} from "react-router";
 
-export function Header(props) {
+function Header(props) {
     const user = useSelector(sessionSelectors.user);
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -19,7 +20,7 @@ export function Header(props) {
         setAnchorElUser(null);
     };
     return <div className='scramble-display-row'>
-        <div className='logo'>
+        <div className='logo' onClick={() => props.history.push('/')}>
             <h1 className='logo-title'>
                 SolveLog
             </h1>
@@ -27,7 +28,7 @@ export function Header(props) {
                 <img src={RubiksCubeIcon} width={48} height={48}/>
             </div>
         </div>
-        {user ? <ScrambleDisplayRow/> : <div></div>}
+        {user && props.renderScramble ? <ScrambleDisplayRow/> : <div></div>}
         <div className='log-out-and-user-name'>
             <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
@@ -50,6 +51,9 @@ export function Header(props) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
+                <MenuItem onClick={() => props.history.push('/sessions')}>
+                    <Typography textAlign={'center'}>Manage Sessions</Typography>
+                </MenuItem>
                 <MenuItem onClick={() => {
                     props.logOut()
                 }}>
@@ -59,3 +63,5 @@ export function Header(props) {
         </div>
     </div>;
 }
+
+export default withRouter(Header);

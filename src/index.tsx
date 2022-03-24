@@ -6,6 +6,8 @@ import App from './App';
 import './static/scss/_Default.scss';
 import reduxStore from "./redux/redux-store";
 import {createTheme, ThemeProvider} from "@mui/material";
+import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
+
 const muiTheme = createTheme({
     palette: {
         primary: {
@@ -31,10 +33,12 @@ const muiTheme = createTheme({
     }
 });
 ReactDOM.render(
-    <Provider store={reduxStore}>
-        <ThemeProvider theme={muiTheme}>
-            <App />
-        </ThemeProvider>
-    </Provider>,
-  document.getElementById("root")
+    <Router>
+        <Provider store={reduxStore}>
+            <ThemeProvider theme={muiTheme}>
+                <App/>
+            </ThemeProvider>
+        </Provider>
+    </Router>,
+    document.getElementById("root")
 );
