@@ -14,6 +14,7 @@ import {SettingsRow, TimerInfo} from "./SettingsRow";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
 import {TimerInfoChipContainer} from "./TimerInfoChipContainer";
 import {isMobile} from 'react-device-detect';
+import {ScrambleGenerator} from "../utils/ScrambleGenerator";
 
 const TIMER_PRECISION_IN_MS = 10;
 const API_DOMAIN = UrlHelper.getScrambleApiDomain();
@@ -30,6 +31,7 @@ const Timer = () => {
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);
     const timerSettings = useSelector(settingsSelectors.timerSettings);
     const scrambleSettings = useSelector(settingsSelectors.scrambleSettings);
+    const {cubeType, scrambleLengthMap} = scrambleSettings;
     const selectedSession = useSelector(solveSelectors.selectedSession);
     const [inspectionTimeInMs, setInspectionTimeInMs] = useState(0);
     const [inspected, setInspected] = useState(false);
@@ -101,9 +103,8 @@ const Timer = () => {
                         type: 'solves/set',
                         payload: {solves: response.data.body.solves}
                     });
-                    getScramble()
-                        .then(() => {
-                        });
+                    const scramble = new ScrambleGenerator().generate(cubeType, scrambleLengthMap)[0];
+                    reduxStore.dispatch({type: 'scrambles/set', payload: {scramble}});
                 });
         }
     }, [timerInfo, inspectionTimeInMs]);
@@ -170,15 +171,6 @@ const Timer = () => {
             })
         }, keyCode);
     }
-
-    const getScramble = async () => {
-        const response = await axios
-            .get<GetScrambleResponse>(`${API_DOMAIN}cubeType/3x3x3`);
-        reduxStore.dispatch({type: 'scrambles/set', payload: {scramble: response.data.body.scramble}});
-        setTimerInfo(info => {
-            return ({...info, timerState: 'ready'});
-        });
-    };
 
     const saveSolve = async () => {
         if (user) {
