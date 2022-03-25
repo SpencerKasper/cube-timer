@@ -15,6 +15,11 @@ export class UrlHelper {
         return 'https://ehje0sjzf7.execute-api.us-east-1.amazonaws.com/prod/';
     }
 
+    public static getSessionManagementUrl() {
+        const domain = window.location.hostname;
+        return `${domain}/sessions`;
+    }
+
     public static parseQueryParams() {
         const queryString = window.location.search;
         const queryStringWithQuestionRemoved = queryString.slice(1, queryString.length);

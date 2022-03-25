@@ -3,13 +3,13 @@ import ScrambleDisplayRow from "./ScrambleDisplay";
 import React from "react";
 import {useSelector} from "react-redux";
 import sessionSelectors from "../redux/selectors/sessionSelectors";
-import {Avatar, IconButton, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
-import {settings} from "cluster";
+import {Avatar, IconButton, Link, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {withRouter} from "react-router";
+import {UrlHelper} from "../utils/url-helper";
 
 function Header(props) {
     const user = useSelector(sessionSelectors.user);
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -51,12 +51,13 @@ function Header(props) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
-                <MenuItem onClick={() => props.history.push('/sessions')}>
-                    <Typography textAlign={'center'}>Manage Sessions</Typography>
+                <MenuItem>
+                    <Link color={'secondary'} target={'_blank'} rel={'noopener noreferrer'} href={'/sessions'}>
+                        <Typography textAlign={'center'}>Manage Sessions</Typography>
+                        <OpenInNewIcon/>
+                    </Link>
                 </MenuItem>
-                <MenuItem onClick={() => {
-                    props.logOut()
-                }}>
+                <MenuItem onClick={props.logOut}>
                     <Typography textAlign="center">Log Out</Typography>
                 </MenuItem>
             </Menu>
