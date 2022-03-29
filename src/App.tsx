@@ -7,7 +7,6 @@ import RubiksCubeLogo from '../src/static/images/cube.png';
 
 import '@aws-amplify/ui-react/styles.css';
 import {SolveLogRouter} from "./SolveLogRouter";
-import {UrlHelper} from "./utils/url-helper";
 import {withRouter} from "react-router";
 
 const awsExports = {

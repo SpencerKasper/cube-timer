@@ -1,10 +1,10 @@
 #root {
-  @import 'static/scss/Home';
-  @import 'static/scss/SessionManagement';
-  @import 'static/scss/Flex';
+  @import 'static/scss/page/Home';
+  @import 'static/scss/page/SessionManagement';
+  @import 'static/scss/site/Flex';
 }
 
-@import 'static/scss/Default';
+@import 'static/scss/site/Default';
 
 body {
   margin: 0;

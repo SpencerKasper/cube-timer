@@ -1,0 +1,32 @@
+.session-management-container {
+  padding: 16px;
+
+  .session-management-card {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .session-management-card-content {
+    width: 100%;
+  }
+
+  .session-swap-container {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .source-session-solves-container {
+    width: 45%;
+    background: pink;
+  }
+
+  .swap-action-container {
+    width: 10%;
+    background: green;
+  }
+
+  .target-session-solves-container {
+    width: 45%;
+    background: pink;
+  }
+}
