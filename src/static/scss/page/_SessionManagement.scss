@@ -13,16 +13,18 @@
   .session-swap-container {
     width: 100%;
     align-items: flex-start;
+    flex-wrap: wrap;
     padding: 16px;
   }
 
   .source-session-solves-container {
-    width: 45%;
+    //width: 45%;
   }
 
   .swap-action-container {
     width: 10%;
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -30,7 +32,7 @@
   }
 
   .target-session-solves-container {
-    width: 45%;
+    //width: 45%;
   }
 
   .right-arrow {
