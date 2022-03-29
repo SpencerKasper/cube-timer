@@ -186,23 +186,8 @@ export const SolveSelectionTable = ({solves, width, selectable = true}: {solves:
     };
 
     const handleClick = (event: React.MouseEvent<unknown>, name: string | number) => {
-        const selectedIndex = selected.indexOf(String(name));
-        let newSelected: readonly string[] = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, String(name));
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        setSelected(newSelected);
+        console.error(event);
+        console.error(name);
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
