@@ -9,7 +9,6 @@ import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import AddIcon from '@mui/icons-material/Add';
-import LooksTwoIcon from '@mui/icons-material/LooksTwo';
 import RemoveIcon from '@mui/icons-material/Remove';
 import solveSelectors from "../redux/selectors/solveSelectors";
 import {CUBE_TYPES} from "./CubeSelectionDropDown";

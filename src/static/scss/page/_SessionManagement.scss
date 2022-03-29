@@ -17,16 +17,21 @@
 
   .source-session-solves-container {
     width: 45%;
-    background: pink;
   }
 
   .swap-action-container {
     width: 10%;
-    background: green;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
 
   .target-session-solves-container {
     width: 45%;
-    background: pink;
+  }
+
+  .right-arrow {
+    cursor: pointer;
   }
 }

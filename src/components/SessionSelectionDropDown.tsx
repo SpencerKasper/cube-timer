@@ -9,12 +9,13 @@ import {UrlHelper} from "../utils/url-helper";
 import AddIcon from '@mui/icons-material/Add';
 import './SessionSelectionDropDown.css';
 import {AddSessionModal} from "./AddSessionModal";
+import {ISolveSession} from "../redux/reducers/solveReducer";
 
-const SessionSelectionDropDown = () => {
-    const selectedSession = useSelector(solveSelectors.selectedSession);
+const SessionSelectionDropDown = ({value, allowAdd = true, onChange}: {value?, allowAdd?: boolean; onChange?: (session: ISolveSession) => Promise<void>}) => {
     const allSessions = useSelector(solveSelectors.sessions);
     const user = useSelector(sessionSelectors.user);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedValue, setSelectedValue] = useState(value ? value : '');
 
     useEffect(() => {
         if (user) {
@@ -28,10 +29,14 @@ const SessionSelectionDropDown = () => {
         reduxStore.dispatch({type: 'solves/set-sessions', payload: {sessions: response.data.body.sessions}})
     };
 
-    const onSessionChange = (event) => {
+    const onSessionChange = async (event) => {
         const selectedSessionId = event.target.value;
+        setSelectedValue(selectedSessionId);
         const nextSelectedSession = allSessions.find(session => session.sessionId === selectedSessionId);
-        reduxStore.dispatch({type: 'solves/set-selected-session', payload: {selectedSession: nextSelectedSession}});
+        if(onChange) {
+            console.error('calling onchange');
+            await onChange(nextSelectedSession);
+        }
     };
 
     return (
@@ -42,7 +47,7 @@ const SessionSelectionDropDown = () => {
                     <Select
                         color={'secondary'}
                         labelId={'selected-session-label-id'}
-                        value={selectedSession.sessionId}
+                        value={selectedValue}
                         label="Current Session"
                         onChange={onSessionChange}
                     >
@@ -55,10 +60,10 @@ const SessionSelectionDropDown = () => {
                         )}
                     </Select>
                 </div>
-                <div className={'add-session-button'}>
+                {allowAdd && <div className={'add-session-button'}>
                     <AddIcon onClick={() => setIsModalOpen(true)}/>
                     <AddSessionModal onClose={() => setIsModalOpen(false)} isOpen={isModalOpen}/>
-                </div>
+                </div>}
             </div>
         </div>
     );
