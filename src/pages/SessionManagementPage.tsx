@@ -2,7 +2,7 @@ import {Card, CardContent} from '@mui/material';
 import React from 'react';
 import {Page} from "../components/Page";
 // import {SolveSelectionTable} from "../components/SolveSelectionTable";
-8
+
 export const SessionManagementPage = () => {
     return (
         <div className={'session-management-container'}>
