@@ -42,6 +42,8 @@ export const SessionManagementPage = () => {
             toast.error('Your source session cannot be the same as your target session.');
         } else if (!sourceSession || !targetSession) {
             toast.error('You must have a source and target session selected.');
+        } else {
+            toast.info('Sorry! This feature isn\'t quite ready yet.');
         }
     };
 
