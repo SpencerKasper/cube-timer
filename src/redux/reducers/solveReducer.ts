@@ -16,6 +16,7 @@ export interface Solve {
     number: number;
     plusTwo: boolean;
     dnf: boolean;
+    creationTimestamp: number;
 }
 
 interface SolveReducerState {

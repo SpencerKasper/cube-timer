@@ -10,7 +10,6 @@ import {SolveCard} from "./SolveCard";
 import {Card, CardContent, Chip} from "@mui/material";
 import {ArrowUpward} from "@mui/icons-material";
 import {toast} from "react-toastify";
-import SessionSelectionDropDown from "./SessionSelectionDropDown";
 
 const SolveLog = () => {
     const [scrollHeight, setScrollHeight] = useState(0);
@@ -49,7 +48,7 @@ const SolveLog = () => {
                               className='scroll-to-top-chip'/>
                     </div>
                 }
-                {solves.length ? solves.sort((a, b) => a.number > b.number ? -1 : 1).map((solve: Solve, index) => {
+                {solves.length ? solves.sort((a, b) => a.creationTimestamp > b.creationTimestamp ? -1 : 1).map((solve: Solve, index) => {
                         return <SolveCard key={index}
                                           solveNumber={solves.length - index}
                                           solve={solve}/>
