@@ -11,7 +11,11 @@ import './SessionSelectionDropDown.css';
 import {AddSessionModal} from "../modals/AddSessionModal";
 import {DEFAULT_SESSION, ISolveSession} from "../../redux/reducers/solveReducer";
 
-const SessionSelectionDropDown = ({value, allowAdd = true, onChange}: {value?, allowAdd?: boolean; onChange?: (session: ISolveSession) => Promise<void>}) => {
+const SessionSelectionDropDown = ({
+                                      value,
+                                      allowAdd = true,
+                                      onChange
+                                  }: { value?, allowAdd?: boolean; onChange?: (session: ISolveSession) => Promise<void> }) => {
     const allSessions = useSelector(solveSelectors.sessions);
     const user = useSelector(sessionSelectors.user);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,16 +37,16 @@ const SessionSelectionDropDown = ({value, allowAdd = true, onChange}: {value?, a
         const selectedSessionId = event.target.value;
         setSelectedValue(selectedSessionId);
         const nextSelectedSession = allSessions.find(session => session.sessionId === selectedSessionId);
-        if(onChange) {
+        if (onChange) {
             await onChange(nextSelectedSession);
         }
     };
 
     return (
         <div>
-            <InputLabel id="selected-session-label-id">Current Session</InputLabel>
             <div className={'session-selection-drop-down-container'}>
-                <div className={'session-selection-drop-down'}>
+                <div className={'flex-row session-selection-drop-down'}>
+                    <p className={'label'}>Current Session</p>
                     <Select
                         color={'secondary'}
                         labelId={'selected-session-label-id'}

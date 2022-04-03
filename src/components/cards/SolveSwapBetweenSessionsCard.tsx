@@ -5,11 +5,14 @@ import {ISolveSession, Solve} from "../../redux/reducers/solveReducer";
 import axios from "axios";
 import {UrlHelper} from "../../utils/url-helper";
 import {toast} from "react-toastify";
-import {Alert, Card, CardContent, Collapse} from "@mui/material";
+import {Alert, Card, CardContent, Collapse, Tooltip} from "@mui/material";
 import SessionSelectionDropDown from "../drop-downs/SessionSelectionDropDown";
 import {SolveSelectionTable} from "../SolveSelectionTable";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import reduxStore from "../../redux/redux-store";
+import {CollapsableAlert} from "../common/CollapsableAlert";
+
+const ALERT_TEXT = 'To swap solves between sessions, select your source and target sessions and select the solves you wish to move.'
 
 export function SolveSwapBetweenSessionsCard() {
     const user = useSelector(sessionSelectors.user);
@@ -18,7 +21,6 @@ export function SolveSwapBetweenSessionsCard() {
     const [sourceSession, setSourceSession] = useState<ISolveSession>(null);
     const [targetSolves, setTargetSolves] = useState<Solve[]>([]);
     const [targetSession, setTargetSession] = useState<ISolveSession>(null);
-    const [isAlertOpen, setIsAlertOpen] = useState(true);
 
     const getSourceSessionSolves = async () => {
         if (sourceSession) {
@@ -66,12 +68,7 @@ export function SolveSwapBetweenSessionsCard() {
     };
     return <Card className={"flex-row session-management-card"}>
         <CardContent className={"flex-column session-management-card-content"}>
-            <Collapse in={isAlertOpen} sx={{width: "100%"}}>
-                <Alert onClose={() => setIsAlertOpen(false)} severity="info">
-                    To swap solves between sessions, select your source and target sessions and select the
-                    solves you wish to move.
-                </Alert>
-            </Collapse>
+            <CollapsableAlert text={ALERT_TEXT}/>
             <h2>Swap Solves Between Sessions</h2>
             <div className={"flex-row session-swap-container"}>
                 <div className={"source-session-solves-container flex-column"}>
@@ -82,7 +79,9 @@ export function SolveSwapBetweenSessionsCard() {
                                          solves={sourceSolves}/>
                 </div>
                 <div className={"swap-action-container"}>
-                    <ArrowRightAltIcon className={"right-arrow"} onClick={transferSolvesToSession}/>
+                    <Tooltip title={'Confirm and transfer solves from the session on the left to the session on the right.'}>
+                        <ArrowRightAltIcon className={"right-arrow"} onClick={transferSolvesToSession}/>
+                    </Tooltip>
                 </div>
                 <div className={"target-session-solves-container"}>
                     <SessionSelectionDropDown
