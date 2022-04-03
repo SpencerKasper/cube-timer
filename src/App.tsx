@@ -24,7 +24,7 @@ const awsExports = {
             "profile",
             "aws.cognito.signin.user.admin"
         ],
-        "redirectSignIn": "https://solvelog.com/",
+        "redirectSignIn": "https://app.solvelog.com/",
         "redirectSignOut": "https://solvelog.com/",
         "responseType": "code"
     },
