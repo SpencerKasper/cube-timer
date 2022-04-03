@@ -5,8 +5,8 @@ import reduxStore from "../redux/redux-store";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
 import {useSelector} from "react-redux";
 import {toast} from "react-toastify";
-import {Setting} from "./Setting";
-import {CubeSelectionDropDown} from "./CubeSelectionDropDown";
+import {Setting} from "./common/Setting";
+import {CubeSelectionDropDown} from "./drop-downs/CubeSelectionDropDown";
 
 const MAX_SCRAMBLE_LENGTH = 100;
 

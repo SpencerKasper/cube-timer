@@ -2,7 +2,7 @@ import {ROUTES} from "./static/constants/routes";
 import HomePage from "./pages/AuthenticatedHomePage";
 import React, {useEffect} from "react";
 import {Route, Switch} from "react-router-dom";
-import {Page} from "./components/Page";
+import {Page} from "./components/common/Page";
 import reduxStore from "./redux/redux-store";
 
 export const SolveLogRouter = (props: { user; logOut }) => {

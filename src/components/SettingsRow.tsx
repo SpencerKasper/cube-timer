@@ -2,7 +2,7 @@ import React from 'react';
 import {ScrambleSettings} from "./ScrambleSettings";
 import {TimerSettings} from "./TimerSettings";
 import './SettingsRow.css';
-import SessionSelectionDropDown from "./SessionSelectionDropDown";
+import SessionSelectionDropDown from "./drop-downs/SessionSelectionDropDown";
 import {Card, CardContent} from "@mui/material";
 
 export interface TimerInfo {

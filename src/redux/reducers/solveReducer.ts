@@ -25,7 +25,7 @@ interface SolveReducerState {
     selectedSession?: ISolveSession;
 }
 
-const DEFAULT_SESSION: ISolveSession = {
+export const DEFAULT_SESSION: ISolveSession = {
     sessionId: 'DEFAULT_SESSION',
     name: 'Default Session',
 };

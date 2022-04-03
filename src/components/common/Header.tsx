@@ -1,12 +1,12 @@
-import RubiksCubeIcon from "../static/images/cube.png";
-import ScrambleDisplayRow from "./ScrambleDisplay";
+import RubiksCubeIcon from "../../static/images/cube.png";
+import ScrambleDisplayRow from "../ScrambleDisplay";
 import React from "react";
 import {useSelector} from "react-redux";
-import sessionSelectors from "../redux/selectors/sessionSelectors";
+import sessionSelectors from "../../redux/selectors/sessionSelectors";
 import {Avatar, IconButton, Link, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {withRouter} from "react-router";
-import {UrlHelper} from "../utils/url-helper";
+import {UrlHelper} from "../../utils/url-helper";
 
 function Header(props) {
     const user = useSelector(sessionSelectors.user);

@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import axios from "axios";
-import {UrlHelper} from "../utils/url-helper";
+import {UrlHelper} from "../../utils/url-helper";
 import {useSelector} from "react-redux";
-import sessionSelectors from "../redux/selectors/sessionSelectors";
+import sessionSelectors from "../../redux/selectors/sessionSelectors";
 import {Button, Dialog, DialogActions, DialogContent, TextField} from "@mui/material";
-import {Setting} from "./Setting";
-import reduxStore from "../redux/redux-store";
+import {Setting} from "../common/Setting";
+import reduxStore from "../../redux/redux-store";
 import {toast} from "react-toastify";
 
 export const AddSessionModal = (props: { onClose, isOpen?: boolean }) => {

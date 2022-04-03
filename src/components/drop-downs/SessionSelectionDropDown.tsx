@@ -1,21 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {InputLabel, MenuItem, Select} from "@mui/material";
 import {useSelector} from "react-redux";
-import solveSelectors from "../redux/selectors/solveSelectors";
-import sessionSelectors from "../redux/selectors/sessionSelectors";
+import solveSelectors from "../../redux/selectors/solveSelectors";
+import sessionSelectors from "../../redux/selectors/sessionSelectors";
 import axios from "axios";
-import reduxStore from "../redux/redux-store";
-import {UrlHelper} from "../utils/url-helper";
+import reduxStore from "../../redux/redux-store";
+import {UrlHelper} from "../../utils/url-helper";
 import AddIcon from '@mui/icons-material/Add';
 import './SessionSelectionDropDown.css';
-import {AddSessionModal} from "./AddSessionModal";
-import {ISolveSession} from "../redux/reducers/solveReducer";
+import {AddSessionModal} from "../modals/AddSessionModal";
+import {DEFAULT_SESSION, ISolveSession} from "../../redux/reducers/solveReducer";
 
 const SessionSelectionDropDown = ({value, allowAdd = true, onChange}: {value?, allowAdd?: boolean; onChange?: (session: ISolveSession) => Promise<void>}) => {
     const allSessions = useSelector(solveSelectors.sessions);
     const user = useSelector(sessionSelectors.user);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(value ? value : '');
+    const [selectedValue, setSelectedValue] = useState(value ? value : DEFAULT_SESSION.sessionId);
 
     useEffect(() => {
         if (user) {
@@ -34,7 +34,6 @@ const SessionSelectionDropDown = ({value, allowAdd = true, onChange}: {value?, a
         setSelectedValue(selectedSessionId);
         const nextSelectedSession = allSessions.find(session => session.sessionId === selectedSessionId);
         if(onChange) {
-            console.error('calling onchange');
             await onChange(nextSelectedSession);
         }
     };

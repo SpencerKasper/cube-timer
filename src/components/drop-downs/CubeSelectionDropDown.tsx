@@ -1,9 +1,9 @@
 import {useSelector} from "react-redux";
-import settingsSelectors from "../redux/selectors/settingsSelectors";
-import reduxStore from "../redux/redux-store";
+import settingsSelectors from "../../redux/selectors/settingsSelectors";
+import reduxStore from "../../redux/redux-store";
 import {MenuItem, Select} from "@mui/material";
 import React from "react";
-import {CubeType} from "../redux/reducers/settingsReducer";
+import {CubeType} from "../../redux/reducers/settingsReducer";
 
 export const CUBE_TYPES: { [key in CubeType]: { name: string; type: CubeType; } } = {
     '222': {name: '2x2x2', type: '222'},

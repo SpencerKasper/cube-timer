@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Card, CardContent, Chip} from "@mui/material";
 import {TimerInfo} from "./SettingsRow";
 import './TimerInfoChipContainer.css';
-import SessionSelectionDropDown from "./SessionSelectionDropDown";
+import SessionSelectionDropDown from "./drop-downs/SessionSelectionDropDown";
 import {useSelector} from "react-redux";
 import solveSelectors from "../redux/selectors/solveSelectors";
 import reduxStore from "../redux/redux-store";

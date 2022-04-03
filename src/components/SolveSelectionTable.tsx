@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     alpha,
     Box,
@@ -23,7 +23,15 @@ import {visuallyHidden} from '@mui/utils';
 import {Solve} from "../redux/reducers/solveReducer";
 import {TimeFormatter} from "../utils/TimeFormatter";
 
-export const SolveSelectionTable = ({solves, width, selectable = true}: {solves: Solve[], width?: string, selectable?: boolean}) => {
+export const SolveSelectionTable = ({
+                                        solves,
+                                        width,
+                                        selectable = true,
+                                        onSelectedChanged = (value) => null
+                                    }: { solves: Solve[], width?: string, selectable?: boolean; onSelectedChanged?: (value) => any }) => {
+    useEffect(() => {
+        setSelected([]);
+    }, [solves]);
     const rows = solves ? solves : [];
     type Order = 'asc' | 'desc';
 
@@ -177,17 +185,27 @@ export const SolveSelectionTable = ({solves, width, selectable = true}: {solves:
     };
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let updated;
         if (event.target.checked) {
-            const newSelecteds = rows ? rows.map((n) => n.solveId) : [];
-            setSelected(newSelecteds);
-            return;
+            updated = rows ? rows.map((n) => n.solveId) : [];
+            setSelected(updated);
+        } else {
+            updated = [];
+            setSelected(updated);
         }
-        setSelected([]);
+        onSelectedChanged(updated);
     };
 
-    const handleClick = (event: React.MouseEvent<unknown>, name: string | number) => {
-        console.error(event);
-        console.error(name);
+    const handleClick = (event, solveId: string) => {
+        let updated;
+        if (event.target.checked) {
+            updated = [...selected, solveId];
+            setSelected(updated);
+        } else {
+            updated = selected.filter(item => item !== solveId);
+            setSelected(updated);
+        }
+        onSelectedChanged(updated);
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -256,7 +274,8 @@ export const SolveSelectionTable = ({solves, width, selectable = true}: {solves:
                                             >
                                                 {row.cubeType}
                                             </TableCell>
-                                            <TableCell align="center">{new TimeFormatter().getFullTime(row.time)}</TableCell>
+                                            <TableCell
+                                                align="center">{new TimeFormatter().getFullTime(row.time)}</TableCell>
                                         </TableRow>
                                     );
                                 })}

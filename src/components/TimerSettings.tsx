@@ -7,7 +7,7 @@ import './TimerSettings.css';
 import reduxStore from "../redux/redux-store";
 import settingsSelectors from "../redux/selectors/settingsSelectors";
 import {useSelector} from "react-redux";
-import {Setting} from "./Setting";
+import {Setting} from "./common/Setting";
 import SingletonStackmat from "../stackmat/singleton-stackmat";
 import {ITimerSettings} from '../redux/reducers/settingsReducer';
 export const TimerSettings = (props) => {

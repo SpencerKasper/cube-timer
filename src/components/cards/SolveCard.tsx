@@ -1,8 +1,8 @@
-import {Solve} from "../redux/reducers/solveReducer";
+import {Solve} from "../../redux/reducers/solveReducer";
 import axios from "axios";
-import {UrlHelper} from "../utils/url-helper";
-import reduxStore, {ReduxStore} from "../redux/redux-store";
-import {TimeFormatter} from "../utils/TimeFormatter";
+import {UrlHelper} from "../../utils/url-helper";
+import reduxStore, {ReduxStore} from "../../redux/redux-store";
+import {TimeFormatter} from "../../utils/TimeFormatter";
 import {Button, Card, CardContent, CircularProgress, Tooltip} from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import React, {useState} from "react";
@@ -10,8 +10,8 @@ import {useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import solveSelectors from "../redux/selectors/solveSelectors";
-import {CUBE_TYPES} from "./CubeSelectionDropDown";
+import solveSelectors from "../../redux/selectors/solveSelectors";
+import {CUBE_TYPES} from "../drop-downs/CubeSelectionDropDown";
 
 export function SolveCard(props: { solve: Solve; solveNumber: number; }) {
     const user = useSelector((state: ReduxStore) => state.sessionReducer.user);

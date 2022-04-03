@@ -6,7 +6,7 @@ import solveSelectors from "../redux/selectors/solveSelectors";
 import axios from "axios";
 import {UrlHelper} from "../utils/url-helper";
 import reduxStore, {ReduxStore} from "../redux/redux-store";
-import {SolveCard} from "./SolveCard";
+import {SolveCard} from "./cards/SolveCard";
 import {Card, CardContent, Chip} from "@mui/material";
 import {ArrowUpward} from "@mui/icons-material";
 import {toast} from "react-toastify";
